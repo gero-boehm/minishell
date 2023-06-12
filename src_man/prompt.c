@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 08:59:40 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/12 18:26:42 by christianme      ###   ########.fr       */
+/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
+/*   Updated: 2023/06/12 19:14:02 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int main(void)
+// char *ft_prompt(void)
+void ft_prompt(void)
 {
-    ft_prompt();
+    char* input;
+
+    while (1) {
+        input = readline(">>"); 
+        if (input == NULL)
+            break;
+       if (input[0] != '\0')
+            add_history(input);
+            
+        // Test //    
+        printf("Input: %s\n", input);
+        // free(input);
+        // return (input);
+    }
+    // return (0);
 }
