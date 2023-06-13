@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/13 12:39:37 by christianme      ###   ########.fr       */
+/*   Created: 2023/06/13 12:33:11 by christianme       #+#    #+#             */
+/*   Updated: 2023/06/13 12:38:10 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-// char *ft_prompt(void)
-void ft_prompt(void)
+int ft_print_history(void) 
 {
-    char* input;
-    using_history();
+    HIST_ENTRY* entry;
+    int         i;
 
-    while (1) {
-        input = readline(">>"); 
-        if (input == NULL)
-            break;
-        if (input[0] != '\0')
-            add_history(input);
-            
-        // Test //    
-        printf("Input: %s\n", input);
-        ft_print_history();
-        // free(input);
-        // return (input); 
+    i = 1;
+
+    while (i < history_length) 
+    {
+        entry = history_get(i);
+        if (entry != NULL)
+            printf("%d: %s\n", i , entry->line);
+        i++;
     }
-    
+    return (0);
 }
