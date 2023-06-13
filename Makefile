@@ -1,10 +1,11 @@
 NAME		= 	minishell
 CFLAGS		= 	-Wall -Werror -Wextra
 CC			= 	cc
+READ		=	-lreadline
 RM			=	rm -rf
 INCLUDE 	= 	-I include
 
-MAN_FILES	=	src_man/minishell.c 
+MAN_FILES	=	src_man/minishell.c src_man/prompt.c src_man/history.c 
 BONUS_FILES	=	src_bonus/bonus.c		
 
 MAN_OBJ		=	$(MAN_FILES:.c=.o)
@@ -26,7 +27,7 @@ endif
 all: $(NAME) 
 
 $(NAME): $(LIBFT) $(MAN_OBJ)
-	$(CC) $(CFLAGS) -o $(NAME) $(MAN_OBJ) $(LIBFT) $(INCLUDE)
+	$(CC) $(CFLAGS) -o $(NAME) $(MAN_OBJ) $(READ) $(LIBFT) $(INCLUDE)
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
 	
 
