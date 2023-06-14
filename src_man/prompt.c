@@ -6,7 +6,7 @@
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/13 12:39:37 by christianme      ###   ########.fr       */
+/*   Updated: 2023/06/14 18:29:11 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void ft_prompt(void)
             
         // Test //    
         printf("Input: %s\n", input);
-        ft_print_history();
         // free(input);
         // return (input); 
     }
