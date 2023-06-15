@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 08:59:40 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/15 11:55:24 by christianme      ###   ########.fr       */
+/*   Created: 2023/06/15 11:56:08 by christianme       #+#    #+#             */
+/*   Updated: 2023/06/15 13:00:26 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int main(void)
+// int ft_echo(token n, char *str)
+int ft_echo(int n, char *str)
 {
-    ft_prompt();
+    int i;
+    
+    i = 0;
+    if (str == NULL)
+    {
+        printf("\n");
+        return (1);
+    }
+    while (str[i + 1] != '\0')
+        printf("%c", str[i++]);
+    if (!n)
+        printf("\n");
+    return (0);        
+        
 }

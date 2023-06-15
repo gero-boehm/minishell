@@ -1,18 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 08:59:40 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/15 11:55:24 by christianme      ###   ########.fr       */
+/*   Created: 2023/06/15 12:50:25 by christianme       #+#    #+#             */
+/*   Updated: 2023/06/15 13:08:24 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int main(void)
+    
+int ft_env(void)
 {
-    ft_prompt();
+    extern char **environ;
+   
+    if (environ == NULL)
+        return (1);
+    while (*environ != NULL) 
+    {
+        printf("%s\n", *environ);
+        environ++;
+    }
+    return (0);  
 }

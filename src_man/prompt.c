@@ -6,7 +6,7 @@
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/14 18:29:11 by christianme      ###   ########.fr       */
+/*   Updated: 2023/06/15 22:55:17 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,14 @@ void ft_prompt(void)
             add_history(input);
             
         // Test //    
-        printf("Input: %s\n", input);
+        // printf("input:  %s\n", input);
+        
+        // char* path = "src_man";
+        // printf("path:   %s\n", path);
+        // ft_cd(path);
+        
+        // ft_env();
+        // ft_pwd();
         // free(input);
         // return (input); 
     }
