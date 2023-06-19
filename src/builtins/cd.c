@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/15 11:56:08 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/15 13:00:26 by christianme      ###   ########.fr       */
+/*   Created: 2023/06/15 18:23:56 by christianme       #+#    #+#             */
+/*   Updated: 2023/06/19 09:46:05 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../../include/minishell.h"
 
-// int ft_echo(token n, char *str)
-int ft_echo(int n, char *str)
+// str doesn't needs '/' before the dir name for relative but for absolut
+int ft_cd(char *str)
 {
-    int i;
     
-    i = 0;
-    if (str == NULL)
+    if (str != NULL)
     {
-        printf("\n");
-        return (1);
+        if (chdir(str) == -1)
+            return (printf("%s\n", "Error"), 1);
+        // Test //
+        //  char *path;
+        // path = NULL;
+        // printf("after:    %s\n", getcwd(path, 1));
+        return (0);
     }
-    while (str[i + 1] != '\0')
-        printf("%c", str[i++]);
-    if (!n)
-        printf("\n");
-    return (0);        
-        
+    return (1);
 }

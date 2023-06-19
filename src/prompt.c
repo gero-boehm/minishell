@@ -6,7 +6,7 @@
 /*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/15 22:55:17 by christianme      ###   ########.fr       */
+/*   Updated: 2023/06/19 15:26:00 by christianme      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,17 @@ void ft_prompt(void)
     using_history();
 
     while (1) {
+        ft_signals();
         input = readline(">>"); 
         if (input == NULL)
             break;
         if (input[0] != '\0')
             add_history(input);
             
-        // Test //    
+        // Tests //    
         // printf("input:  %s\n", input);
+        
+        // ft_exit();
         
         // char* path = "src_man";
         // printf("path:   %s\n", path);
