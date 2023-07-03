@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: christianmeng <christianmeng@student.42    +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 09:00:16 by christianme       #+#    #+#             */
-/*   Updated: 2023/06/19 15:24:59 by christianme      ###   ########.fr       */
+/*   Updated: 2023/07/03 14:05:40 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@
 
 
 void    ft_prompt(void);
-int     ft_pwd(void);
-int     ft_echo(int n, char *str);
-int     ft_env(void);
-int     ft_cd(char *str);
+int 	ft_exec(char **cmd_args);
 
 void    ft_signals(void);
 void    ft_ctrlc(int sig);

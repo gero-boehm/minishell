@@ -5,9 +5,8 @@ READ		=	-l readline
 RM			=	rm -rf
 INCLUDE 	= 	-I include
 
-MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c\
-				src/builtins/echo.c src/builtins/pwd.c src/builtins/env.c src/builtins/cd.c 
-BONUS_FILES	=	src_bonus/bonus.c		
+MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c src/exec.c
+BONUS_FILES	=	src_bonus/bonus.c
 
 MAN_OBJ		=	$(MAN_FILES:.c=.o)
 BONUS_OBJ	=	$(BONUS_FILES:.c=.o)
@@ -25,12 +24,12 @@ endif
 
 # RULES
 
-all: $(NAME) 
+all: $(NAME)
 
 $(NAME): $(LIBFT) $(MAN_OBJ) $(READLINE)
 	$(CC) $(CFLAGS) -o $(NAME) $(MAN_OBJ) $(READ) $(LIBFT)
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
-	
+
 
 %.o: %.c $(INCLUDE)
 	$(CC) $(CFLAGS) -c $< -o $@
