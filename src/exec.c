@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/03 13:57:32 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/03 14:18:04 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,10 @@ int ft_exec(char **cmd_args)
 	paths = ft_split(env, ':');
 	if (ft_get_cmd_path(paths, cmd_args[0], cmd_path))
 		return (1);
-	// execve(cmd_path, cmd_args, NULL);
-	// printf("yay %d\n", errno);
+		
+	//*--Create Child process before execve--*
+	execve(cmd_path, cmd_args, NULL);
+	printf("yay %d\n", errno);
 	return (0);
 }
 
