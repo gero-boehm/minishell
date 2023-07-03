@@ -1,1 +1,3 @@
 # minishell
+
+Shell but mini.
