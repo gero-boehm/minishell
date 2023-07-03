@@ -5,7 +5,8 @@ READ		=	-l readline
 RM			=	rm -rf
 INCLUDE 	= 	-I include
 
-MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c src/exec.c
+MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c src/exec.c\
+				src/builtins/echo.c src/builtins/pwd.c src/builtins/env.c src/builtins/cd.c
 BONUS_FILES	=	src_bonus/bonus.c
 
 MAN_OBJ		=	$(MAN_FILES:.c=.o)
