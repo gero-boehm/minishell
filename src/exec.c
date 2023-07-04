@@ -6,42 +6,44 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/03 14:18:04 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/04 11:56:30 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <errno.h>
 
-static int ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
+static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
 {
 	while (*paths != NULL)
 	{
 		sprintf(cmd_path, "%s/%s", *paths++, cmd);
 		// printf("path: %s\n", path);
 		if (access(cmd_path, X_OK))
-			return(0);
+			return (0);
 	}
 	return (1);
 }
 
-int ft_exec(char **cmd_args)
+int	ft_exec(char **cmd_args)
 {
-	char *env;
-	char **paths;
-	char *cmd_path = malloc(100);
+	char	*env;
+	char	**paths;
+	char	*cmd_path = malloc(100);
 
 	env = getenv("PATH");
 	paths = ft_split(env, ':');
 	if (ft_get_cmd_path(paths, cmd_args[0], cmd_path))
 		return (1);
-		
 	//*--Create Child process before execve--*
-	execve(cmd_path, cmd_args, NULL);
+	printf("cmd of execve: %s\n", cmd_args[0]);
+	printf("cmd_path: %s\n", cmd_path);
+	printf("===================================\n");
+	fork();
+	if (execve(cmd_path, cmd_args, NULL) != 0)
+		return (write(1,"fail\n", 5), 1);
 	printf("yay %d\n", errno);
 	return (0);
 }
-
 
 // void print(char **paths)
 // {
@@ -67,7 +69,6 @@ int ft_exec(char **cmd_args)
 
 // 	// printf("Valid[0]: %s\n", paths[0]);
 // 	printf("Valid: %s\n", path);
-
 
 // 	return(0);
 // }
