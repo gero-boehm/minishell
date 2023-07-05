@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:32:49 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/03 18:52:15 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/04 17:56:09 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int		var_set(char *key, char *value);
 int		var_get(char *key, char **value);
 void	vars_print(void);
 
+int		ft_split(char *str, char c, t_array *arr);
 
 
 #endif
