@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/04 18:06:17 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/05 10:54:42 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "array.h"
 
 int	memalloc(size_t count, void **ptr)
@@ -120,10 +121,21 @@ int	main(int argc, char **argv, char** envp)
 	// var_get("test", &v);
 	// printf("%s\n", v);
 
-	t_array split;
-	ft_split("  a b c def ", ' ', &split);
+	// t_array split;
+	// ft_split("  a b c def ", ' ', &split);
 
-	arr_print_str(&split);
+	// arr_print_str(&split);
+
+	t_range range;
+	char *str = "abc*def";
+	int found = get_range_to("abc*def", "*", 0, &range);
+	printf("%d | %lu -> %zu\n", found, range.start, range.length);
+
+	char *sub;
+	str_extract_range(str, &range, &sub);
+	printf("%s\n", sub);
+
+	// printf("%d\n", strncmp("abcdef", "abc", 3));
 
 	// error(0);
 	cleanup();

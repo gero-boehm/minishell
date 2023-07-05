@@ -1,7 +1,7 @@
 CC=cc
 CFLAGS=
 NAME=array
-SRC=main.c array.c vars.c split.c wildcard.c
+SRC=main.c array.c vars.c split.c wildcard.c string.c
 OBJ=$(SRC:.c=.o)
 HEADERS=array.h
 

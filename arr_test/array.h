@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:32:49 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/04 17:56:09 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/05 10:55:35 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ typedef struct s_array {
 	unsigned int	bytes;
 }	t_array;
 
-typedef struct s_vars
-{
+typedef struct s_vars {
 	t_array	keys;
 	t_array	values;
 }	t_vars;
@@ -32,6 +31,11 @@ typedef struct s_global {
 	t_vars	vars;
 	t_array	allocs;
 }	t_global;
+
+typedef struct s_range {
+	unsigned long	start;
+	size_t			length;
+}	t_range;
 
 t_global g_global;
 
@@ -56,5 +60,7 @@ void	vars_print(void);
 
 int		ft_split(char *str, char c, t_array *arr);
 
+int		str_range_to(char *haystack, char *needle, unsigned long start, t_range *range);
+int		str_extract_range(char *str, t_range *range, char **sub);
 
 #endif
