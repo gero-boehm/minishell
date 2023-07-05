@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/05 10:54:42 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/05 13:28:43 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,14 +126,18 @@ int	main(int argc, char **argv, char** envp)
 
 	// arr_print_str(&split);
 
-	t_range range;
-	char *str = "abc*def";
-	int found = get_range_to("abc*def", "*", 0, &range);
-	printf("%d | %lu -> %zu\n", found, range.start, range.length);
+	// t_range range;
+	// char *str = "abc*def";
+	// int found = str_range_of("abc*def", "def", 0, &range);
+	// printf("%d | %lu -> %zu\n", found, range.start, range.length);
 
-	char *sub;
-	str_extract_range(str, &range, &sub);
-	printf("%s\n", sub);
+	// char *sub;
+	// str_extract_range(str, &range, &sub);
+	// printf("%s\n", sub);
+
+	char *str = strdup("xxxxxx");
+	str_trim(&str, "x");
+	printf("%s\n", str);
 
 	// printf("%d\n", strncmp("abcdef", "abc", 3));
 

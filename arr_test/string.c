@@ -6,21 +6,21 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/05 10:56:54 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/05 13:27:23 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include "array.h"
 
-int	str_range_to(char *haystack, char *needle, unsigned long start, t_range *range)
+int	str_range_to(char *str, char *pattern, unsigned long start, t_range *range)
 {
 	size_t	i;
 
 	i = start;
-	while(strncmp(&haystack[i], needle, strlen(needle)))
+	while (strncmp(&str[i], pattern, strlen(pattern)))
 	{
-		if (haystack[i] == '\0')
+		if (str[i] == '\0')
 			return (1);
 		i++;
 	}
@@ -29,20 +29,96 @@ int	str_range_to(char *haystack, char *needle, unsigned long start, t_range *ran
 	return (0);
 }
 
-int	str_range_of(char *haystack, char *needle, unsigned long start, t_range *range)
+int	str_range_of(char *str, char *pattern, unsigned long start, t_range *range)
 {
 	size_t	i;
 
 	i = start;
-	while(strncmp(&haystack[i], needle, strlen(needle)))
+	while (strncmp(&str[i], pattern, strlen(pattern)))
 	{
-		if (haystack[i] == '\0')
+		if (str[i] == '\0')
 			return (1);
 		i++;
 	}
-	range->start = start;
-	range->length = i;
+	range->start = i;
+	range->length = strlen(pattern);
 	return (0);
+}
+
+static int	str_char_in_set(char *set, char c)
+{
+	while (*set != '\0')
+	{
+		if (*set == c)
+			return (1);
+		set++;
+	}
+	return (0);
+}
+
+// int	str_range_of_set(char *str, char *set, unsigned long start, t_range *range)
+// {
+// 	size_t	i;
+
+// 	i = start;
+// 	while (strncmp(&haystack[i], needle, strlen(needle)))
+// 	{
+// 		if (haystack[i] == '\0')
+// 			return (1);
+// 		i++;
+// 	}
+// 	range->start = i;
+// 	range->length = strlen(needle);
+// 	return (0);
+// }
+
+int	str_trim_start(char **str, char *set)
+{
+	t_range	range;
+	char	c;
+	char	*trimmed;
+
+	range.start = 0;
+	while (1)
+	{
+		c = (*str)[range.start];
+		if (c == '\0' || !str_char_in_set(set, c))
+			break ;
+		range.start++;
+	}
+	range.length = strlen(*str) - range.start;
+	if (str_extract_range(*str, &range, &trimmed))
+		return (1);
+	memfree(*str);
+	*str = trimmed;
+	return (0);
+}
+
+int	str_trim_end(char **str, char *set)
+{
+	t_range	range;
+	char	c;
+	char	*trimmed;
+
+	range.start = 0;
+	range.length = strlen(*str);
+	while (range.length > 0)
+	{
+		c = (*str)[range.length - 1];
+		if (!str_char_in_set(set, c))
+			break ;
+		range.length--;
+	}
+	if (str_extract_range(*str, &range, &trimmed))
+		return (1);
+	memfree(*str);
+	*str = trimmed;
+	return (0);
+}
+
+int	str_trim(char **str, char *set)
+{
+	return (str_trim_start(str, set) || str_trim_end(str, set));
 }
 
 int	str_extract_range(char *str, t_range *range, char **sub)
