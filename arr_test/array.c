@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:02:50 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/03 19:09:29 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 12:00:43 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	arr_index(t_array *arr, void *element, unsigned int *index)
 	while (i < arr->size)
 	{
 		tmp = arr_get(arr, i);
-		if(ft_memcmp(tmp, element, arr->bytes) == 0)
+		if (ft_memcmp(tmp, element, arr->bytes) == 0)
 		{
 			if (index != NULL)
 				*index = i;

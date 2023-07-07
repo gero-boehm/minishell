@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/05 13:28:43 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 15:11:28 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "array.h"
+#include "assoc.h"
 
 int	memalloc(size_t count, void **ptr)
 {
@@ -50,8 +51,8 @@ int	init_global(void)
 {
 	if (arr_create(&g_global.allocs, sizeof(void *)))
 		return (1);
-	if (vars_init())
-		return (2);
+	// if (vars_init())
+	// 	return (2);
 	return (0);
 }
 
@@ -106,7 +107,7 @@ void	test_normal(void)
 
 int	main(int argc, char **argv, char** envp)
 {
-	t_array arr;
+	// t_array arr;
 
 	init_global();
 	// arr_print_ptr(&g_global.allocs);
@@ -135,9 +136,31 @@ int	main(int argc, char **argv, char** envp)
 	// str_extract_range(str, &range, &sub);
 	// printf("%s\n", sub);
 
-	char *str = strdup("xxxxxx");
-	str_trim(&str, "x");
-	printf("%s\n", str);
+	// char *str = strdup("xxxxxx");
+	// str_trim(&str, "x");
+	// printf("%s\n", str);
+
+	t_assoc	assoc;
+	int	fail = assoc_from_str_arr(&assoc, envp);
+
+	assoc_print(&assoc);
+
+	// assoc_init(&assoc);
+
+	assoc_set(&assoc, "key", "value");
+	assoc_set(&assoc, "test", "123");
+
+	printf("===============\n");
+
+	char **arr;
+	assoc_to_str_arr(&assoc, &arr);
+
+	while (*arr != NULL)
+		printf("%s\n", *arr++);
+
+	// while (*arr != NULL)
+	// 	printf("%d\n", strcmp(*arr++, *envp++));
+
 
 	// printf("%d\n", strncmp("abcdef", "abc", 3));
 

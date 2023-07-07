@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 17:38:55 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/04 18:09:42 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 12:03:37 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static void	trim(char **str, char c)
 		(*str)++;
 }
 
-static int grab_word(char **str, char c, t_array *arr)
+static int	grab_word(char **str, char c, t_array *arr)
 {
 	size_t	len;
 	char	*word;
 
 	len = 0;
-	while((*str)[len] && (*str)[len] != c)
+	while ((*str)[len] && (*str)[len] != c)
 		len++;
 	if (memalloc(len + 1, (void **) &word))
 		return (1);
@@ -37,7 +37,7 @@ static int grab_word(char **str, char c, t_array *arr)
 	return (0);
 }
 
-int	ft_split(char *str, char c, t_array *arr)
+int	str_split(char *str, char c, t_array *arr)
 {
 	if (arr_create(arr, sizeof(char *)))
 		return (1);

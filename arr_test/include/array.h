@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:32:49 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/05 13:28:10 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 14:16:00 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,8 @@ typedef struct s_array {
 	unsigned int	bytes;
 }	t_array;
 
-typedef struct s_vars {
-	t_array	keys;
-	t_array	values;
-}	t_vars;
-
 typedef struct s_global {
-	t_vars	vars;
+	// t_vars	vars;
 	t_array	allocs;
 }	t_global;
 
@@ -53,19 +48,10 @@ void	arr_free(t_array *arr);
 
 void	arr_print_ptr(t_array *arr);
 
-int		vars_init(void);
-int		var_set(char *key, char *value);
-int		var_get(char *key, char **value);
-void	vars_print(void);
-
-int		ft_split(char *str, char c, t_array *arr);
-
-int		str_range_to(char *haystack, char *needle, unsigned long start, t_range *range);
-int		str_range_of(char *haystack, char *needle, unsigned long start, t_range *range);
-int		str_extract_range(char *str, t_range *range, char **sub);
-int		str_trim_start(char **str, char *set);
-int		str_trim_end(char **str, char *set);
-int		str_trim(char **str, char *set);
+// int		vars_init(void);
+// int		var_set(char *key, char *value);
+// int		var_get(char *key, char **value);
+// void	vars_print(void);
 
 
 

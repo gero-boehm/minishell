@@ -1,7 +1,7 @@
 CC=cc
-CFLAGS=
+CFLAGS=-I include
 NAME=array
-SRC=main.c array.c vars.c split.c wildcard.c string.c
+SRC=main.c array.c split.c wildcard.c string.c assoc.c
 OBJ=$(SRC:.c=.o)
 HEADERS=array.h
 

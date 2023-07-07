@@ -6,14 +6,15 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/05 13:27:23 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 14:31:30 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include "array.h"
+#include "gstring.h"
 
-int	str_range_to(char *str, char *pattern, unsigned long start, t_range *range)
+int	str_range_to_exclusive(char *str, char *pattern, unsigned long start, t_range *range)
 {
 	size_t	i;
 
@@ -28,6 +29,43 @@ int	str_range_to(char *str, char *pattern, unsigned long start, t_range *range)
 	range->length = i;
 	return (0);
 }
+
+int	str_range_to_inclusive(char *str, char *pattern, unsigned long start, t_range *range)
+{
+	if (str_range_to_exclusive(str, pattern, start, range))
+		return (1);
+	range->length += strlen(pattern);
+	return (0);
+}
+
+int	str_range_from_inclusive(char *str, char *pattern, unsigned long start, t_range *range)
+{
+	size_t	i;
+
+	i = start;
+	while (strncmp(&str[i], pattern, strlen(pattern)))
+	{
+		if (str[i] == '\0')
+			return (1);
+		i++;
+	}
+	range->start = i;
+	range->length = strlen(str) - i;
+	return (0);
+}
+
+int	str_range_from_exclusive(char *str, char *pattern, unsigned long start, t_range *range)
+{
+	size_t	len;
+
+	if (str_range_from_inclusive(str, pattern, start, range))
+		return (1);
+	len = strlen(pattern);
+	range->start += len;
+	range->length -= len;
+	return (0);
+}
+
 
 int	str_range_of(char *str, char *pattern, unsigned long start, t_range *range)
 {
@@ -45,6 +83,42 @@ int	str_range_of(char *str, char *pattern, unsigned long start, t_range *range)
 	return (0);
 }
 
+int	str_str_to_inclusive(char *str, char *pattern, unsigned long start, char **sub)
+{
+	t_range	range;
+
+	if (str_range_to_inclusive(str, pattern, start, &range))
+		return (1);
+	return (str_extract_range(str, &range, sub));
+}
+
+int	str_str_to_exclusive(char *str, char *pattern, unsigned long start, char **sub)
+{
+	t_range	range;
+
+	if (str_range_to_exclusive(str, pattern, start, &range))
+		return (1);
+	return (str_extract_range(str, &range, sub));
+}
+
+int	str_str_from_inclusive(char *str, char *pattern, unsigned long start, char **sub)
+{
+	t_range	range;
+
+	if (str_range_from_inclusive(str, pattern, start, &range))
+		return (1);
+	return (str_extract_range(str, &range, sub));
+}
+
+int	str_str_from_exclusive(char *str, char *pattern, unsigned long start, char **sub)
+{
+	t_range	range;
+
+	if (str_range_from_exclusive(str, pattern, start, &range))
+		return (1);
+	return (str_extract_range(str, &range, sub));
+}
+
 static int	str_char_in_set(char *set, char c)
 {
 	while (*set != '\0')
@@ -54,6 +128,31 @@ static int	str_char_in_set(char *set, char c)
 		set++;
 	}
 	return (0);
+}
+
+size_t	str_len(const char *str)
+{
+	size_t	len;
+
+	len = 0;
+	while (str[len])
+		len++;
+	return (len);
+}
+
+size_t	str_copyn(char *dst, const char *src)
+{
+	unsigned long	i;
+	size_t			len;
+
+	i = 0;
+	len = str_len(src);
+	while (i < len)
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	return (len);
 }
 
 // int	str_range_of_set(char *str, char *set, unsigned long start, t_range *range)
