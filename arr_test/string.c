@@ -6,13 +6,14 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 14:31:30 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 17:34:40 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include "array.h"
-#include "gstring.h"
+#include "str.h"
+#include "memory.h"
 
 int	str_range_to_exclusive(char *str, char *pattern, unsigned long start, t_range *range)
 {
@@ -65,7 +66,6 @@ int	str_range_from_exclusive(char *str, char *pattern, unsigned long start, t_ra
 	range->length -= len;
 	return (0);
 }
-
 
 int	str_range_of(char *str, char *pattern, unsigned long start, t_range *range)
 {

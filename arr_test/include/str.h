@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gstring.h                                          :+:      :+:    :+:   */
+/*   str.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 14:29:35 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 16:38:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GSTRING_H
-# define GSTRING_H
+#ifndef STR_H
+# define STR_H
 
 # include <stddef.h>
+# include "strdef.h"
+# include "arraydef.h"
 
 size_t	str_len(const char *s);
 size_t	str_copyn(char *dst, const char *src);

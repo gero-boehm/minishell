@@ -6,15 +6,18 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:51:28 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 14:31:02 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 18:27:36 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdio.h"
+#include <stdio.h>
+#include <string.h>
+#include "memory.h"
 #include "assoc.h"
-#include "gstring.h"
+#include "array.h"
+#include "str.h"
 
-static int	assoc_add(t_assoc *assoc, char *key, char *value)
+static int	assoc_add(t_assoc *assoc, const char *key, char *value)
 {
 	if (arr_add(&assoc->keys, &key))
 		return (1);
@@ -32,7 +35,7 @@ int	assoc_init(t_assoc *assoc)
 	return (0);
 }
 
-int	assoc_set(t_assoc *assoc, char *key, char *value)
+int	assoc_set(t_assoc *assoc, const char *key, char *value)
 {
 	unsigned int	index;
 
@@ -42,13 +45,20 @@ int	assoc_set(t_assoc *assoc, char *key, char *value)
 	return (0);
 }
 
-int	assoc_get(t_assoc *assoc, char *key, char **value)
+int	assoc_get(t_assoc *assoc, const char *key, char **value)
 {
-	unsigned int	index;
+	unsigned int	i;
+	char			*tmp;
 
-	if (arr_index(&assoc->keys, &key, &index))
-		return (1);
-	*value = *(char **) arr_get(&assoc->values, index);
+	i = 0;
+	while (i < assoc->keys.size)
+	{
+		tmp = *(char **) arr_get(&assoc->keys, i);
+		if (strcmp(tmp, key) == 0)
+			break;
+		i++;
+	}
+	*value = *(char **) arr_get(&assoc->values, i);
 	return (0);
 }
 
@@ -62,7 +72,7 @@ char	*assoc_get_value_at(t_assoc *assoc, unsigned int index)
 	return (*(char **) arr_get(&assoc->values, index));
 }
 
-int	assoc_remove(t_assoc *assoc, char *key)
+int	assoc_remove(t_assoc *assoc, const char *key)
 {
 	unsigned int	index;
 
@@ -82,7 +92,6 @@ size_t	assoc_size(t_assoc *assoc)
 
 int	assoc_from_str_arr(t_assoc *assoc, char **arr)
 {
-	t_array	key_value;
 	char	*key;
 	char	*value;
 
@@ -124,7 +133,6 @@ static int	assoc_get_str_at(t_assoc *assoc, unsigned int index, char **str)
 int	assoc_to_str_arr(t_assoc *assoc, char ***arr)
 {
 	unsigned long	i;
-
 
 	if (memalloc((assoc_size(assoc) + 1) * sizeof(char *), (void **) arr))
 		return (1);

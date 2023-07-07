@@ -6,55 +6,21 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 15:11:28 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 18:14:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "globaldef.h"
+#include "global.h"
 #include "array.h"
 #include "assoc.h"
+#include "memory.h"
+#include "env.h"
 
-int	memalloc(size_t count, void **ptr)
-{
-	*ptr = malloc(count);
-	if (*ptr == NULL)
-		return (1);
-	if (arr_add(&g_global.allocs, ptr))
-		return (2);
-	return (0);
-}
-
-int	memfree(void *ptr)
-{
-	if (arr_remove(&g_global.allocs, &ptr))
-		return (1);
-	free(ptr);
-	return (0);
-}
-
-void	cleanup(void)
-{
-	unsigned int	i;
-	void			*ptr;
-
-	i = g_global.allocs.size;
-	while(i--)
-	{
-		ptr = *(void **) arr_get(&g_global.allocs, i);
-		free(ptr);
-	}
-}
-
-int	init_global(void)
-{
-	if (arr_create(&g_global.allocs, sizeof(void *)))
-		return (1);
-	// if (vars_init())
-	// 	return (2);
-	return (0);
-}
+extern char	**environ;
 
 void	arr_print(t_array *arr)
 {
@@ -83,12 +49,6 @@ void	arr_print_ptr(t_array *arr)
 	printf("\n");
 }
 
-void	error(int code)
-{
-	cleanup();
-	exit(code);
-}
-
 void	test_fancy(void)
 {
 	char *str;
@@ -105,11 +65,13 @@ void	test_normal(void)
 	error(1);
 }
 
-int	main(int argc, char **argv, char** envp)
+int	main(int argc, char **argv, char **envp)
 {
 	// t_array arr;
 
-	init_global();
+	(void) argc;
+	(void) argv;
+	init_global(envp);
 	// arr_print_ptr(&g_global.allocs);
 	// arr_create(&arr, sizeof(int));
 	// arr_print_ptr(&g_global.allocs);
@@ -140,29 +102,51 @@ int	main(int argc, char **argv, char** envp)
 	// str_trim(&str, "x");
 	// printf("%s\n", str);
 
-	t_assoc	assoc;
-	int	fail = assoc_from_str_arr(&assoc, envp);
+	// t_assoc	assoc;
+	// int	fail = assoc_from_str_arr(&assoc, envp);
 
-	assoc_print(&assoc);
+	// assoc_print(&assoc);
 
 	// assoc_init(&assoc);
 
-	assoc_set(&assoc, "key", "value");
-	assoc_set(&assoc, "test", "123");
+	// assoc_set(&assoc, "key", "value");
+	// assoc_set(&assoc, "test", "123");
 
-	printf("===============\n");
+	// printf("===============\n");
 
-	char **arr;
-	assoc_to_str_arr(&assoc, &arr);
+	// char **arr;
+	// assoc_to_str_arr(&assoc, &arr);
 
-	while (*arr != NULL)
-		printf("%s\n", *arr++);
+	// while (*arr != NULL)
+	// 	printf("%s\n", *arr++);
 
 	// while (*arr != NULL)
 	// 	printf("%d\n", strcmp(*arr++, *envp++));
 
+	// assoc_print(&g_global.env);
+	// printf("===============\n");
+
+
+	// char **env;
+	// env_get_all(&env);
+
+	// while (*env != NULL)
+	// 	printf("%s\n", *env++);
 
 	// printf("%d\n", strncmp("abcdef", "abc", 3));
+
+
+	char *paths;
+	env_get("PATH", &paths);
+
+	printf("%s\n", paths);
+
+	// while (*envp != NULL)
+	// 	printf("%d\n", strcmp(*envp++, *environ++));
+	// printf("===============\n");
+	// while (*environ != NULL)
+		// printf("%s\n", *environ++);
+
 
 	// error(0);
 	cleanup();

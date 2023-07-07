@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 17:38:55 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 12:03:37 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 17:36:52 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
 #include "array.h"
+#include "memory.h"
 
 static void	trim(char **str, char c)
 {

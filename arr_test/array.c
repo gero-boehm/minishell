@@ -6,19 +6,15 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:02:50 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 12:00:43 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/07 17:33:06 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "globaldef.h"
 #include "array.h"
-
-int	ft_malloc2(size_t count, void **ptr)
-{
-	*ptr = malloc(count);
-	return (*ptr == NULL);
-}
+#include "memory.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -61,7 +57,7 @@ static int	arr_grow(t_array *arr)
 	arr->max_size *= 2;
 	if (arr_index(&g_global.allocs, &arr->elements, &index))
 		return (1);
-	if (ft_malloc2(arr->max_size * arr->bytes, (void **) &new))
+	if (malloc2(arr->max_size * arr->bytes, (void **) &new))
 		return (2);
 	arr_set(&g_global.allocs, index, &new);
 	ft_memcpy(new, arr->elements, arr->size * arr->bytes);
