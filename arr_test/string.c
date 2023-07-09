@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 17:34:40 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 08:14:50 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,34 @@ size_t	str_copyn(char *dst, const char *src)
 		i++;
 	}
 	return (len);
+}
+
+int	str_cmpn(const char *s1, const char *s2, size_t n)
+{
+	size_t				i;
+	const unsigned char	*a;
+	const unsigned char	*b;
+
+	i = 0;
+	a = (const unsigned char *) s1;
+	b = (const unsigned char *) s2;
+	while (i < n)
+	{
+		if (!a[i] || !b[i] || a[i] != b[i])
+			return (a[i] - b[i]);
+		i++;
+	}
+	return (0);
+}
+
+int	str_cmp(const char *s1, const char *s2)
+{
+	return (str_cmpn(s1, s2, str_len(s2)));
+}
+
+int	str_eq(const char *s1, const char *s2)
+{
+	return (str_cmp(s1, s2) == 0);
 }
 
 // int	str_range_of_set(char *str, char *set, unsigned long start, t_range *range)

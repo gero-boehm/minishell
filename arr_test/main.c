@@ -6,19 +6,23 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 18:14:18 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 08:31:17 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
+#include <limits.h>
+#include <sys/stat.h>
 #include "globaldef.h"
 #include "global.h"
 #include "array.h"
 #include "assoc.h"
 #include "memory.h"
 #include "env.h"
+#include "str.h"
 
 extern char	**environ;
 
@@ -65,6 +69,49 @@ void	test_normal(void)
 	error(1);
 }
 
+int	is_dir(char *path)
+{
+	struct stat	stats;
+
+	stat(path, &stats);
+}
+
+void iterateDirectories(const char *path) {
+	DIR *dir;
+	struct dirent *entry;
+
+	// Open the directory
+	dir = opendir(path);
+	if (dir == NULL) {
+		perror("opendir");
+		return;
+	}
+
+	// Iterate over entries in the directory
+	while ((entry = readdir(dir)) != NULL) {
+		// Skip current directory (.) and parent directory (..)
+		if (str_eq(entry->d_name, ".") || str_eq(entry->d_name, ".."))
+			continue;
+
+		// Construct the full path of the entry
+		char fullpath[PATH_MAX];
+		snprintf(fullpath, PATH_MAX, "%s/%s", path, entry->d_name);
+
+		// Recurse if the entry is a directory
+		printf("%s\n", fullpath);
+
+		if (entry->d_type == DT_DIR) {
+			iterateDirectories(fullpath);
+		}
+
+		// Process the entry (you can modify this part to suit your needs)
+	}
+
+	// Close the directory
+	closedir(dir);
+}
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	// t_array arr;
@@ -72,6 +119,16 @@ int	main(int argc, char **argv, char **envp)
 	(void) argc;
 	(void) argv;
 	init_global(envp);
+
+	DIR *dir;
+
+	dir = opendir("test/c");
+	if (dir = NULL)
+		printf("yay\n");
+
+	// iterateDirectories("test");
+
+
 	// arr_print_ptr(&g_global.allocs);
 	// arr_create(&arr, sizeof(int));
 	// arr_print_ptr(&g_global.allocs);
@@ -135,11 +192,16 @@ int	main(int argc, char **argv, char **envp)
 
 	// printf("%d\n", strncmp("abcdef", "abc", 3));
 
+	// char *paths;
+	// env_get("PATH", &paths);
 
-	char *paths;
-	env_get("PATH", &paths);
+	// printf("%s\n", paths);
+	// env_set("VAR", "test");
 
-	printf("%s\n", paths);
+	// env_get("VAR", &paths);
+
+	// printf("%s\n", paths);
+
 
 	// while (*envp != NULL)
 	// 	printf("%d\n", strcmp(*envp++, *environ++));
