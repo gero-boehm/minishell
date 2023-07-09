@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:02:50 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 17:33:06 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 16:46:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "globaldef.h"
 #include "array.h"
 #include "memory.h"
+#include "str.h"
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -146,10 +147,104 @@ int	arr_create(t_array *arr, unsigned int bytes)
 	return (0);
 }
 
+static int	str_arr_memalloc(size_t	count, char ***arr)
+{
+	size_t bytes;
+
+	bytes = (count + 1) * sizeof(char *);
+	if (memalloc(bytes, (void **) arr))
+		return (1);
+	(*arr)[count] = NULL;
+	return (0);
+}
+
+int	arr_to_str_arr(t_array *arr, char ***strs)
+{
+	unsigned long	i;
+	char			*tmp;
+
+	if (str_arr_memalloc(arr->size, strs))
+		return (1);
+	i = 0;
+	while (i < arr_size(arr))
+	{
+		tmp = *(char **) arr_get(arr, i);
+		if (str_dup(tmp, *strs + i))
+			return (2);
+		i++;
+	}
+	return (0);
+}
+
+static size_t	arr_str_len(t_array *arr)
+{
+	unsigned long	i;
+	size_t			len;
+	char			*tmp;
+
+	i = 0;
+	len = 0;
+	while (i < arr_size(arr))
+	{
+		tmp = *(char **) arr_get(arr, i);
+		len += str_len(tmp);
+		i++;
+	}
+	return (len);
+}
+
+static void	arr_str_cpy(t_array *arr, char *str)
+{
+	unsigned long	i;
+	char			*tmp;
+
+	i = 0;
+	while (i < arr_size(arr))
+	{
+		tmp = *(char **) arr_get(arr, i);
+		str += str_copyn(str, tmp);
+		i++;
+	}
+}
+
+int	arr_to_str(t_array *arr, char **str)
+{
+	size_t			len;
+
+	len = arr_str_len(arr);
+	if (memalloc(len + 1, (void **) str))
+		return (1);
+	arr_str_cpy(arr, *str);
+	(*str)[len] = '\0';
+	return (0);
+}
+
+size_t	arr_size(t_array *arr)
+{
+	return (arr->size);
+}
+
 void	arr_free(t_array *arr)
 {
 	memfree(arr->elements);
 	arr->size = 0;
 	arr->max_size = 0;
 	arr->bytes = 0;
+}
+
+void	arr_print_str(t_array *arr)
+{
+	unsigned long	i;
+	char			*tmp;
+
+	i = 0;
+	while (i < arr->size)
+	{
+		tmp = *(char **) arr_get(arr, i);
+		printf("\"%s\"", tmp);
+		if (i < arr->size - 1)
+			printf(", ");
+		i++;
+	}
+	printf("\n");
 }

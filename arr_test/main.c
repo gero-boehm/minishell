@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 08:31:17 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 16:55:56 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "memory.h"
 #include "env.h"
 #include "str.h"
+#include "wildcard.h"
 
 extern char	**environ;
 
@@ -36,22 +37,22 @@ void	arr_print(t_array *arr)
 	printf("\n");
 }
 
-void	arr_print_str(t_array *arr)
-{
-	for (unsigned int i = 0; i < arr->size; i++)
-	{
-		printf("%s\n", *(char **) arr_get(arr, i));
-	}
-}
+// void	arr_print_str(t_array *arr)
+// {
+// 	for (unsigned int i = 0; i < arr->size; i++)
+// 	{
+// 		printf("%s\n", *(char **) arr_get(arr, i));
+// 	}
+// }
 
-void	arr_print_ptr(t_array *arr)
-{
-	for (unsigned int i = 0; i < arr->size; i++)
-	{
-		printf("%p ", *(void **) arr_get(arr, i));
-	}
-	printf("\n");
-}
+// void	arr_print_ptr(t_array *arr)
+// {
+// 	for (unsigned int i = 0; i < arr->size; i++)
+// 	{
+// 		printf("%p ", *(void **) arr_get(arr, i));
+// 	}
+// 	printf("\n");
+// }
 
 void	test_fancy(void)
 {
@@ -112,21 +113,40 @@ void iterateDirectories(const char *path) {
 }
 
 
-int	main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv)
 {
-	// t_array arr;
+	t_array arr;
 
 	(void) argc;
 	(void) argv;
-	init_global(envp);
+	init_global();
 
-	DIR *dir;
+	// if (arr_create(&arr, sizeof(char *)))
+	// 	return (1);
 
-	dir = opendir("test/c");
-	if (dir = NULL)
-		printf("yay\n");
+	// char *a = "a";
+	// arr_add(&arr, &a);
+	// char *b = "b";
+	// arr_add(&arr, &b);
+	// char *c = "c";
+	// arr_add(&arr, &c);
+
+	// arr_print_str(&arr);
+
+	// char *str;
+	// arr_to_str(&arr, &str);
+
+	// str_join(&str, ", ", "a", "b", "c", NULL);
+
+	// printf("%zu |  %s\n", str_len(str), str);
+
+	get_paths("test/a", &arr);
+	arr_print_str(&arr);
+
+
 
 	// iterateDirectories("test");
+
 
 
 	// arr_print_ptr(&g_global.allocs);

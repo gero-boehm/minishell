@@ -1,22 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   wildcard.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 16:29:53 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 09:35:46 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/09 10:35:35 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/09 14:07:22 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef WILDCARD_H
+# define WILDCARD_H
 
-int	env_init(void);
-int	env_get(const char *key, char **value);
-int	env_set(const char *key, char *value);
-int	env_remove(const char *key);
-int	env_get_all(char ***arr);
+# include "arraydef.h"
+
+int	get_paths(char *pattern, t_array *paths);
 
 #endif

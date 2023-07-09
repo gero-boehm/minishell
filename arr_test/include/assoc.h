@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:49:33 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 17:43:56 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 14:04:08 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ int		assoc_remove(t_assoc *assoc, const char *key);
 size_t	assoc_size(t_assoc *assoc);
 int		assoc_from_str_arr(t_assoc *assoc, char **arr);
 int		assoc_to_str_arr(t_assoc *assoc, char ***arr);
+
 void	assoc_print(t_assoc *assoc);
 
 #endif

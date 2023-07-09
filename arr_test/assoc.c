@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:51:28 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 18:27:36 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 09:35:14 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	assoc_get(t_assoc *assoc, const char *key, char **value)
 	{
 		tmp = *(char **) arr_get(&assoc->keys, i);
 		if (strcmp(tmp, key) == 0)
-			break;
+			break ;
 		i++;
 	}
 	*value = *(char **) arr_get(&assoc->values, i);

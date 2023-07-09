@@ -6,11 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 08:14:50 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 15:51:30 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <string.h>
+#include <stdarg.h>
 #include "array.h"
 #include "str.h"
 #include "memory.h"
@@ -181,6 +182,44 @@ int	str_cmp(const char *s1, const char *s2)
 int	str_eq(const char *s1, const char *s2)
 {
 	return (str_cmp(s1, s2) == 0);
+}
+
+int	str_dup(const char *str, char **dup)
+{
+	size_t	len;
+
+	len = str_len(str);
+	if (memalloc(len + 1, (void **) dup))
+		return (1);
+	str_copyn(*dup, str);
+	(*dup)[len] = '\0';
+	return (0);
+}
+
+int	str_join(char **str, const char *sep, ...)
+{
+	va_list	args;
+	t_array	parts;
+	char	*part;
+
+	if (arr_create(&parts, sizeof(char *)))
+		return (1);
+	va_start(args, sep);
+	while (1)
+	{
+		part = va_arg(args, char *);
+		if (part == NULL)
+			break ;
+		if (arr_size(&parts) > 0 && arr_add(&parts, &sep))
+			return (va_end(args), 2);
+		if (arr_add(&parts, &part))
+			return (va_end(args), 3);
+	}
+	va_end(args);
+	if (arr_to_str(&parts, str))
+		return (4);
+	arr_free(&parts);
+	return (0);
 }
 
 // int	str_range_of_set(char *str, char *set, unsigned long start, t_range *range)

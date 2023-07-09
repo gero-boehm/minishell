@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 16:55:40 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/07 18:04:54 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 09:35:27 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 extern char	**environ;
 
-int	env_init(char **envp)
+int	env_init(void)
 {
 	return (assoc_from_str_arr(&g_global.env, environ));
 }

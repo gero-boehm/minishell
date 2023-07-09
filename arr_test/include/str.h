@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 07:55:58 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/09 15:48:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int		str_str_from_exclusive(char *str, char *pattern, unsigned long start, char 
 int		str_cmpn(const char *s1, const char *s2, size_t n);
 int		str_cmp(const char *s1, const char *s2);
 int		str_eq(const char *s1, const char *s2);
+int		str_dup(const char *str, char **dup);
+int		str_join(char **str, const char *sep, ...);
+
 
 int		str_range_of(char *str, char *pattern, unsigned long start, t_range *range);
 int		str_extract_range(char *str, t_range *range, char **sub);
