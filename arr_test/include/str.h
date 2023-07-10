@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 15:48:19 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/10 16:26:00 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 # include "arraydef.h"
 
 size_t	str_len(const char *s);
-size_t	str_copyn(char *dst, const char *src);
 int		str_split(char *str, char c, t_array *arr);
 
 int		str_range_to_exclusive(char *str, char *pattern, unsigned long start, t_range *range);
@@ -30,7 +29,8 @@ int		str_str_to_exclusive(char *str, char *pattern, unsigned long start, char **
 int		str_str_from_inclusive(char *str, char *pattern, unsigned long start, char **sub);
 int		str_str_from_exclusive(char *str, char *pattern, unsigned long start, char **sub);
 
-int		str_cmpn(const char *s1, const char *s2, size_t n);
+size_t	str_cpyn(char *dst, const char *src);
+int		str_ncmp(const char *s1, const char *s2, size_t n);
 int		str_cmp(const char *s1, const char *s2);
 int		str_eq(const char *s1, const char *s2);
 int		str_dup(const char *str, char **dup);

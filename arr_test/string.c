@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 10:44:35 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 15:51:30 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/10 16:59:37 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,15 @@ int	str_str_from_exclusive(char *str, char *pattern, unsigned long start, char *
 	return (str_extract_range(str, &range, sub));
 }
 
+int	str_range_between(char *str, char *pattern, unsigned long start, t_range *range)
+{
+	if (str_range_from_exclusive(str, pattern, start, range))
+		return (1);
+	if (str_range_to_exclusive(str, pattern, range->start, range))
+		return (2);
+	return (0);
+}
+
 static int	str_char_in_set(char *set, char c)
 {
 	while (*set != '\0')
@@ -141,7 +150,7 @@ size_t	str_len(const char *str)
 	return (len);
 }
 
-size_t	str_copyn(char *dst, const char *src)
+size_t	str_cpyn(char *dst, const char *src)
 {
 	unsigned long	i;
 	size_t			len;
@@ -156,7 +165,7 @@ size_t	str_copyn(char *dst, const char *src)
 	return (len);
 }
 
-int	str_cmpn(const char *s1, const char *s2, size_t n)
+int	str_ncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t				i;
 	const unsigned char	*a;
@@ -176,7 +185,7 @@ int	str_cmpn(const char *s1, const char *s2, size_t n)
 
 int	str_cmp(const char *s1, const char *s2)
 {
-	return (str_cmpn(s1, s2, str_len(s2)));
+	return (str_ncmp(s1, s2, str_len(s2)));
 }
 
 int	str_eq(const char *s1, const char *s2)
@@ -191,7 +200,7 @@ int	str_dup(const char *str, char **dup)
 	len = str_len(str);
 	if (memalloc(len + 1, (void **) dup))
 		return (1);
-	str_copyn(*dup, str);
+	str_cpyn(*dup, str);
 	(*dup)[len] = '\0';
 	return (0);
 }

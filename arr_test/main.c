@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 16:55:56 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/10 14:43:44 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int	main(int argc, char **argv)
 
 	// printf("%zu |  %s\n", str_len(str), str);
 
-	get_paths("test/a", &arr);
+	get_paths("test/*", &arr);
 	arr_print_str(&arr);
 
 

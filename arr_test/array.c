@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:02:50 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 16:46:18 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/10 16:25:11 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ static void	arr_str_cpy(t_array *arr, char *str)
 	while (i < arr_size(arr))
 	{
 		tmp = *(char **) arr_get(arr, i);
-		str += str_copyn(str, tmp);
+		str += str_cpyn(str, tmp);
 		i++;
 	}
 }

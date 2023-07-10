@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 11:51:28 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 09:35:14 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/10 16:25:11 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,9 +123,9 @@ static int	assoc_get_str_at(t_assoc *assoc, unsigned int index, char **str)
 	if (memalloc(len, (void **) str))
 		return (1);
 	cursor = *str;
-	cursor += str_copyn(cursor, key);
-	cursor += str_copyn(cursor, "=");
-	cursor += str_copyn(cursor, value);
+	cursor += str_cpyn(cursor, key);
+	cursor += str_cpyn(cursor, "=");
+	cursor += str_cpyn(cursor, value);
 	*cursor = '\0';
 	return (0);
 }
