@@ -1,7 +1,7 @@
 NAME			= 	minishell
 CC				= 	cc
 CFLAGS			= 	-Wall -Werror -Wextra
-READLINE_FLAGS	=	-Llib/readline_out/lib -lreadline -lhistory
+READLINE_FLAGS	=	-L lib/readline_out/lib -l readline -l history
 
 INCLUDE 		= 	-I include -I lib/libft
 READLINE_INCLUDE=	-I ./lib/readline_out/include/
@@ -15,6 +15,8 @@ BONUS_OBJ		=	$(BONUS_FILES:.c=.o)
 LIBFT			=	lib/libft/libft.a
 READLINE		=	lib/readline_out/lib/libreadline.a
 
+HEADERS			=	include/minishell.h lib/libft/libft.h
+
 RM				=	rm -rf
 GREEN			= 	\033[0;32m
 BLUE			=	\033[0;94m
@@ -25,16 +27,18 @@ ifdef DEBUG
 	CFLAGS += -g
 endif
 
+CFLAGS += $(INCLUDE) $(READLINE_INCLUDE)
+
 # RULES
 
 all: $(NAME)
 
-$(NAME): $(READLINE) $(LIBFT)  $(MAN_OBJ)
-	$(CC) $(MAN_OBJ) -o $(NAME) $(LIBFT) $(READLINE_FLAGS) $(CFLAGS)
+$(NAME): $(READLINE) $(LIBFT) $(MAN_OBJ)
+	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $@ $^
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
 
 
-%.o: %.c $(INCLUDE) $(READLINE_INCLUDE) Makefile
+%.o: %.c $(HEADERS) Makefile
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
