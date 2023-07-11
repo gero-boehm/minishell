@@ -6,14 +6,16 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 14:24:14 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/10 17:05:10 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/11 17:15:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdio.h>
 #include <dirent.h>
 #include <limits.h>
 #include <errno.h>
+#include <string.h>
 #include "array.h"
 #include "str.h"
 
@@ -30,12 +32,48 @@ static int	readdir2(DIR *dir, struct dirent **entry)
 	return (errno);
 }
 
-static int	is_pattern_matching(char *name, char *pattern)
+static size_t	get_length_of_subpattern(char *pattern)
 {
-	return (str_eq(pattern, "*") || str_eq(name, pattern));
+	t_range	range;
+
+	if (*pattern == '\0')
+		return (0);
+	if (!str_range_to_exclusive(pattern, "*", 0, &range))
+		return (range.length);
+	return (str_len(pattern));
 }
 
-static int	is_current_or_parent_dir(char name[PATH_MAX])
+int	is_pattern_matching(char *name, char *pattern)
+{
+	int		wildcard;
+	size_t	len;
+
+	if (str_eq(pattern, "*"))
+		return (1);
+	while (1)
+	{
+		wildcard = *pattern == '*';
+		pattern += wildcard;
+		while (1)
+		{
+			if (*pattern == '\0')
+				return (*name == '\0');
+			len = get_length_of_subpattern(pattern);
+			if (str_ncmp(name, pattern, len) == 0)
+			{
+				name += len;
+				pattern += len;
+				break ;
+			}
+			else if (wildcard)
+				name++;
+			else
+				return (0);
+		}
+	}
+}
+
+static int	is_dir_current_or_parent(char name[PATH_MAX])
 {
 	return (str_eq(name, ".") || str_eq(name, ".."));
 }
@@ -68,7 +106,7 @@ static int	recurse(char *path, char **patterns, t_array *paths)
 			return (closedir(dir), 2);
 		if (entry == NULL)
 			break ;
-		if (is_current_or_parent_dir(entry->d_name))
+		if (is_dir_current_or_parent(entry->d_name))
 			continue ;
 		if (is_pattern_matching((char *) entry->d_name, *patterns))
 		{
@@ -90,10 +128,26 @@ static int	recurse(char *path, char **patterns, t_array *paths)
 	return (0);
 }
 
-// static int	cwd_get(char *cwd[PATH_MAX])
-// {
-// 	return (getcwd(*cwd, PATH_MAX) == NULL);
-// }
+static int	cwd_get(char *cwd[PATH_MAX])
+{
+	return (getcwd(cwd, PATH_MAX) == NULL);
+}
+
+static int	cwd_cut(char cwd[PATH_MAX], t_array *paths)
+{
+	char			**path;
+	unsigned long	i;
+
+	i = 0;
+	while (i < arr_size(paths))
+	{
+		path = arr_get(paths, i);
+		if (str_cut_start(path, cwd))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	get_paths(char *pattern, t_array *paths)
 {
@@ -112,12 +166,13 @@ int	get_paths(char *pattern, t_array *paths)
 	// replace "." with cwd
 	if (arr_create(paths, sizeof(char *)))
 		return (3);
-	// if (cwd_get(&cwd))
-	// 	return (4);
-	// printf("%s\n", cwd);
-
-	if (recurse(".", parts, paths))
+	if (cwd_get(&cwd))
+		return (4);
+	// printf("cwd = %s\n", cwd);
+	if (recurse(cwd, parts, paths))
 		return (5);
+	if (cwd_cut(cwd, paths))
+		return (6);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:02:50 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/10 16:25:11 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/11 16:14:23 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,23 +147,12 @@ int	arr_create(t_array *arr, unsigned int bytes)
 	return (0);
 }
 
-static int	str_arr_memalloc(size_t	count, char ***arr)
-{
-	size_t bytes;
-
-	bytes = (count + 1) * sizeof(char *);
-	if (memalloc(bytes, (void **) arr))
-		return (1);
-	(*arr)[count] = NULL;
-	return (0);
-}
-
 int	arr_to_str_arr(t_array *arr, char ***strs)
 {
 	unsigned long	i;
 	char			*tmp;
 
-	if (str_arr_memalloc(arr->size, strs))
+	if (str_memalloc_arr(arr->size, strs))
 		return (1);
 	i = 0;
 	while (i < arr_size(arr))

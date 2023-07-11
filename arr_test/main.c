@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/10 14:43:44 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/11 17:18:53 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,18 @@ int	main(int argc, char **argv)
 
 	// printf("%zu |  %s\n", str_len(str), str);
 
-	get_paths("test/*", &arr);
+	printf("%s\n", argv[1]);
+	get_paths(argv[1], &arr);
 	arr_print_str(&arr);
+
+	// char *str = strdup("__bc_sdbc_b__");
+	// str_cut(&str, "_");
+	// // printf("%c\n", *str);
+	// printf("%s\n", str);
+
+	// char *str = "abbbbc";
+	// char *pat = "*a*c*";
+	// printf("'%s' '%s' | %d\n", str, pat, is_pattern_matching(str, pat));
 
 
 
