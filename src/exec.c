@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/05 15:10:42 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/11 10:01:40 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int	ft_exec(char **cmd_args)
 	// }
 	// else
 	// 	printf("This is the parent process\n---------------\n");
-	*environ = "***TESTEDIT***";
-	print_environ();
+	// *environ = "***TESTEDIT***";
+	// print_environ();
 	// perror("fail");
 	// printf("yay %d\n", errno);
 	return (0);

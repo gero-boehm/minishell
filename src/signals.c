@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:33:14 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/04 12:00:44 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/11 10:01:35 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	ft_ctrlc(int sig)
 	{
 		// printf("%i %s", "\n");
 		write(STDERR_FILENO, "\n", 1);
-		// rl_replace_line(">>", 0);
-		// rl_on_new_line();
-		// rl_redisplay();
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 	}
 }
 

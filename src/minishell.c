@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 08:59:40 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/05 14:36:29 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/11 10:03:33 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ int	main(int argc, char **argv)
 	// printf("exec: %i\n", ft_exec(cmd_args));
 	// printf("path: %s\n", cmd_path);
 	// *--PROMPT--*
-	// ft_prompt();
+	ft_prompt();
 	return (0);
 }

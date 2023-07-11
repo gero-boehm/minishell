@@ -1,21 +1,24 @@
-NAME		= 	minishell
-CFLAGS		= 	-Wall -Werror -Wextra
-CC			= 	cc
-READ		=	-l readline
-RM			=	rm -rf
-INCLUDE 	= 	-I include
+NAME			= 	minishell
+CC				= 	cc
+CFLAGS			= 	-Wall -Werror -Wextra
+READLINE_FLAGS	=	-Llib/readline_out/lib -lreadline -lhistory
 
-MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c src/exec.c
-BONUS_FILES	=	src_bonus/bonus.c
+INCLUDE 		= 	-I include
+READLINE_INCLUDE=	-I ./lib/readline_out/include/
 
-MAN_OBJ		=	$(MAN_FILES:.c=.o)
-BONUS_OBJ	=	$(BONUS_FILES:.c=.o)
+MAN_FILES		=	src/minishell.c src/prompt.c src/signals.c src/exec.c
+BONUS_FILES		=	src_bonus/bonus.c
 
-LIBFT		=	libft/libft.a
+MAN_OBJ			=	$(MAN_FILES:.c=.o)
+BONUS_OBJ		=	$(BONUS_FILES:.c=.o)
 
-GREEN		= 	\033[0;32m
-BLUE		=	\033[0;94m
-WHITE		=	\033[0m
+LIBFT			=	libft/libft.a
+READLINE		=	lib/readline_out/lib/libreadline.a
+
+RM				=	rm -rf
+GREEN			= 	\033[0;32m
+BLUE			=	\033[0;94m
+WHITE			=	\033[0m
 
 
 ifdef DEBUG
@@ -26,17 +29,33 @@ endif
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(MAN_OBJ) $(READLINE)
-	$(CC) $(CFLAGS) -o $(NAME) $(MAN_OBJ) $(READ) $(LIBFT)
+$(NAME): $(READLINE) $(LIBFT)  $(MAN_OBJ)
+	$(CC) $(MAN_OBJ) -o $(NAME) $(LIBFT) $(READLINE_FLAGS) $(CFLAGS)
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
 
 
-%.o: %.c $(INCLUDE)
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(INCLUDE) $(READLINE_INCLUDE)
 
 $(LIBFT):
 	@if [ ! -d "./libft" ]; then git clone https://github.com/gero-boehm/libft.git; fi
-	@make --silent DEBUG=$(DEBUG) -C libft
+	@make  --silent DEBUG=$(DEBUG) -C libft
+
+#####################################################################################
+READLINE_VERSION=	readline-8.1.2
+
+$(READLINE):
+	@mkdir -p lib
+	@curl -s https://ftp.gnu.org/gnu/readline/$(READLINE_VERSION).tar.gz --output lib/$(READLINE_VERSION).tar.gz
+	@tar xfz lib/$(READLINE_VERSION).tar.gz -C lib
+	@cd lib/$(READLINE_VERSION); ./configure --prefix=$(PWD)/lib/readline_out
+	@make -C lib/$(READLINE_VERSION)
+	@make install -C lib/$(READLINE_VERSION)
+	@rm -rf lib/$(READLINE_VERSION)
+	@rm -f lib/$(READLINE_VERSION).tar.gz
+	@echo "$(GREEN)*** Readline compiled!***$(WHITE)"
+
+#####################################################################################
 
 clean:
 	$(RM) $(MAN_OBJ)
@@ -52,4 +71,8 @@ fclean: clean
 re: fclean all
 	@echo "$(GREEN)*** Cleaned and rebuilt minishell! ***$(WHITE)"
 
-.PHONY:  bonus fclean re all
+delete:
+	$(RM) lib/
+	@echo "$(BLUE)*** Lib deleted! ***$(WHITE)"
+
+.PHONY:  bonus fclean re all delete
