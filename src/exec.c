@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/11 10:01:40 by cmeng            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../include/minishell.h"
 
@@ -43,17 +32,17 @@ int	ft_exec(char **cmd_args)
 	if (ft_get_cmd_path(paths, cmd_args[0], cmd_path))
 		return (1);
 	// //*--Create Child process before execve--*
-	// // printf("cmd of execve: %s\n", cmd_args[0]);
-	// // printf("cmd_path: %s\n", cmd_path);
-	// int		pid;
-	// pid = fork();
-	// if (pid == 0)
-	// {
-	// 	printf("This is the child process\n");
-	// 	execve(cmd_path, cmd_args, environ);
-	// }
-	// else
-	// 	printf("This is the parent process\n---------------\n");
+	// printf("cmd of execve: %s\n", cmd_args[0]);
+	// printf("cmd_path: %s\n", cmd_path);
+	int		pid;
+	pid = fork();
+	if (pid == 0)
+	{
+		printf("This is the child process\n");
+		execve(cmd_path, cmd_args, environ);
+	}
+	else
+		printf("This is the parent process\n---------------\n");
 	// *environ = "***TESTEDIT***";
 	// print_environ();
 	// perror("fail");
