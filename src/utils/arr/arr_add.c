@@ -6,10 +6,11 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:26:31 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:33:13 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:47:57 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "globaldef.h"
 #include "array.h"
 #include "memory.h"

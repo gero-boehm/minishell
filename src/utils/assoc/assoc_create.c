@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:37:25 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:13:06 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:49:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "assocdef.h"
+#include "assoc.h"
 #include "array.h"
+#include "str.h"
 
 int	assoc_create(t_assoc *assoc)
 {

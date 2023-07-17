@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:22:10 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/09 09:40:45 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:38:13 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "array.h"
 #include "env.h"
 
-int	init_global(void)
+int	global_init(void)
 {
 	if (arr_create(&g_global.allocs, sizeof(void *)))
 		return (1);

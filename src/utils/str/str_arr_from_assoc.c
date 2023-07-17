@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 18:14:39 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:17:45 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:49:38 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assoc.h"
 #include "str.h"
+#include "memory.h"
 
 static int	assoc_get_str_at(t_assoc *assoc, unsigned int index, char **str)
 {

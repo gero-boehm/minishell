@@ -6,11 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:33:45 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:34:23 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:48:27 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "array.h"
+#include "memory.h"
 
 void	arr_free(t_array *arr)
 {

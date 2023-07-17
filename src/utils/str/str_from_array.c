@@ -6,11 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:06:19 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:19:33 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:50:40 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "str.h"
 #include "array.h"
+#include "memory.h"
 
 static size_t	get_total_str_len(t_array *arr)
 {

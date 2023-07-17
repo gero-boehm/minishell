@@ -6,11 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:16:06 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:19:33 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:51:04 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str.h"
+#include "memory.h"
 
 int	str_dup(const char *str, char **dup)
 {

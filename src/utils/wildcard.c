@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 14:24:14 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/11 17:15:19 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:52:57 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ int	get_paths(char *pattern, t_array *paths)
 
 	if (str_split(pattern, '/', &arr))
 		return (1);
-	if (arr_to_str_arr(&arr, &parts))
+	if (str_arr_from_arr(&arr, &parts))
 		return (2);
 	arr_free(&arr);
 	// char **t = parts;

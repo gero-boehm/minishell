@@ -6,11 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:10:15 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:19:33 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:50:13 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str.h"
+#include "memory.h"
 
 int	str_extract_range(char *str, t_range *range, char **sub)
 {

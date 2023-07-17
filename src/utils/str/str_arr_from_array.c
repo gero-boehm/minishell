@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:13:46 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:19:33 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:50:49 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str.h"
 #include "array.h"
+#include "memory.h"
 
 int	str_arr_from_arr(t_array *arr, char ***strs)
 {

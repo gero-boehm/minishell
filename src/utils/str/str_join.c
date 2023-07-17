@@ -6,12 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:02:33 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 14:03:12 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/17 18:52:00 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include "array.h"
+#include "str.h"
 
 int	str_join(char **str, const char *sep, ...)
 {
@@ -33,7 +34,7 @@ int	str_join(char **str, const char *sep, ...)
 			return (va_end(args), 3);
 	}
 	va_end(args);
-	if (arr_to_str(&parts, str))
+	if (str_from_arr(&parts, str))
 		return (4);
 	arr_free(&parts);
 	return (0);
