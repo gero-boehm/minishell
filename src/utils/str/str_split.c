@@ -1,43 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   assoc_create.c                                     :+:      :+:    :+:   */
+/*   str_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 15:37:25 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:13:06 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/04 17:38:55 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/17 18:25:36 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "assocdef.h"
 #include "array.h"
+#include "memory.h"
 
-int	assoc_create(t_assoc *assoc)
+static void	trim(char **str, char c)
 {
-	if (arr_create(&assoc->keys, sizeof(char *)))
+	while (**str == c)
+		(*str)++;
+}
+
+static int	grab_word(char **str, char c, t_array *arr)
+{
+	size_t	len;
+	char	*word;
+
+	len = 0;
+	while ((*str)[len] && (*str)[len] != c)
+		len++;
+	if (memalloc_str(len, &word))
 		return (1);
-	if (arr_create(&assoc->values, sizeof(char *)))
+	mem_ncpy(word, *str, len);
+	if (arr_add(arr, &word))
 		return (2);
+	*str += len;
 	return (0);
 }
 
-int	assoc_from_str_arr(t_assoc *assoc, char **arr)
+int	str_split(char *str, char c, t_array *arr)
 {
-	char	*key;
-	char	*value;
-
-	if (assoc_create(assoc))
+	if (arr_create(arr, sizeof(char *)))
 		return (1);
-	while (*arr != NULL)
+	while (*str)
 	{
-		if (str_str_to_exclusive(*arr, "=", 0, &key))
+		trim(&str, c);
+		if (*str == 0)
+			return (0);
+		if (grab_word(&str, c, arr))
 			return (2);
-		if (str_str_from_exclusive(*arr, "=", 0, &value))
-			return (3);
-		if (assoc_set(assoc, key, value))
-			return (4);
-		arr++;
 	}
 	return (0);
 }

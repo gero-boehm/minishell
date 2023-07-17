@@ -1,43 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   assoc_create.c                                     :+:      :+:    :+:   */
+/*   assoc_set.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/17 15:37:25 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:13:06 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/17 18:04:22 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/17 18:05:10 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "assocdef.h"
 #include "array.h"
 
-int	assoc_create(t_assoc *assoc)
+static int	assoc_add(t_assoc *assoc, const char *key, char *value)
 {
-	if (arr_create(&assoc->keys, sizeof(char *)))
+	if (arr_add(&assoc->keys, &key))
 		return (1);
-	if (arr_create(&assoc->values, sizeof(char *)))
+	if (arr_add(&assoc->values, &value))
 		return (2);
 	return (0);
 }
 
-int	assoc_from_str_arr(t_assoc *assoc, char **arr)
+int	assoc_set(t_assoc *assoc, const char *key, char *value)
 {
-	char	*key;
-	char	*value;
+	unsigned int	index;
 
-	if (assoc_create(assoc))
-		return (1);
-	while (*arr != NULL)
-	{
-		if (str_str_to_exclusive(*arr, "=", 0, &key))
-			return (2);
-		if (str_str_from_exclusive(*arr, "=", 0, &value))
-			return (3);
-		if (assoc_set(assoc, key, value))
-			return (4);
-		arr++;
-	}
+	if (arr_index(&assoc->keys, &key, &index))
+		return (assoc_add(assoc, key, value));
+	arr_set(&assoc->values, index, &value);
 	return (0);
 }
