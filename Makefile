@@ -3,7 +3,7 @@ CFLAGS		= 	-Wall -Werror -Wextra
 CC			= 	cc
 READ		=	-l readline
 RM			=	rm -rf
-INCLUDE 	= 	-I include
+INCLUDE 	= 	-I include -I include/def
 
 MAN_FILES	=	src/minishell.c src/prompt.c src/signals.c src/exec.c
 BONUS_FILES	=	src_bonus/bonus.c
