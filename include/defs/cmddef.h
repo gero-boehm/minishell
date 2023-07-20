@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   cmddef.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 14:29:46 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/20 14:53:12 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/20 14:47:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#ifndef CMDDEF_H
+# define CMDDEF_H
 
-// int	env(void)
-// {
-// 	extern char	**environ;
+enum e_op {
+	AND,
+	OR,
+	END
+};
 
-// 	if (environ == NULL)
-// 		return (1);
-// 	while (*environ != NULL)
-// 	{
-// 		printf("%s\n", *environ);
-// 		environ++;
-// 	}
-// 	return (0);
-// }
+typedef struct s_command {
+	char	*cmd;
+	char	**args;
+	int		fd_in;
+	int		fd_out;
+}	t_command;
 
+typedef struct s_sequence {
+	t_command	cmd;
+	e_op		op;
+}	t_sequence;
+
+#endif

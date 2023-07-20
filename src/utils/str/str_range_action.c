@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:10:15 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:50:13 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:00:37 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	str_extract_range(char *str, t_range *range, char **sub)
 {
 	unsigned long	i;
 
-	if (memalloc_str(range->length, sub))
+	if (mem_alloc_str(range->length, sub))
 		return (1);
 	i = 0;
 	while (i < range->length)
@@ -45,7 +45,7 @@ int	str_cut_range(char *str, t_range *range, char **sub)
 		return (2);
 	if (str_join(sub, "", head, tail, NULL))
 		return (3);
-	memfree(head);
-	memfree(tail);
+	mem_free(head);
+	mem_free(tail);
 	return (0);
 }

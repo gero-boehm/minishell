@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:30:06 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/20 14:38:34 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/20 14:53:21 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-int	pwd(void)
-{
-	char	*pwd;
+// int	pwd(void)
+// {
+// 	char	*pwd;
 
-	pwd = NULL;
-	pwd = getcwd(pwd, 1);
-	if (pwd == NULL)
-		return (1);
-	printf("%s\n", pwd);
-	return (0);
-}
+// 	pwd = NULL;
+// 	pwd = getcwd(pwd, 1);
+// 	if (pwd == NULL)
+// 		return (1);
+// 	printf("%s\n", pwd);
+// 	return (0);
+// }

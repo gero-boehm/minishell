@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:06:19 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:50:40 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:00:27 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	str_from_arr(t_array *arr, char **str)
 	size_t			len;
 
 	len = get_total_str_len(arr);
-	if (memalloc_str(len, str))
+	if (mem_alloc_str(len, str))
 		return (1);
 	copy_elements_into_str(arr, *str);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:00:02 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 14:04:55 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:00:37 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	str_trim_start(char **str, char *set)
 	range.length = str_len(*str) - range.start;
 	if (str_extract_range(*str, &range, &trimmed))
 		return (1);
-	memfree(*str);
+	mem_free(*str);
 	*str = trimmed;
 	return (0);
 }
@@ -63,7 +63,7 @@ int	str_trim_end(char **str, char *set)
 	}
 	if (str_extract_range(*str, &range, &trimmed))
 		return (1);
-	memfree(*str);
+	mem_free(*str);
 	*str = trimmed;
 	return (0);
 }

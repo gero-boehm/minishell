@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 17:38:55 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:25:36 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:00:27 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	grab_word(char **str, char c, t_array *arr)
 	len = 0;
 	while ((*str)[len] && (*str)[len] != c)
 		len++;
-	if (memalloc_str(len, &word))
+	if (mem_alloc_str(len, &word))
 		return (1);
 	mem_ncpy(word, *str, len);
 	if (arr_add(arr, &word))

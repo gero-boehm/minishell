@@ -58,7 +58,7 @@
 // {
 // 	char *str;
 
-// 	memalloc(6, (void **) &str);
+// 	mem_alloc(6, (void **) &str);
 
 // 	error(1);
 // }

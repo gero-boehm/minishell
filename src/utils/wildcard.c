@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 14:24:14 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:52:57 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/20 15:03:05 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string.h>
 #include "array.h"
 #include "str.h"
+#include "memory.h"
 
 static int	opendir2(const char *path, DIR **dir)
 {
@@ -128,9 +129,12 @@ static int	recurse(char *path, char **patterns, t_array *paths)
 	return (0);
 }
 
-static int	cwd_get(char *cwd[PATH_MAX])
+static int	cwd_get(char **cwd)
 {
-	return (getcwd(cwd, PATH_MAX) == NULL);
+	if (getcwd(*cwd, 0) == NULL)
+		return (1);
+	mem_add((void *) *cwd);
+	return (0);
 }
 
 static int	cwd_cut(char cwd[PATH_MAX], t_array *paths)
@@ -153,7 +157,7 @@ int	get_paths(char *pattern, t_array *paths)
 {
 	t_array	arr;
 	char	**parts;
-	char	cwd[PATH_MAX];
+	char	*cwd;
 
 	if (str_split(pattern, '/', &arr))
 		return (1);
