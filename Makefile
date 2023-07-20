@@ -8,12 +8,12 @@ READLINE_INCLUDE=	-I ./lib/readline_out/include/
 
 MAN_FILES		=	src/main.c src/minishell.c src/prompt.c src/signals.c src/exec.c \
 					\
-				 	src/builtins/cd.c src/builtins/echo.c src/builtins/env.c src/builtins/exit.c src/builtins/export.c \
-					src/builtins/pwd.c src/builtins/unset.c \
+				 	src/builtins/builtin_cd.c src/builtins/builtin_echo.c src/builtins/builtin_env.c src/builtins/builtin_exit.c \
+					src/builtins/builtin_export.c src/builtins/builtin_pwd.c src/builtins/builtin_unset.c \
 					\
 					src/utils/env.c src/utils/global.c src/utils/wildcard.c \
 					\
-					src/utils/memory/mem_alloc.c src/utils/memory/mem_alloc_str.c src/utils/memory/mem_copy.c src/utils/memory/mem_compare.c \
+					src/utils/memory/mem_alloc.c src/utils/memory/mem_alloc_str.c src/utils/memory/mem_free_str_arr.c src/utils/memory/mem_copy.c src/utils/memory/mem_compare.c \
 					\
 					src/utils/arr/arr_index.c src/utils/arr/arr_add.c src/utils/arr/arr_create.c src/utils/arr/arr_size.c \
 					src/utils/arr/arr_free.c src/utils/arr/arr_get_set.c src/utils/arr/arr_remove.c src/utils/arr/arr_print_str.c \

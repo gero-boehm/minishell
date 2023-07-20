@@ -6,19 +6,22 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:33:14 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 13:30:56 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/20 18:12:46 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
+#include <readline/readline.h>
+#include <signal.h>
 #include "minishell.h"
 
-void	ft_signals(void)
+void	signals(void)
 {
-	signal(SIGINT, &ft_ctrlc);
+	signal(SIGINT, &ctrlc);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_ctrlc(int sig)
+void	ctrlc(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -28,10 +31,3 @@ void	ft_ctrlc(int sig)
 		rl_redisplay();
 	}
 }
-
-// void	ft_exit(void)
-// {
-// 	printf("%s\n", "exit");
-// 	clear_history();
-// 	exit(0);
-// }

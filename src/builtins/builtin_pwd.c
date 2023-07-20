@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 14:29:14 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/20 14:52:54 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/20 14:30:06 by cmeng             #+#    #+#             */
+/*   Updated: 2023/07/20 18:08:45 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <unistd.h>
 #include <stdio.h>
+#include <errno.h>
 #include "builtins.h"
 
-// int ft_echo(token n, char *str)
-int	echo(int n, char *str)
+int	builtin_pwd(void)
 {
-	if (str == NULL)
-		return (printf("\n"), 1);
-	printf("%s", str);
-	if (!n)
-		printf("\n");
+	char	*pwd;
+
+	pwd = NULL;
+	pwd = getcwd(pwd, 1);
+	if (pwd == NULL)
+		error(errno);
+	printf("%s\n", pwd);
 	return (0);
 }
