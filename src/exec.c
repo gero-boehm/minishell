@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/05 15:10:42 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/20 13:30:09 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,35 +32,74 @@ static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
 	return (1);
 }
 
+int	is_builtin(char *cmd)
+{
+	return (ft_strncmp("echo", cmd, ft_strlen("echo")) == 0
+		|| ft_strncmp("cd", cmd, ft_strlen("cd")) == 0
+		|| ft_strncmp("pwd", cmd, ft_strlen("pwd")) == 0
+		|| ft_strncmp("export", cmd, ft_strlen("export")) == 0
+		|| ft_strncmp("unset", cmd, ft_strlen("unset")) == 0
+		|| ft_strncmp("env", cmd, ft_strlen("env")) == 0
+		|| ft_strncmp("exit", cmd, ft_strlen("exit")) == 0);
+}
+
+void	exec_builtin(char *cmd)
+{
+	if (ft_strncmp("echo", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_echo();
+	else if (ft_strncmp("cd", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_cd();
+	else if (ft_strncmp("pwd", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_pwd():
+	else if (ft_strncmp("export", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_export();
+	else if (ft_strncmp("unset", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_unset();
+	else if (ft_strncmp("env", cmd, ft_strlen(cmd)) == 0)
+	{
+		printf("Builtin: %s executed\n", cmd);
+		exit(1);
+	}
+		// ft_env();
+	else if (ft_strncmp("exit", cmd, ft_strlen(cmd)) == 0)
+		printf("Builtin: %s executed\n", cmd);
+		// ft_exit();
+
+}
+
 int	ft_exec(char **cmd_args)
 {
 	char	*env;
 	char	**paths;
 	char	*cmd_path = malloc(100);
+	int		pid;
 
 	env = getenv("PATH");
 	paths = ft_split(env, ':');
-	if (ft_get_cmd_path(paths, cmd_args[0], cmd_path))
-		return (1);
-	// //*--Create Child process before execve--*
-	// // printf("cmd of execve: %s\n", cmd_args[0]);
-	// // printf("cmd_path: %s\n", cmd_path);
-	// int		pid;
-	// pid = fork();
-	// if (pid == 0)
-	// {
-	// 	printf("This is the child process\n");
-	// 	execve(cmd_path, cmd_args, environ);
-	// }
-	// else
-	// 	printf("This is the parent process\n---------------\n");
-	*environ = "***TESTEDIT***";
-	print_environ();
-	// perror("fail");
-	// printf("yay %d\n", errno);
+
+	pid = fork();
+	if (pid > 0)
+	{
+		write(1, "This is the parent process\n---------------\n", 44);
+		wait(NULL);
+	}
+	else if (pid == 0)
+	{
+		write(1, "This is the child process\n---------------\n", 43);
+		if (is_builtin(cmd_args[0]))
+			exec_builtin(cmd_args[0]);
+		else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
+			execve(cmd_path, cmd_args, environ);
+	}
+	else
+		perror("fork failed");
 	return (0);
 }
-
 
 // int ft_exec(char *path, char *str)
 // {

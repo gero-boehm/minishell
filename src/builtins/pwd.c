@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 14:36:19 by cmeng            ###   ########.fr       */
+/*   Created: 2023/07/20 14:30:06 by cmeng             #+#    #+#             */
+/*   Updated: 2023/07/20 14:38:34 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
-// returns when *input == NULL
-int	ft_prompt(char **input)
+int	pwd(void)
 {
-	using_history();
-	*input = readline(">>");
-	if (*input == NULL)
+	char	*pwd;
+
+	pwd = NULL;
+	pwd = getcwd(pwd, 1);
+	if (pwd == NULL)
 		return (1);
-	if (*input[0] != '\0')
-		add_history(*input);
+	printf("%s\n", pwd);
 	return (0);
 }

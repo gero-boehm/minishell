@@ -6,7 +6,25 @@ READLINE_FLAGS	=	-L lib/readline_out/lib -l readline -l history
 INCLUDE 		= 	-I include -I include/defs -I lib/libft
 READLINE_INCLUDE=	-I ./lib/readline_out/include/
 
-MAN_FILES		=	src/main.c src/minishell.c src/prompt.c src/signals.c src/exec.c src/utils/memory/memalloc.c src/utils/memory/mem_copy.c src/utils/memory/mem_compare.c src/utils/arr/arr_index.c src/utils/arr/arr_add.c src/utils/arr/arr_create.c src/utils/arr/arr_size.c src/utils/arr/arr_free.c src/utils/arr/arr_get_set.c src/utils/arr/arr_remove.c src/utils/arr/arr_print_str.c src/utils/env.c src/utils/assoc/assoc_print.c src/utils/assoc/assoc_get.c src/utils/assoc/assoc_set.c src/utils/assoc/assoc_remove.c src/utils/assoc/assoc_size.c src/utils/assoc/assoc_create.c src/utils/global.c src/utils/str/str_range.c src/utils/str/str_trim.c src/utils/str/str_malloc.c src/utils/str/str_arr_from_assoc.c src/utils/str/str_compare.c src/utils/str/str_range2.c src/utils/str/str_range_action.c src/utils/str/str_substring.c src/utils/str/str_from_array.c src/utils/str/str_arr_from_array.c src/utils/str/str_copy.c src/utils/str/str_duplicate.c src/utils/str/str_length.c src/utils/str/str_cut.c src/utils/str/str_join.c src/utils/str/str_split.c src/utils/wildcard.c
+MAN_FILES		=	src/main.c src/minishell.c src/prompt.c src/signals.c src/exec.c \
+					\
+				 	src/builtins/cd.c src/builtins/echo.c src/builtins/env.c src/builtins/exit.c src/builtins/export.c \
+					src/builtins/pwd.c src/builtins/unset.c \
+					\
+					src/utils/env.c src/utils/global.c src/utils/wildcard.c \
+					\
+					src/utils/memory/memalloc.c src/utils/memory/mem_copy.c src/utils/memory/mem_compare.c \
+					\
+					src/utils/arr/arr_index.c src/utils/arr/arr_add.c src/utils/arr/arr_create.c src/utils/arr/arr_size.c \
+					src/utils/arr/arr_free.c src/utils/arr/arr_get_set.c src/utils/arr/arr_remove.c src/utils/arr/arr_print_str.c \
+					\
+					src/utils/assoc/assoc_print.c src/utils/assoc/assoc_get.c src/utils/assoc/assoc_set.c \
+					src/utils/assoc/assoc_remove.c src/utils/assoc/assoc_size.c src/utils/assoc/assoc_create.c \
+					\
+					src/utils/str/str_range.c src/utils/str/str_trim.c src/utils/str/str_malloc.c src/utils/str/str_arr_from_assoc.c \
+					src/utils/str/str_compare.c src/utils/str/str_range2.c src/utils/str/str_range_action.c src/utils/str/str_substring.c \
+					src/utils/str/str_from_array.c src/utils/str/str_arr_from_array.c src/utils/str/str_copy.c src/utils/str/str_duplicate.c \
+					src/utils/str/str_length.c src/utils/str/str_cut.c src/utils/str/str_join.c src/utils/str/str_split.c
 BONUS_FILES		=	src_bonus/bonus.c
 
 MAN_OBJ			=	$(MAN_FILES:.c=.o)

@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 14:36:19 by cmeng            ###   ########.fr       */
+/*   Created: 2023/07/20 14:29:14 by cmeng             #+#    #+#             */
+/*   Updated: 2023/07/20 14:35:57 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
-// returns when *input == NULL
-int	ft_prompt(char **input)
+// int ft_echo(token n, char *str)
+int	echo(int n, char *str)
 {
-	using_history();
-	*input = readline(">>");
-	if (*input == NULL)
+	int	i;
+
+	i = 0;
+	if (str == NULL)
+	{
+		printf("\n");
 		return (1);
-	if (*input[0] != '\0')
-		add_history(*input);
+	}
+	while (str[i + 1] != '\0')
+		printf("%c", str[i++]);
+	if (!n)
+		printf("\n");
 	return (0);
 }

@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 14:36:19 by cmeng            ###   ########.fr       */
+/*   Created: 2023/07/20 14:37:08 by cmeng             #+#    #+#             */
+/*   Updated: 2023/07/20 14:39:23 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 
-// returns when *input == NULL
-int	ft_prompt(char **input)
-{
-	using_history();
-	*input = readline(">>");
-	if (*input == NULL)
-		return (1);
-	if (*input[0] != '\0')
-		add_history(*input);
-	return (0);
-}
+#ifndef BUILTINS_H
+# define BUILTINS_H
+
+int	cd(char *str);
+int	echo(int n, char *str);
+int	env(void);
+int	exit(void);
+int	export(void);
+int	pwd(void);
+int	unset(void);
+
+
+#endif

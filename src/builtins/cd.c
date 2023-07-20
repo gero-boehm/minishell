@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.c                                           :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/12 15:54:46 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 14:36:19 by cmeng            ###   ########.fr       */
+/*   Created: 2023/07/20 14:28:43 by cmeng             #+#    #+#             */
+/*   Updated: 2023/07/20 14:35:27 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
-// returns when *input == NULL
-int	ft_prompt(char **input)
+// str doesn't needs '/' before the dir name for relative but for absolut
+int	cd(char *str)
 {
-	using_history();
-	*input = readline(">>");
-	if (*input == NULL)
-		return (1);
-	if (*input[0] != '\0')
-		add_history(*input);
-	return (0);
+	if (str != NULL)
+	{
+		if (chdir(str) == -1)
+			return (printf("%s\n", "Error"), 1);
+		return (0);
+	}
+	return (1);
 }
