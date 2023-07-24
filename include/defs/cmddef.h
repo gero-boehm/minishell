@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/24 22:49:23 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 00:35:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ typedef struct s_heredoc_var {
 }	t_heredoc_var;
 
 typedef struct s_heredoc {
-	int		is_available;
-	int		expand_vars;
+	int		available;
+	int		expand;
 	char	*str;
 	t_array	vars;
 }	t_heredoc;

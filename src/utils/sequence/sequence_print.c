@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 19:21:05 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/24 23:56:09 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 00:35:46 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,12 @@
 #include "cmddef.h"
 #include "array.h"
 
-#define BLACK			"\033[30m"
 #define RED				"\033[31m"
 #define GREEN			"\033[32m"
-#define YELLOW			"\033[33m"
-#define BLUE			"\033[34m"
-#define MAGENTA			"\033[35m"
-#define CYAN			"\033[36m"
+#define CYAN			"\033[38;5;216m"
 #define WHITE			"\033[37m"
-#define ORANGE			"\033[38;5;208m"
-#define PURPLE			"\033[38;5;165m"
-#define LIGHT_BLACK		"\033[1m\033[30m"
-#define LIGHT_RED		"\033[1m\033[31m"
-#define LIGHT_GREEN		"\033[1m\033[32m"
-#define LIGHT_YELLOW	"\033[1m\033[33m"
-#define LIGHT_BLUE		"\033[1m\033[34m"
-#define LIGHT_MAGENTA	"\033[1m\033[35m"
-#define LIGHT_CYAN		"\033[1m\033[36m"
-#define LIGHT_WHITE		"\033[1m\033[37m"
+#define PURPLE			"\033[38;2;81;97;205m"
+#define GRAY			"\033[38;5;245m"
 #define RESET			"\033[0m"
 
 void	print_str_arr(char **arr)
@@ -43,7 +31,7 @@ void	print_str_arr(char **arr)
 	{
 		if (!first)
 			printf(", ");
-		printf("%s'%s'%s", CYAN, *arr, LIGHT_BLACK);
+		printf("%s'%s'%s", CYAN, *arr, GRAY);
 		first = 0;
 		arr++;
 	}
@@ -52,9 +40,9 @@ void	print_str_arr(char **arr)
 
 void	print_heredoc_var(t_heredoc_var *var)
 {
-	printf(RESET WHITE"          var " LIGHT_BLACK "{\n");
-	printf("            key:   %s'%s'%s\n", CYAN, var->key, LIGHT_BLACK);
-	printf("            range: %s%d..%d%s\n", PURPLE, var->range.start, var->range.start + var->range.length, LIGHT_BLACK);
+	printf(RESET WHITE"          var " GRAY "{\n");
+	printf("            key:   %s'%s'%s\n", CYAN, var->key, GRAY);
+	printf("            range: %s%d..%d%s\n", PURPLE, var->range.start, var->range.start + var->range.length, GRAY);
 	printf("          }\n");
 }
 
@@ -64,7 +52,7 @@ void	print_heredoc_vars(t_array *vars)
 	t_heredoc_var	*var;
 
 	i = 0;
-	printf(RESET WHITE "        vars:         " LIGHT_BLACK "[\n");
+	printf(RESET WHITE "        vars:         " GRAY "[\n");
 	while (i < arr_size(vars))
 	{
 		var = (t_heredoc_var *) arr_get(vars, i);
@@ -76,13 +64,13 @@ void	print_heredoc_vars(t_array *vars)
 
 void	heredoc_print(t_heredoc *heredoc)
 {
-	printf(RESET WHITE "      heredoc: " LIGHT_BLACK "{\n");
-	printf("        is_available: %s%s%s\n", heredoc->is_available ? GREEN : RED, heredoc->is_available ? "true" : "false", LIGHT_BLACK);
-	if (heredoc->is_available)
+	printf(RESET WHITE "      heredoc: " GRAY "{\n");
+	printf("        available:    %s%s%s\n", heredoc->available ? GREEN : RED, heredoc->available ? "true" : "false", GRAY);
+	if (heredoc->available)
 	{
-		printf("        expand_vars:  %s%s%s\n", heredoc->expand_vars ? GREEN : RED, heredoc->expand_vars ? "true" : "false", LIGHT_BLACK);
-		printf("        str:          %s'%s'%s\n", CYAN, heredoc->str, LIGHT_BLACK);
-		if (heredoc->expand_vars)
+		printf("        expand:       %s%s%s\n", heredoc->expand ? GREEN : RED, heredoc->expand ? "true" : "false", GRAY);
+		printf("        str:          %s'%s'%s\n", CYAN, heredoc->str, GRAY);
+		if (heredoc->expand)
 		{
 			print_heredoc_vars(&heredoc->vars);
 		}
@@ -122,12 +110,12 @@ void command_builtin_exit_print(t_command_data *data)
 
 void command_external_print(t_external *external)
 {
-	printf(RESET WHITE "    command " LIGHT_BLACK "{\n");
-	printf("      cmd:     %s'%s'%s\n", CYAN, external->cmd, LIGHT_BLACK);
+	printf(RESET WHITE "    command " GRAY "{\n");
+	printf("      cmd:     %s'%s'%s\n", CYAN, external->cmd, GRAY);
 	printf("      args:    ");
 	print_str_arr(external->args);
-	printf("      fd_in:   %s%d%s\n", PURPLE, external->fd_in, LIGHT_BLACK);
-	printf("      fd_out:  %s%d%s\n", PURPLE, external->fd_out, LIGHT_BLACK);
+	printf("      fd_in:   %s%d%s\n", PURPLE, external->fd_in, GRAY);
+	printf("      fd_out:  %s%d%s\n", PURPLE, external->fd_out, GRAY);
 	heredoc_print(&external->heredoc);
 	printf("    }\n");
 }
@@ -166,7 +154,7 @@ static void	chain_print(t_chain *chain)
 	t_command 		*command;
 
 	i = 0;
-	printf(RESET WHITE "  chain " LIGHT_BLACK "[\n");
+	printf(RESET WHITE "  chain " GRAY "[\n");
 	while(i < arr_size(command))
 	{
 		command = (t_command *) arr_get(chain, i);
@@ -182,7 +170,7 @@ void	sequence_print(t_array *sequence)
 	t_chain 		*chain;
 
 	i = 0;
-	printf(WHITE "\nsequence " LIGHT_BLACK "[\n");
+	printf(WHITE "\nsequence " GRAY "[\n");
 	while(i < arr_size(sequence))
 	{
 		chain = (t_chain *) arr_get(sequence, i);

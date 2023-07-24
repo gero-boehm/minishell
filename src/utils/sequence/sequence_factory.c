@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:04:06 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/24 23:47:56 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 00:35:17 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	single_link_single_external(t_array *sequence)
 	command00.data.external.args[1] = (char *) "-la";
 	command00.data.external.fd_in = 0;
 	command00.data.external.fd_out = 1;
-	command00.data.external.heredoc.is_available = 0;
+	command00.data.external.heredoc.available = 0;
 	if (arr_add(&chain0, &command00))
 		return (5);
 }
@@ -71,9 +71,9 @@ int	single_link_single_external_with_heredoc(t_array *sequence)
 	command00.data.external.args[1] = (char *) "-la";
 	command00.data.external.fd_in = 0;
 	command00.data.external.fd_out = 1;
-	command00.data.external.heredoc.is_available = 1;
-	command00.data.external.heredoc.is_available = 1;
-	command00.data.external.heredoc.expand_vars = 1;
+	command00.data.external.heredoc.available = 1;
+	command00.data.external.heredoc.available = 1;
+	command00.data.external.heredoc.expand = 1;
 	command00.data.external.heredoc.str = (char *) "this is a $TEST.";
 	if (arr_create(&command00.data.external.heredoc.vars, sizeof(t_heredoc_var)))
 		return (5);
