@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:32:17 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/20 18:12:50 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/24 20:01:55 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "builtins.h"
+#include "global.h"
 
-int	builtin_exit(void)
+void	builtin_exit(void)
 {
 	printf("exit\n");
 	clear_history();

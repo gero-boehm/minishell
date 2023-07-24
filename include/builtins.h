@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:37:08 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/20 16:07:46 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/07/24 19:59:44 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-int	builtin_cd(char *str);
-int	builtin_echo(int n, char *str);
-int	builtin_env(void);
-int	builtin_exit(void);
-int	builtin_export(void);
-int	builtin_pwd(void);
-int	builtin_unset(void);
+void	builtin_cd(char *str);
+void	builtin_echo(int n, char *str);
+void	builtin_env(void);
+void	builtin_exit(void);
+void	builtin_export(const char *key, char *value);
+void	builtin_pwd(void);
+void	builtin_unset(const char *key);
 
 #endif

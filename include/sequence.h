@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_pwd.c                                      :+:      :+:    :+:   */
+/*   sequence.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 14:30:06 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/24 20:01:22 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/24 19:35:57 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/24 19:40:46 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <errno.h>
-#include "builtins.h"
-#include "global.h"
+#ifndef SEQUENCE_H
+# define SEQUENCE_H
 
-void	builtin_pwd(void)
-{
-	char	*pwd;
+#include "cmddef.h"
+#include "arraydef.h"
 
-	pwd = NULL;
-	pwd = getcwd(pwd, 1);
-	if (pwd == NULL)
-		error(errno);
-	printf("%s\n", pwd);
-}
+int		sequence_factory(t_factory factory, t_array *sequence);
+void	sequence_print(t_array *sequence);
+
+#endif
