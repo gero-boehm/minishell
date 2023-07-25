@@ -10,33 +10,79 @@
 // /*                                                                            */
 // /* ************************************************************************** */
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-// #include <sys/wait.h>
-// #include "minishell.h"
-// #include "env.h"
-// #include "global.h"
-// #include "builtins.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include "minishell.h"
+#include "env.h"
+#include "global.h"
+#include "builtins.h"
+#include "array.h"
 
-// // void	print_environ(void)
-// // {
-// // 	while (*environ != NULL)
-// // 		printf("%s\n", *environ++);
-// // }
 
-// static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
+// void	print_environ(void)
 // {
-// 	while (*paths != NULL)
-// 	{
-// 		//replace printf
-// 		sprintf(cmd_path, "%s/%s", *paths++, cmd);
-// 		// printf("path: %s\n", path);
-// 		if (!access(cmd_path, X_OK))
-// 			return (0);
-// 	}
-// 	return (1);
+// 	while (*environ != NULL)
+// 		printf("%s\n", *environ++);
 // }
+
+static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
+{
+	while (*paths != NULL)
+	{
+		//replace printf
+		sprintf(cmd_path, "%s/%s", *paths++, cmd);
+		// printf("path: %s\n", path);
+		if (!access(cmd_path, X_OK))
+			return (0);
+	}
+	return (1);
+}
+
+// int	exec(char **cmd_args)
+int	exec(char *sequence)
+{
+	char	*paths_str;
+	char	**paths;
+	char	**env;
+	char	*cmd_path = malloc(100);
+	int		pid;
+
+
+	// go through seqence, amount of chains = childs
+	// go though chain, check external or builtin
+
+	int amount_chains = arr_size(sequence);
+
+
+	if (env_get("PATH", &paths_str))
+		return (1);
+	paths = ft_split(paths_str, ':');
+
+	pid = fork();
+	if (pid > 0)
+	{
+		write(1, "This is the parent process\n---------------\n", 44);
+		wait(NULL);
+	}
+	else if (pid == 0)
+	{
+		write(1, "This is the child process\n---------------\n", 43);
+		if (is_builtin(cmd_args[0]))
+			exec_builtin(cmd_args[0]);
+		if (env_get_all(&env))
+			// TODO: find proper exit code
+			error(2);
+		else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
+			execve(cmd_path, cmd_args, env);
+	}
+	else
+		perror("fork failed");
+	return (0);
+}
+
+
 
 // int	is_builtin(char *cmd)
 // {
@@ -67,38 +113,3 @@
 // 		builtin_exit();
 // 	error(0);
 // }
-
-// int	exec(char **cmd_args)
-// {
-// 	char	*paths_str;
-// 	char	**paths;
-// 	char	**env;
-// 	char	*cmd_path = malloc(100);
-// 	int		pid;
-
-// 	if (env_get("PATH", &paths_str))
-// 		return (1);
-// 	paths = ft_split(paths_str, ':');
-
-// 	pid = fork();
-// 	if (pid > 0)
-// 	{
-// 		write(1, "This is the parent process\n---------------\n", 44);
-// 		wait(NULL);
-// 	}
-// 	else if (pid == 0)
-// 	{
-// 		write(1, "This is the child process\n---------------\n", 43);
-// 		if (is_builtin(cmd_args[0]))
-// 			exec_builtin(cmd_args[0]);
-// 		if (env_get_all(&env))
-// 			// TODO: find proper exit code
-// 			error(2);
-// 		else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
-// 			execve(cmd_path, cmd_args, env);
-// 	}
-// 	else
-// 		perror("fork failed");
-// 	return (0);
-// }
-
