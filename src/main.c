@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/24 23:00:57 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 12:58:51 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,13 @@ int	main(int argc, char **argv)
 
 	t_array sequence;
 
-	sequence_factory(F_SINGLE_LINK_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
+	sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
+	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
+	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
 	sequence_print(&sequence);
 
 	// if (arr_create(&arr, sizeof(char *)))

@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 00:35:18 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 12:56:06 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 # include "strdef.h"
 
 typedef enum e_factory {
-	F_SINGLE_LINK_SINGLE_EXTERNAL,
-	F_SINGLE_LINK_MULTIPLE_EXTERNAL,
-	F_SINGLE_LINK_MULTIPLE_EXTERNAL_AND_BUILTINS,
-	F_SINGLE_LINK_SINGLE_EXTERNAL_WITH_HEREDOC,
-	F_MULTIPLE_LINKS_SINGLE_EXTERNAL,
-	F_MULTIPLE_LINKS_SINGLE_EXTERNAL_AND_BUILTINS,
-	F_MULTIPLE_LINKS_MULTIPLE_EXTERNAL
+	F_SINGLE_CHAIN_SINGLE_EXTERNAL,
+	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL,
+	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS,
+	F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC,
+	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL,
+	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS,
+	F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS
 }	t_factory;
 
 typedef enum e_op {
@@ -35,6 +35,7 @@ typedef enum e_op {
 typedef enum e_command_type {
 	COMMAND_BUILTIN_ECHO,
 	COMMAND_BUILTIN_CD,
+	COMMAND_BUILTIN_PWD,
 	COMMAND_BUILTIN_EXPORT,
 	COMMAND_BUILTIN_UNSET,
 	COMMAND_BUILTIN_ENV,
@@ -56,7 +57,7 @@ typedef struct s_heredoc {
 
 typedef struct s_builtin_echo {
 	char	*str;
-	int		flag;
+	int		newline;
 }	t_builtin_echo;
 
 typedef struct s_builtin_cd {
