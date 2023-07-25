@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 			break ;
 		// ft_parse get_cmd_args //
 		if (i < 1)
-			exec(sequence);
+			exec(&sequence);
 		i++;
 	}
 

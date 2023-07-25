@@ -41,7 +41,7 @@ static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
 }
 
 // int	exec(char **cmd_args)
-int	exec(char *sequence)
+int	exec(t_array *sequence)
 {
 	char	*paths_str;
 	char	**paths;
@@ -69,13 +69,13 @@ int	exec(char *sequence)
 	else if (pid == 0)
 	{
 		write(1, "This is the child process\n---------------\n", 43);
-		if (is_builtin(cmd_args[0]))
-			exec_builtin(cmd_args[0]);
-		if (env_get_all(&env))
-			// TODO: find proper exit code
-			error(2);
-		else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
-			execve(cmd_path, cmd_args, env);
+		// if (is_builtin(cmd_args[0]))
+		// 	exec_builtin(cmd_args[0]);
+		// if (env_get_all(&env))
+		// 	// TODO: find proper exit code
+		// 	error(2);
+		// else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
+		// 	execve(cmd_path, cmd_args, env);
 	}
 	else
 		perror("fork failed");
