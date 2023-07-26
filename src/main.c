@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 12:58:51 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/26 13:01:33 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include "str.h"
 #include "wildcard.h"
 #include "sequence.h"
+#include "tmp.h"
 
 extern char	**environ;
 
@@ -123,16 +124,28 @@ int	main(int argc, char **argv)
 	global_init();
 
 
-	t_array sequence;
+	char *str;
+	str_random(16, &str);
+	printf("%s\n", str);
+
+	int	fd;
+	tmp_create(&fd);
+	tmp_write(fd, "sadjn sjd sad jk");
+	tmp_close(fd);
+
+
+
+
+	// t_array sequence;
 
 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
-	sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
 	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
-	sequence_print(&sequence);
+	// sequence_print(&sequence);
 
 	// if (arr_create(&arr, sizeof(char *)))
 	// 	return (1);

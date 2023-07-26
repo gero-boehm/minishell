@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:17:03 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/26 10:46:25 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ int		str_trim(char **str, char *set);
 
 int		str_arr_from_arr(t_array *arr, char ***strs);
 int		str_from_arr(t_array *arr, char **str);
+
+int		str_random(size_t length, char **str);
 
 #endif
