@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sequence_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 19:21:05 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 12:56:45 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 18:34:59 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 
 #define RED				"\033[31m"
 #define GREEN			"\033[32m"
+#define YELLOW			"\033[33m"
 #define CYAN			"\033[38;5;216m"
 #define WHITE			"\033[37m"
 #define PURPLE			"\033[38;2;81;97;205m"
@@ -182,6 +183,7 @@ static void	chain_print(t_chain *chain)
 		i++;
 	}
 	printf("  ]\n");
+	printf("  %s%s%s\n", YELLOW, chain_op_str(chain), GRAY);
 }
 
 void	sequence_print(t_array *sequence)

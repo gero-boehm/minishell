@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sequence_factory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:04:06 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 12:39:41 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/27 05:32:00 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,28 @@ void	copy_args(char **dst, char **src)
 	while(*src != NULL)
 		*dst++ = *src++;
 }
+
+int	single_chain_single_builtin(t_array *sequence)
+{
+	if (arr_create(sequence, sizeof(t_chain)))
+		return (1);
+
+	t_chain chain0;
+	chain0.op = OP_END;
+	if (arr_create(&chain0.commands, sizeof(t_command)))
+		return (2);
+
+	t_command command00;
+	command00.type = COMMAND_BUILTIN_ECHO;
+	command00.data.builtin_echo.str = (char *) "ECHO_TEST";
+	command00.data.builtin_echo.newline = 1;
+	if (arr_add(&chain0, &command00))
+		return (3);
+
+	if (arr_add(sequence, &chain0))
+		return (4);
+}
+
 
 int	single_chain_single_external(t_array *sequence)
 {
@@ -415,6 +437,8 @@ int	multiple_chains_multiple_external_and_builtins(t_array *sequence)
 
 int	sequence_factory(t_factory factory, t_array *sequence)
 {
+	if (factory == F_SINGLE_CHAIN_SINGLE_BUILTIN)
+		return single_chain_single_builtin(sequence);
 	if (factory == F_SINGLE_CHAIN_SINGLE_EXTERNAL)
 		return single_chain_single_external(sequence);
 	if (factory == F_SINGLE_CHAIN_MULTIPLE_EXTERNAL)

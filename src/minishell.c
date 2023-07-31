@@ -27,10 +27,10 @@ int	main(int argc, char **argv)
 	global_init();
 	signals();
 
-	// *------TEST------*
+	// *------RETURN PARSER------*
 	// char *cmd_args[] = {"ls", NULL , NULL};
-	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
-	sequence_print(&sequence);
+	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+	// sequence_print(&sequence);
 
 	int i = 0;
 	// *----------------*
@@ -39,7 +39,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// ft_parse get_cmd_args //
+		// ft_parse (&input, &sequence) //
 		if (i < 1)
 			exec(&sequence);
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:30:06 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/24 20:01:22 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:28:14 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	builtin_pwd(void)
 	if (pwd == NULL)
 		error(errno);
 	printf("%s\n", pwd);
+	error(0);
 }

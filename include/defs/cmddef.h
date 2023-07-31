@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmddef.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 12:56:06 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:07:05 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "strdef.h"
 
 typedef enum e_factory {
+	F_SINGLE_CHAIN_SINGLE_BUILTIN,
 	F_SINGLE_CHAIN_SINGLE_EXTERNAL,
 	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL,
 	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS,
@@ -43,6 +44,7 @@ typedef enum e_command_type {
 	COMMAND_EXTERNAL
 }	t_command_type;
 
+/*--------------external--------------*/
 typedef struct s_heredoc_var {
 	char	*key;
 	t_range	range;
@@ -54,6 +56,8 @@ typedef struct s_heredoc {
 	char	*str;
 	t_array	vars;
 }	t_heredoc;
+
+/*------------command_data------------*/
 
 typedef struct s_builtin_echo {
 	char	*str;
@@ -80,6 +84,8 @@ typedef struct s_external {
 	int			fd_out;
 	t_heredoc	heredoc;
 }	t_external;
+
+/*-----------------------------------*/
 
 typedef union u_command_data {
 	t_builtin_echo		builtin_echo;

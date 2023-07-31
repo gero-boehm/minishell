@@ -19,6 +19,7 @@
 #include "global.h"
 #include "builtins.h"
 #include "array.h"
+#include "cmddef.h"
 
 
 // void	print_environ(void)
@@ -31,85 +32,145 @@ static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
 {
 	while (*paths != NULL)
 	{
-		//replace printf
+		//TODO: replace sprintf
 		sprintf(cmd_path, "%s/%s", *paths++, cmd);
-		// printf("path: %s\n", path);
 		if (!access(cmd_path, X_OK))
 			return (0);
 	}
 	return (1);
 }
 
-// int	exec(char **cmd_args)
+void	exec_builtin(t_command *command)
+{
+	if (command->type == COMMAND_BUILTIN_ECHO)
+		builtin_echo(&command->data.builtin_echo);
+	else if (command->type == COMMAND_BUILTIN_CD)
+		builtin_cd(&command->data.builtin_cd);
+	else if (command->type == COMMAND_BUILTIN_PWD)
+		builtin_pwd();
+	else if (command->type == COMMAND_BUILTIN_EXPORT)
+		builtin_export(&command->data.builtin_export);
+	else if (command->type == COMMAND_BUILTIN_UNSET)
+		builtin_unset(&command->data.builtin_unset);
+	else if (command->type == COMMAND_BUILTIN_ENV)
+		builtin_env();
+	else if (command->type == COMMAND_BUILTIN_EXIT)
+		builtin_exit();
+}
+
+//TODO mem_alloc amount_cmds
 int	exec(t_array *sequence)
 {
-	char	*paths_str;
-	char	**paths;
-	char	**env;
-	char	*cmd_path = malloc(100);
-	int		pid;
+	char		*paths_str;
+	char		**paths;
+	char		**env;
+	char		*cmd_path;
+	pid_t		*pid;
+	int 		id;
+	int 		amount_cmds;
+	int			amount_chains;
+	t_chain		*chain;
+	t_command	*command;
 
-
-	// go through seqence, amount of chains = childs
-	// go though chain, check external or builtin
-
-	int amount_chains = arr_size(sequence);
-
-
-	if (env_get("PATH", &paths_str))
-		return (1);
-	paths = ft_split(paths_str, ':');
-
-	pid = fork();
-	if (pid > 0)
+	chain = (t_chain *) arr_get(sequence, 0);
+	command = (t_command *) arr_get(&chain->commands, 0);
+	amount_cmds = arr_size(&chain->commands);
+	amount_chains = arr_size(sequence);
+	cmd_path = malloc(100);
+	pid = malloc(amount_cmds);
+	id = 0;
+	// go through seqence, amount of chains
+	// goes though chain, check and execute external or builtin
+	while (amount_cmds > id)
 	{
-		write(1, "This is the parent process\n---------------\n", 44);
-		wait(NULL);
+		pid[id] = fork();
+		if (pid[id] < 0)
+			perror("fork failed");
+		else if (pid[id] == 0)
+		{
+			if (command->type == COMMAND_EXTERNAL)
+			{
+				// printf("%s\n",  command->data.external.args[0]);
+				//TODO: find proper exit code
+				if (env_get_all(&env))
+					error(2);
+				if (env_get("PATH", &paths_str))
+					return (1);
+				paths = ft_split(paths_str, ':');
+				if (!ft_get_cmd_path(paths, command->data.external.args[0], cmd_path))
+					execve(cmd_path, command->data.external.args, env);
+			}
+			else
+				exec_builtin(command);
+		}
+		id++;
 	}
-	else if (pid == 0)
-	{
-		write(1, "This is the child process\n---------------\n", 43);
-		// if (is_builtin(cmd_args[0]))
-		// 	exec_builtin(cmd_args[0]);
-		// if (env_get_all(&env))
-		// 	// TODO: find proper exit code
-		// 	error(2);
-		// else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
-		// 	execve(cmd_path, cmd_args, env);
-	}
-	else
-		perror("fork failed");
+	//----------Parent process--------//
+	wait(NULL);
+	int status;
+	waitpid(pid[0], &status, NULL);
+	//--------------------------------//
+	error(0);
 	return (0);
 }
 
+/*--------------sequence tools--------------------------*/
+	// int amount_chains = arr_size(sequence);
+	// t_chain	*chain;
+	// chain = (t_chain *) arr_get(sequence, 0);
+	// t_command	*command;
+	// command = (t_command *) arr_get(&chain->commands, 0);
+	// if (command->type == COMMAND_EXTERNAL)
+	// 	command->data.external.cmd;
+	// if (command->type == COMMAND_CD)
+	// 	command->data.builtin_cd.path;
+/*------------------------------------------------------*/
+
+	// printf("op: %i\n", chain->op);
+	// printf("Amount chains: %i\n", amount_chains);
+
+	// int amount_chains = arr_size(sequence);
+	// int amount_cmds = arr_size(chain);
+	// int	id_chain = 0;
+	// int	id_cmd = 0;
 
 
-// int	is_builtin(char *cmd)
-// {
-// 	return (ft_strncmp("echo", cmd, ft_strlen("echo")) == 0
-// 		|| ft_strncmp("cd", cmd, ft_strlen("cd")) == 0
-// 		|| ft_strncmp("pwd", cmd, ft_strlen("pwd")) == 0
-// 		|| ft_strncmp("export", cmd, ft_strlen("export")) == 0
-// 		|| ft_strncmp("unset", cmd, ft_strlen("unset")) == 0
-// 		|| ft_strncmp("env", cmd, ft_strlen("env")) == 0
-// 		|| ft_strncmp("exit", cmd, ft_strlen("exit")) == 0);
-// }
 
-// void	exec_builtin(char *cmd)
-// {
-// 	if (ft_strncmp("echo", cmd, ft_strlen("echo")) == 0)
-// 		builtin_echo();
-// 	else if (ft_strncmp("cd", cmd, ft_strlen("cd")) == 0)
-// 		builtin_cd();
-// 	else if (ft_strncmp("pwd", cmd, ft_strlen("pwd")) == 0)
-// 		builtin_pwd();
-// 	else if (ft_strncmp("export", cmd, ft_strlen("export")) == 0)
-// 		builtin_export();
-// 	else if (ft_strncmp("unset", cmd, ft_strlen("unset")) == 0)
-// 		builtin_unset();
-// 	else if (ft_strncmp("env", cmd, ft_strlen("env")) == 0)
-// 		builtin_env();
-// 	else if (ft_strncmp("exit", cmd, ft_strlen(cmd)) == 0)
-// 		builtin_exit();
-// 	error(0);
-// }
+	// if (command->type == COMMAND_EXTERNAL)
+	// {
+	// 	// printf("%s\n",  command->data.external.args[0]);
+	// 	//TODO: find proper exit code
+	// 	if (env_get_all(&env))
+	// 		error(2);
+	// 	if (env_get("PATH", &paths_str))
+	// 		return (1);
+	// 	paths = ft_split(paths_str, ':');
+	// 	if (!ft_get_cmd_path(paths, command->data.external.args[0], cmd_path))
+	// 		execve(cmd_path, command->data.external.args, env);
+	// }
+	// else
+	// 	exec_builtin(command);
+
+	// if (env_get("PATH", &paths_str))
+	// 	return (1);
+	// paths = ft_split(paths_str, ':');
+
+	// pid = fork();
+	// if (pid > 0)
+	// {
+	// 	write(1, "This is the parent process\n---------------\n", 44);
+	// 	wait(NULL);
+	// }
+	// else if (pid == 0)
+	// {
+	// 	write(1, "This is the child process\n---------------\n", 43);
+	// 	// if (is_builtin(cmd_args[0]))
+	// 	// 	exec_builtin(cmd_args[0]);
+	// 	// if (env_get_all(&env))
+	// 	// 	// TODO: find proper exit code
+	// 	// 	error(2);
+	// 	// else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
+	// 	// 	execve(cmd_path, cmd_args, env);
+	// }
+	// else
+	// 	perror("fork failed");
