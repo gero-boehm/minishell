@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:04:06 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/27 05:32:00 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/01 13:20:34 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -445,7 +445,7 @@ int	sequence_factory(t_factory factory, t_array *sequence)
 		return single_chain_multiple_external(sequence);
 	if (factory == F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS)
 		return single_chain_multiple_external_and_builtins(sequence);
-	if  (factory == F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC)
+	if (factory == F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC)
 		return single_chain_single_external_with_heredoc(sequence);
 	if (factory == F_MULTIPLE_CHAINS_SINGLE_EXTERNAL)
 		return multiple_chains_single_external(sequence);

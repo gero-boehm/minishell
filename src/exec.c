@@ -58,52 +58,59 @@ void	exec_builtin(t_command *command)
 		builtin_exit();
 }
 
-//TODO mem_alloc amount_cmds
-int	exec(t_array *sequence)
+int	exec_cmd(t_command *command)
 {
 	char		*paths_str;
 	char		**paths;
 	char		**env;
 	char		*cmd_path;
+
+	cmd_path = malloc(100);
+	if (command->type == COMMAND_EXTERNAL)
+	{
+		// printf("%s\n",  command->data.external.args[0]);
+		//TODO: find proper exit code
+		if (env_get_all(&env))
+			error(2);
+		if (env_get("PATH", &paths_str))
+			return (1);
+		paths = ft_split(paths_str, ':');
+		if (!ft_get_cmd_path(paths, command->data.external.args[0], cmd_path))
+			execve(cmd_path, command->data.external.args, env);
+	}
+	else
+		exec_builtin(command);
+	return (0);
+}
+
+//TODO mem_alloc amount_cmds
+int	exec(t_array *sequence)
+{
 	pid_t		*pid;
-	int 		id;
-	int 		amount_cmds;
-	int			amount_chains;
+	int			i;
+	int			amount_cmds;
+	// int			amount_chains;
 	t_chain		*chain;
 	t_command	*command;
 
 	chain = (t_chain *) arr_get(sequence, 0);
 	command = (t_command *) arr_get(&chain->commands, 0);
 	amount_cmds = arr_size(&chain->commands);
-	amount_chains = arr_size(sequence);
-	cmd_path = malloc(100);
-	pid = malloc(amount_cmds);
-	id = 0;
+	// amount_chains = arr_size(sequence);
+	// pid = malloc(amount_cmds);
+	i = 0;
 	// go through seqence, amount of chains
 	// goes though chain, check and execute external or builtin
-	while (amount_cmds > id)
+	while (amount_cmds > i)
 	{
-		pid[id] = fork();
-		if (pid[id] < 0)
+		pid[i] = fork();
+		if (pid[i] < 0)
 			perror("fork failed");
-		else if (pid[id] == 0)
+		else if (pid[i] == 0)
 		{
-			if (command->type == COMMAND_EXTERNAL)
-			{
-				// printf("%s\n",  command->data.external.args[0]);
-				//TODO: find proper exit code
-				if (env_get_all(&env))
-					error(2);
-				if (env_get("PATH", &paths_str))
-					return (1);
-				paths = ft_split(paths_str, ':');
-				if (!ft_get_cmd_path(paths, command->data.external.args[0], cmd_path))
-					execve(cmd_path, command->data.external.args, env);
-			}
-			else
-				exec_builtin(command);
+			exec_cmd(command);
 		}
-		id++;
+		i++;
 	}
 	//----------Parent process--------//
 	wait(NULL);
