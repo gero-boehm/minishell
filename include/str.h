@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/26 10:46:25 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/03 15:18:53 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ int		str_dup(const char *str, char **dup);
 int		str_join(char **str, const char *sep, ...);
 
 int		str_extract_range(char *str, t_range *range, char **sub);
-int		str_cut_range(char *str, t_range *range, char **sub);
+int		str_sub_range(char **str, t_range *range, char *sub);
+int		str_cut_range(char **str, t_range *range);
 
 int		str_cut_start(char **str, char *cut);
 int		str_cut_end(char **str, char *cut);

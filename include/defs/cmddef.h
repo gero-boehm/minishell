@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/25 12:56:06 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/03 16:19:46 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@
 # include "strdef.h"
 
 typedef enum e_factory {
+	F_SINGLE_CHAIN_SINGLE_BUILTIN,
 	F_SINGLE_CHAIN_SINGLE_EXTERNAL,
 	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL,
 	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS,
 	F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC,
 	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL,
 	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS,
-	F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS
+	F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS,
+	F_MULTIPLE_CHAINS_ALL_BUILTINS
 }	t_factory;
 
 typedef enum e_op {
@@ -43,10 +45,11 @@ typedef enum e_command_type {
 	COMMAND_EXTERNAL
 }	t_command_type;
 
-typedef struct s_heredoc_var {
+typedef struct s_var {
 	char	*key;
+	long	index;
 	t_range	range;
-}	t_heredoc_var;
+}	t_var;
 
 typedef struct s_heredoc {
 	int		available;
@@ -58,27 +61,38 @@ typedef struct s_heredoc {
 typedef struct s_builtin_echo {
 	char	*str;
 	int		newline;
+	t_array	vars;
 }	t_builtin_echo;
 
 typedef struct s_builtin_cd {
 	char	*path;
+	t_array	vars;
 }	t_builtin_cd;
 
 typedef struct s_builtin_export {
 	char	*key;
 	char	*value;
+	t_array	key_vars;
+	t_array	value_vars;
 }	t_builtin_export;
 
 typedef struct s_builtin_unset {
 	char	*key;
+	t_array	key_vars;
 }	t_builtin_unset;
 
+typedef struct s_builtin_exit {
+	char	*arg;
+	int		too_many_args;
+	t_array	vars;
+}	t_builtin_exit;
+
 typedef struct s_external {
-	char		*cmd;
 	char		**args;
 	int			fd_in;
 	int			fd_out;
 	t_heredoc	heredoc;
+	t_array		vars;
 }	t_external;
 
 typedef union u_command_data {
@@ -86,6 +100,7 @@ typedef union u_command_data {
 	t_builtin_cd		builtin_cd;
 	t_builtin_export	builtin_export;
 	t_builtin_unset		builtin_unset;
+	t_builtin_exit		builtin_exit;
 	t_external			external;
 }	t_command_data;
 
