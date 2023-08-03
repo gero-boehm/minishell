@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 17:26:18 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/03 19:06:34 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "wildcard.h"
 #include "sequence.h"
 #include "tmp.h"
+#include "vars.h"
 
 extern char	**environ;
 
@@ -124,6 +125,78 @@ int	main(int argc, char **argv)
 	global_init();
 
 
+	t_array vars0;
+
+	arr_create(&vars0, sizeof(t_var));
+
+	t_var var00;
+	var00.key = "USER";
+	var00.index = -1;
+	var00.range.start = 11;
+	var00.range.length = 5;
+
+	t_var var01;
+	var01.key = "HOME";
+	var01.index = -1;
+	var01.range.start = 32;
+	var01.range.length = 5;
+
+	arr_add(&vars0, &var00);
+	arr_add(&vars0, &var01);
+
+	char *str = strdup("my name is $USER and my home is $HOME");
+	printf("%s\n", str);
+	vars_expand_str(&vars0, &str);
+	printf("%s\n", str);
+
+
+
+	t_array vars1;
+
+	arr_create(&vars1, sizeof(t_var));
+
+	t_var var10;
+	var10.key = "PWD";
+	var10.index = 0;
+	var10.range.start = 10;
+	var10.range.length = 4;
+
+	t_var var11;
+	var11.key = "SHELL";
+	var11.index = 1;
+	var11.range.start = 15;
+	var11.range.length = 6;
+
+	t_var var12;
+	var12.key = "TERM";
+	var12.index = 1;
+	var12.range.start = 25;
+	var12.range.length = 5;
+
+	arr_add(&vars1, &var10);
+	arr_add(&vars1, &var11);
+	arr_add(&vars1, &var12);
+
+	// char **str_arr = {"i am here $PWD", "and i am using $SHELL in $TERM"};
+	char **str_arr;
+	mem_alloc_str_arr(2, &str_arr);
+	str_arr[0] = strdup("i am here $PWD");
+	str_arr[1] = strdup("and i am using $SHELL in $TERM");
+
+	char **cursor = str_arr;
+	printf("\n");
+	while (*cursor != NULL)
+		printf("%s\n", *cursor++);
+
+	vars_expand_str_arr(&vars1, str_arr);
+
+	cursor = str_arr;
+	while (*cursor != NULL)
+		printf("%s\n", *cursor++);
+
+
+
+
 	// char *str;
 	// str_random(16, &str);
 	// printf("%s\n", str);
@@ -152,12 +225,12 @@ int	main(int argc, char **argv)
 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
 	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
 	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
-	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
 	// sequence_factory(F_MULTIPLE_CHAINS_ALL_BUILTINS, &sequence);
-	sequence_print(&sequence);
+	// sequence_print(&sequence);
 
 	// if (arr_create(&arr, sizeof(char *)))
 	// 	return (1);
