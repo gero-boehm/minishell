@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:23:16 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:38:01 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/05 18:37:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,6 @@
 int		global_init(void);
 void	cleanup(void);
 void	error(int code);
+void	success(void);
 
 #endif
