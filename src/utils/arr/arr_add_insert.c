@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   arr_add.c                                          :+:      :+:    :+:   */
+/*   arr_add_insert.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:26:31 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 18:47:57 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/04 14:26:34 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,23 @@ int	arr_add(t_array *arr, void *element)
 		return (1);
 	ptr = arr->elements + arr->size * arr->bytes;
 	mem_ncpy(ptr, element, arr->bytes);
+	arr->size++;
+	return (0);
+}
+
+int	arr_insert_at(t_array *arr, unsigned int index, void *element)
+{
+	void	*dst;
+	void	*src;
+	size_t	len;
+
+	if (arr->size == arr->max_size && arr_grow(arr))
+		return (1);
+	dst = arr_get(arr, index + 1);
+	src = arr_get(arr, index);
+	len = (arr->size - index) * arr->bytes;
+	mem_ncpy(dst, src, len);
+	mem_ncpy(src, element, arr->bytes);
 	arr->size++;
 	return (0);
 }
