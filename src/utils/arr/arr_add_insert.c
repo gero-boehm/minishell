@@ -6,12 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:26:31 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/04 14:26:34 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/06 15:07:44 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "globaldef.h"
+#include "global.h"
 #include "array.h"
 #include "memory.h"
 
@@ -21,11 +21,11 @@ static int	arr_grow(t_array *arr)
 	unsigned int	index;
 
 	arr->max_size *= 2;
-	if (arr_index(&g_global.allocs, &arr->elements, &index))
+	if (arr_index(&global()->allocs, &arr->elements, &index))
 		return (1);
 	if (malloc2(arr->max_size * arr->bytes, (void **) &new))
 		return (2);
-	arr_set(&g_global.allocs, index, &new);
+	arr_set(&global()->allocs, index, &new);
 	mem_ncpy(new, arr->elements, arr->size * arr->bytes);
 	free(arr->elements);
 	arr->elements = new;

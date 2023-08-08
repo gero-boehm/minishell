@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 16:19:46 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/05 19:08:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,11 @@ typedef union u_command_data {
 }	t_command_data;
 
 typedef struct s_command {
-	t_command_type	type;
-	t_command_data	data;
+	char		**args;
+	int			fd_in;
+	int			fd_out;
+	int			heredoc_id;
+	t_array		vars;
 }	t_command;
 
 typedef struct s_chain {

@@ -6,27 +6,34 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:22:10 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/05 18:45:37 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/08 12:17:07 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include <fcntl.h>
-#include "globaldef.h"
+#include <unistd.h>
+#include "global.h"
 #include "array.h"
 #include "env.h"
 #include "cmddef.h"
 
+t_global	*global(void)
+{
+	static t_global global;
+
+	return (&global);
+}
+
 int	global_init(void)
 {
-	if (arr_create(&g_global.allocs, sizeof(char *)))
+	if (arr_create(&global()->allocs, sizeof(void *)))
 		return (1);
-	if (arr_create(&g_global.fds, sizeof(int)))
-		return (1);
-	if (arr_create(&g_global.heredocs, sizeof(t_heredoc)))
-		return (1);
-	if (env_init())
+	if (arr_create(&global()->fds, sizeof(int)))
 		return (2);
+	if (arr_create(&global()->heredocs, sizeof(t_heredoc)))
+		return (3);
+	if (env_init())
+		return (4);
 	return (0);
 }
 
@@ -36,16 +43,16 @@ void	cleanup(void)
 	int		fd;
 	void	*ptr;
 
-	i = arr_size(&g_global.fds);
+	i = arr_size(&global()->fds);
 	while (i--)
 	{
-		fd = *(int *) arr_get(&g_global.fds, i);
+		fd = *(int *) arr_get(&global()->fds, i);
 		close(fd);
 	}
-	i = arr_size(&g_global.allocs);
+	i = arr_size(&global()->allocs);
 	while (i--)
 	{
-		ptr = *(void **) arr_get(&g_global.allocs, i);
+		ptr = *(void **) arr_get(&global()->allocs, i);
 		free(ptr);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/04 14:23:39 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/06 15:14:52 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,28 +125,31 @@ int	main(int argc, char **argv)
 	global_init();
 
 
-	if (arr_create(&arr, sizeof(int)))
-		return (1);
-	int n = 1;
-	if (arr_add(&arr, &n))
-		return (2);
-	n = 3;
-	if (arr_add(&arr, &n))
-		return (3);
+	// if (arr_create(&arr, sizeof(int)))
+	// 	return (1);
+	// int n = 1;
+	// if (arr_add(&arr, &n))
+	// 	return (2);
+	// n = 3;
+	// if (arr_add(&arr, &n))
+	// 	return (3);
 
-	printf("size: %zu\n", arr.size);
-	printf("max: %zu\n", arr.max_size);
+	// printf("size: %zu\n", arr.size);
+	// printf("max: %zu\n", arr.max_size);
 
-	n = 2;
-	if(arr_insert_at(&arr, 1, &n))
-		return (4);
+	// n = 2;
+	// if(arr_insert_at(&arr, 1, &n))
+	// 	return (4);
 
 
-	for(int i = 0; i < arr_size(&arr); i++)
-		printf("%d\n", *(int *) arr_get(&arr, i));
+	// for(int i = 0; i < arr_size(&arr); i++)
+	// 	printf("%d\n", *(int *) arr_get(&arr, i));
 
-	printf("size: %zu\n", arr.size);
-	printf("max: %zu\n", arr.max_size);
+	// printf("size: %zu\n", arr.size);
+	// printf("max: %zu\n", arr.max_size);
+
+	for(int i = 0; i < arr_size(&global()->allocs); i++)
+		printf("%p\n", *(void **) arr_get(&global()->allocs, i));
 
 	// t_array vars0;
 
@@ -293,13 +296,13 @@ int	main(int argc, char **argv)
 
 
 
-	// arr_print_ptr(&g_global.allocs);
+	// arr_print_ptr(&global()->allocs);
 	// arr_create(&arr, sizeof(int));
-	// arr_print_ptr(&g_global.allocs);
+	// arr_print_ptr(&global()->allocs);
 
 	// var_set("test", "abc");
 	// var_set("abc", "def");
-	// arr_print_ptr(&g_global.allocs);
+	// arr_print_ptr(&global()->allocs);
 	// vars_print();
 	// char *v;
 	// var_get("test", &v);
@@ -344,7 +347,7 @@ int	main(int argc, char **argv)
 	// while (*arr != NULL)
 	// 	printf("%d\n", strcmp(*arr++, *envp++));
 
-	// assoc_print(&g_global.env);
+	// assoc_print(&global()->env);
 	// printf("===============\n");
 
 

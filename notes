@@ -1,1 +1,5 @@
- - gero: these chars form a boundary for variables " !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
+- these chars form a boundary for variables " !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
+  - variable boundaries within variable names cause error in export and unset. except in export one or more minuses "-" cause usage to be printed "export: usage: export [-nf] [name[=value] ...] or export -p"
+
+- export and unset can have multiple variables defined at the same time
+- unset does nothing without args

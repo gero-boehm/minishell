@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   global.h                                           :+:      :+:    :+:   */
+/*   lexerdef.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 17:23:16 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/06 15:05:15 by gbohm            ###   ########.fr       */
+/*   Created: 2023/08/06 11:47:27 by gbohm             #+#    #+#             */
+/*   Updated: 2023/08/06 11:49:18 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBAL_H
-# define GLOBAL_H
+#ifndef LEXERDEF_H
+# define LEXERDEF_H
 
-# include "globaldef.h"
-
-t_global	*global(void);
-int			global_init(void);
-void		cleanup(void);
-void		error(int code);
-void		success(void);
+typedef struct s_token {
+	char	*str;
+}	t_token;
 
 #endif
