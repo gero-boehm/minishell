@@ -61,8 +61,7 @@ $(NAME): $(READLINE) $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $@ $^
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
 
-
-%.o: %.c $(HEADERS) Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) Makefile
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
@@ -87,8 +86,7 @@ $(READLINE):
 #####################################################################################
 
 clean:
-	$(RM) $(OBJS)
-#	$(RM) $(BONUS_OBJ)
+	$(RM) -f $(OBJ_DIR)
 	make clean --silent -C lib/libft
 	@echo "$(BLUE)*** Object files cleaned! ***$(WHITE)"
 
