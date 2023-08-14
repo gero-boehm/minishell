@@ -83,10 +83,30 @@ int	exec_cmd(t_command *command)
 	return (0);
 }
 
+int	run_child(t_command *command, int ports[2])
+{
+	close(ports[0]);
+	dup2("fd", STDIN);
+	dup2(ports[1], STDOUT);
+	close("fd");
+	close(ports[1]);
+	if ("fd" == -1)
+		return ;
+	exec_cmd(command);
+}
+
+int	run_parent(t_command *command, int ports[2])
+{
+	close(ports[1]);
+	close("fd");
+	"fd" = ports[0];
+}
+
 //TODO mem_alloc amount_cmds
 int	exec(t_array *sequence)
 {
 	pid_t		*pid;
+	int			ports[2];
 	int			i;
 	int			amount_cmds;
 	// int			amount_chains;
@@ -96,20 +116,23 @@ int	exec(t_array *sequence)
 	chain = (t_chain *) arr_get(sequence, 0);
 	command = (t_command *) arr_get(&chain->commands, 0);
 	amount_cmds = arr_size(&chain->commands);
+	i = 0;
 	// amount_chains = arr_size(sequence);
 	// pid = malloc(amount_cmds);
-	i = 0;
 	// go through seqence, amount of chains
 	// goes though chain, check and execute external or builtin
-	while (amount_cmds > i)
+	while (i < amount_cmds)
 	{
+		if (amount_cmds - 1 > i)
+			if (pipe(ports) == -1)
+				perror("pipe failed");
 		pid[i] = fork();
-		if (pid[i] < 0)
+		if (pid[i] == -1)
 			perror("fork failed");
-		else if (pid[i] == 0)
-		{
-			exec_cmd(command);
-		}
+		if (pid[i] == 0)
+			run_child(command, ports);
+		else
+			run_parent(command, ports);
 		i++;
 	}
 	//----------Parent process--------//
@@ -117,6 +140,7 @@ int	exec(t_array *sequence)
 	int status;
 	waitpid(pid[0], &status, NULL);
 	//--------------------------------//
+	close("fd");
 	error(0);
 	return (0);
 }
