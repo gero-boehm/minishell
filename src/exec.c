@@ -1,14 +1,3 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exec.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-// /*   Updated: 2023/07/24 19:53:49 by gbohm            ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,20 +75,20 @@ int	exec_cmd(t_command *command)
 int	run_child(t_command *command, int ports[2])
 {
 	close(ports[0]);
-	dup2("fd", STDIN);
-	dup2(ports[1], STDOUT);
-	close("fd");
+	// dup2("fd", STDIN);
+	// dup2(ports[1], STDOUT);
+	// close("fd");
 	close(ports[1]);
-	if ("fd" == -1)
-		return ;
+	// if ("fd" == -1)
+		// return ;
 	exec_cmd(command);
 }
 
 int	run_parent(t_command *command, int ports[2])
 {
-	close(ports[1]);
-	close("fd");
-	"fd" = ports[0];
+	// close(ports[1]);
+	// close("fd");
+	// "fd" = ports[0];
 }
 
 //TODO mem_alloc amount_cmds
@@ -136,11 +125,11 @@ int	exec(t_array *sequence)
 		i++;
 	}
 	//----------Parent process--------//
-	wait(NULL);
-	int status;
-	waitpid(pid[0], &status, NULL);
+	// wait(NULL);
+	// int status;
+	// waitpid(pid[0], &status, NULL);
 	//--------------------------------//
-	close("fd");
+	// close("fd");
 	error(0);
 	return (0);
 }

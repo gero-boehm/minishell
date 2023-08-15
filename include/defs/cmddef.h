@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/26 16:07:05 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/15 13:43:56 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ typedef enum e_factory {
 	F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC,
 	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL,
 	F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS,
-	F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS
+	F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS,
+	F_MULTIPLE_CHAINS_ALL_BUILTINS
 }	t_factory;
 
 typedef enum e_op {
@@ -44,11 +45,11 @@ typedef enum e_command_type {
 	COMMAND_EXTERNAL
 }	t_command_type;
 
-/*--------------external--------------*/
-typedef struct s_heredoc_var {
+typedef struct s_var {
 	char	*key;
+	long	index;
 	t_range	range;
-}	t_heredoc_var;
+}	t_var;
 
 typedef struct s_heredoc {
 	int		available;
@@ -56,8 +57,6 @@ typedef struct s_heredoc {
 	char	*str;
 	t_array	vars;
 }	t_heredoc;
-
-/*------------command_data------------*/
 
 typedef struct s_builtin_echo {
 	char	*str;
@@ -69,36 +68,46 @@ typedef struct s_builtin_cd {
 }	t_builtin_cd;
 
 typedef struct s_builtin_export {
-	char	*key;
-	char	*value;
+	char	**keys;
+	char	**values;
 }	t_builtin_export;
 
 typedef struct s_builtin_unset {
-	char	*key;
+	char	**keys;
 }	t_builtin_unset;
 
-typedef struct s_external {
-	char		*cmd;
-	char		**args;
-	int			fd_in;
-	int			fd_out;
-	t_heredoc	heredoc;
-}	t_external;
+typedef struct s_builtin_exit {
+	char	*arg;
+	int		too_many_args;
+}	t_builtin_exit;
 
-/*-----------------------------------*/
+typedef struct s_external {
+	char		**args;
+}	t_external;
 
 typedef union u_command_data {
 	t_builtin_echo		builtin_echo;
 	t_builtin_cd		builtin_cd;
 	t_builtin_export	builtin_export;
 	t_builtin_unset		builtin_unset;
+	t_builtin_exit		builtin_exit;
 	t_external			external;
 }	t_command_data;
 
 typedef struct s_command {
+	int				fd_in;
+	int				fd_out;
 	t_command_type	type;
 	t_command_data	data;
 }	t_command;
+
+typedef struct s_raw_command {
+	char		**args;
+	int			fd_in;
+	int			fd_out;
+	int			heredoc_id;
+	t_array		vars;
+}	t_raw_command;
 
 typedef struct s_chain {
 	t_array		commands;
