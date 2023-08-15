@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:30:20 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/15 14:06:46 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/15 18:16:21 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@
 
 void	builtin_unset(t_builtin_unset *unset)
 {
-	while (*unset->keys != NULL)
+	char	**keys;
+	int		i;
+
+	keys = unset->keys;
+	i = 0;
+	while (keys[i] != NULL)
 	{
-		if (env_remove(unset->keys))
+		if (env_remove(keys[i]))
 			error(134);
-		*unset->values++;
+		i++;
 	}
 	error(0);
 }
