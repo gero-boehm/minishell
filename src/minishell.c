@@ -1,20 +1,45 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   minishell.c                                        :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2023/06/12 08:59:40 by christianme       #+#    #+#             */
-// /*   Updated: 2023/07/20 18:10:40 by cmeng            ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/16 16:02:18 by cmeng             #+#    #+#             */
+/*   Updated: 2023/08/16 18:06:04 by cmeng            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include <stdio.h>
 #include "minishell.h"
 #include "global.h"
 #include "arraydef.h"
 #include "sequence.h"
+#include "array.h"
+
+void	exec_sequence(t_array *sequence)
+{
+	int		i;
+	int		last_return_chain;
+	int		amount_chains;
+	t_chain	*chain;
+
+	i = 0;
+	last_return_chain = 0;
+	amount_chains = arr_size(sequence);
+	while (i < amount_chains)
+	{
+		chain = (t_chain *)arr_get(sequence, i);
+		last_return_chain = exec_chain(chain);
+		if (chain->op == OP_AND)
+			if (last_return_chain)
+				error(0);
+		if (chain->op == OP_OR)
+			if (!last_return_chain)
+				error(0);
+		i++;
+	}
+}
 
 int	main(int argc, char **argv)
 {
@@ -26,23 +51,17 @@ int	main(int argc, char **argv)
 	(void) argv;
 	global_init();
 	signals();
-
 	// *------RETURN PARSER------*
 	// char *cmd_args[] = {"ls", NULL , NULL};
-	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+	sequence_factory(F_SINGLE_CHAIN_SINGLE_BUILTIN, &sequence);
 	// sequence_print(&sequence);
-
-	int i = 0;
 	// *----------------*
-
 	while (1)
 	{
 		if (prompt(&input))
 			break ;
 		// ft_parse (&input, &sequence) //
-		if (i < 1)
-			exec(&sequence);
-		i++;
+		exec_sequence(&sequence);
 	}
 
 

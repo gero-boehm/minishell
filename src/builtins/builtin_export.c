@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:31:57 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/15 17:52:58 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/16 10:25:24 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,14 @@ int	contains_invalid_sign(char *key)
 	return (0);
 }
 
-void	builtin_export(t_builtin_export	*exp)
+void	builtin_export(t_builtin_export	*data_export)
 {
 	char	**keys;
 	char	**values;
 	int		i;
 
-	keys = exp->keys;
-	values = exp->values;
+	keys = data_export->keys;
+	values = data_export->values;
 	i = 0;
 	while (keys[i] != NULL)
 	{
