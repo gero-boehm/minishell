@@ -1,104 +1,145 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   exec.c                                             :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2023/06/26 09:53:10 by christianme       #+#    #+#             */
-// /*   Updated: 2023/07/24 19:53:49 by gbohm            ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/16 18:05:20 by cmeng             #+#    #+#             */
+/*   Updated: 2023/08/17 13:34:43 by cmeng            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <unistd.h>
-// #include <sys/wait.h>
-// #include "minishell.h"
-// #include "env.h"
-// #include "global.h"
-// #include "builtins.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include "minishell.h"
+#include "env.h"
+#include "global.h"
+#include "builtins.h"
+#include "array.h"
+#include "cmddef.h"
+#include "str.h"
+#include "memory.h"
 
-// // void	print_environ(void)
-// // {
-// // 	while (*environ != NULL)
-// // 		printf("%s\n", *environ++);
-// // }
+static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
+{
+	unsigned long	i;
+	char			*path;
 
-// static int	ft_get_cmd_path(char **paths, char *cmd, char *cmd_path)
-// {
-// 	while (*paths != NULL)
-// 	{
-// 		//replace printf
-// 		sprintf(cmd_path, "%s/%s", *paths++, cmd);
-// 		// printf("path: %s\n", path);
-// 		if (!access(cmd_path, X_OK))
-// 			return (0);
-// 	}
-// 	return (1);
-// }
+	i = 0;
+	while (i < arr_size(paths))
+	{
+		path = *(char **) arr_get(paths, i);
+		if (str_join(cmd_path, "", path, "/", cmd, NULL))
+			error(134);
+		if (!access(*cmd_path, X_OK))
+			return (0);
+		mem_free(*cmd_path);
+		i++;
+	}
+	return (1);
+}
 
-// int	is_builtin(char *cmd)
-// {
-// 	return (ft_strncmp("echo", cmd, ft_strlen("echo")) == 0
-// 		|| ft_strncmp("cd", cmd, ft_strlen("cd")) == 0
-// 		|| ft_strncmp("pwd", cmd, ft_strlen("pwd")) == 0
-// 		|| ft_strncmp("export", cmd, ft_strlen("export")) == 0
-// 		|| ft_strncmp("unset", cmd, ft_strlen("unset")) == 0
-// 		|| ft_strncmp("env", cmd, ft_strlen("env")) == 0
-// 		|| ft_strncmp("exit", cmd, ft_strlen("exit")) == 0);
-// }
+void	exec_builtin(t_command *command)
+{
+	if (command->type == COMMAND_BUILTIN_ECHO)
+		builtin_echo(&command->data.builtin_echo);
+	else if (command->type == COMMAND_BUILTIN_CD)
+		builtin_cd(&command->data.builtin_cd);
+	else if (command->type == COMMAND_BUILTIN_PWD)
+		builtin_pwd();
+	else if (command->type == COMMAND_BUILTIN_EXPORT)
+		builtin_export(&command->data.builtin_export);
+	else if (command->type == COMMAND_BUILTIN_UNSET)
+		builtin_unset(&command->data.builtin_unset);
+	else if (command->type == COMMAND_BUILTIN_ENV)
+		builtin_env();
+	else if (command->type == COMMAND_BUILTIN_EXIT)
+		builtin_exit();
+}
 
-// void	exec_builtin(char *cmd)
-// {
-// 	if (ft_strncmp("echo", cmd, ft_strlen("echo")) == 0)
-// 		builtin_echo();
-// 	else if (ft_strncmp("cd", cmd, ft_strlen("cd")) == 0)
-// 		builtin_cd();
-// 	else if (ft_strncmp("pwd", cmd, ft_strlen("pwd")) == 0)
-// 		builtin_pwd();
-// 	else if (ft_strncmp("export", cmd, ft_strlen("export")) == 0)
-// 		builtin_export();
-// 	else if (ft_strncmp("unset", cmd, ft_strlen("unset")) == 0)
-// 		builtin_unset();
-// 	else if (ft_strncmp("env", cmd, ft_strlen("env")) == 0)
-// 		builtin_env();
-// 	else if (ft_strncmp("exit", cmd, ft_strlen(cmd)) == 0)
-// 		builtin_exit();
-// 	error(0);
-// }
+int	exec_cmd(t_command *cmd)
+{
+	char		*paths_str;
+	t_array		paths;
+	char		**env;
+	char		*cmd_path;
 
-// int	exec(char **cmd_args)
-// {
-// 	char	*paths_str;
-// 	char	**paths;
-// 	char	**env;
-// 	char	*cmd_path = malloc(100);
-// 	int		pid;
+	if (cmd->type == COMMAND_EXTERNAL)
+	{
+		//TODO: find proper exit code
+		if (env_get_all(&env))
+			error(134);
+		if (env_get("PATH", &paths_str))
+			error(134);
+		if (str_split(paths_str, ':', &paths))
+			error(134);
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+		{
+			printf("bash: %s: command not found\n", cmd->data.external.args[0]);
+			error(127);
+		}
+		execve(cmd_path, cmd->data.external.args, env);
+	}
+	else
+		exec_builtin(cmd);
+	return (0);
+}
 
-// 	if (env_get("PATH", &paths_str))
-// 		return (1);
-// 	paths = ft_split(paths_str, ':');
+void	run_child(t_command *cmd, int port)
+{
+	// close(ports[0]);
+	// dup2("fd", STDIN);
+	// dup2(ports[1], STDOUT);
+	// close("fd");
+	// close(ports[1]);
+	// if ("fd" == -1)
+	// 	return ;
+	exec_cmd(cmd);
+}
 
-// 	pid = fork();
-// 	if (pid > 0)
-// 	{
-// 		write(1, "This is the parent process\n---------------\n", 44);
-// 		wait(NULL);
-// 	}
-// 	else if (pid == 0)
-// 	{
-// 		write(1, "This is the child process\n---------------\n", 43);
-// 		if (is_builtin(cmd_args[0]))
-// 			exec_builtin(cmd_args[0]);
-// 		if (env_get_all(&env))
-// 			// TODO: find proper exit code
-// 			error(2);
-// 		else if (!ft_get_cmd_path(paths, cmd_args[0], cmd_path))
-// 			execve(cmd_path, cmd_args, env);
-// 	}
-// 	else
-// 		perror("fork failed");
-// 	return (0);
-// }
+void	run_parent(t_command *command, int port)
+{
+	// close(ports[1]);
+	// close("fd");
+	// "fd" = ports[0];
+}
 
+//TODO mem_alloc amount_cmds
+int	exec_chain(t_chain *chain)
+{
+	pid_t			pid;
+	int				ports[2];
+	int				i;
+	// int				amount_cmds;
+	// t_raw_command	*raw;
+	t_command		*cmd;
+	int				exit_code;
+
+	// amount_cmds = arr_size(&chain->commands);
+	i = 0;
+	while (i < arr_size(&chain->commands))
+	{
+		cmd = (t_command *) arr_get(&chain->commands, i);
+		// raw = (t_raw_command *) arr_get(&chain->commands, i);
+		// cmd = 2nd_parse(raw);
+		// if (amount_cmds - 1 > i)
+		// 	if (pipe(ports) == -1)
+		// 		perror("pipe failed");
+		pid = fork();
+		if (pid == -1)
+			perror("fork failed");
+		if (pid == 0)
+			run_child(cmd, ports[1]);
+		else
+			run_parent(cmd, ports[0]);
+		i++;
+	}
+	//----------Parent process--------//
+	wait(&exit_code);
+	//--------------------------------//
+	// close("fd");
+	return (exit_code);
+}

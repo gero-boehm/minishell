@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:29:46 by cmeng             #+#    #+#             */
-/*   Updated: 2023/07/24 20:01:38 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/26 16:28:42 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,5 @@ void	builtin_env(void)
 		error(134);
 	env_print(env);
 	mem_free_str_arr(env);
+	error(0);
 }
