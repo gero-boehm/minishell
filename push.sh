@@ -5,6 +5,6 @@ if [ $# -eq 0 ]; then
 	exit 1
 fi
 
-git add *
+git add .
 git commit -m "$*"
 git push

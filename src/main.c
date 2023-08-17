@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/06 15:14:52 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/10 01:36:16 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 #include "sequence.h"
 #include "tmp.h"
 #include "vars.h"
+#include "lexer.h"
 
 extern char	**environ;
 
@@ -115,6 +116,13 @@ void iterateDirectories(const char *path) {
 	closedir(dir);
 }
 
+int	sort_int(void *element1, void *element2)
+{
+	int a = *(int *) element1;
+	int b = *(int *) element2;
+
+	return (b - a);
+}
 
 int	main(int argc, char **argv)
 {
@@ -124,6 +132,61 @@ int	main(int argc, char **argv)
 	(void) argv;
 	global_init();
 
+
+	char *str = "echo a\\  \\''test' && cat <<'eof'";
+	// char *str = "t.";
+	if (lexer_get_fragments(str, &arr))
+		return (1);
+
+	arr_print_str(&arr);
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
+
+	// char *str = "this 'is' \ta \n  test.";
+	// char *set = " \n\t\r\f\v";
+
+	// t_range range;
+
+	// str_range_of_set(str, set, 9, &range);
+	// printf("%lu..%lu\n", range.start, range.start + range.length);
+
+	// if (arr_create(&arr, sizeof(int)))
+	// 	return (1);
+
+	// int nums[] = {4, 3, 1, 1, 5, 6, 5};
+	// int c = 7;
+
+	// for (int i = 0; i < c; i++)
+	// {
+	// 	if (arr_add(&arr, nums + i))
+	// 		return (2);
+	// }
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
+
+	// // int n = 4;
+	// // if(arr_insert_at(&arr, 1, &n))
+	// // 	return (3);
+
+	// if (arr_sort(&arr, sort_int))
+	// 	return (3);
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
 
 	// if (arr_create(&arr, sizeof(int)))
 	// 	return (1);
@@ -148,8 +211,8 @@ int	main(int argc, char **argv)
 	// printf("size: %zu\n", arr.size);
 	// printf("max: %zu\n", arr.max_size);
 
-	for(int i = 0; i < arr_size(&global()->allocs); i++)
-		printf("%p\n", *(void **) arr_get(&global()->allocs, i));
+	// for(int i = 0; i < arr_size(&global()->allocs); i++)
+	// 	printf("%p\n", *(void **) arr_get(&global()->allocs, i));
 
 	// t_array vars0;
 

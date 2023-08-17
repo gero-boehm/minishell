@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/14 13:31:14 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/14 22:31:31 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,12 @@ typedef enum e_command_type {
 	COMMAND_BUILTIN_EXIT,
 	COMMAND_EXTERNAL
 }	t_command_type;
+
+typedef enum e_file_type {
+	FILE_IN,
+	FILE_OUT,
+	FILE_OUT_APPEND,
+}	t_file_type;
 
 typedef struct s_var {
 	char	*key;
@@ -101,12 +107,17 @@ typedef struct s_command {
 	t_command_data	data;
 }	t_command;
 
+typedef struct s_file {
+	char		*path;
+	t_file_type	type;
+}	t_file;
+
 typedef struct s_raw_command {
-	char		**args;
-	int			fd_in;
-	int			fd_out;
+	t_array		args;
+	t_array		files;
 	int			heredoc_id;
-	t_array		vars;
+	t_array		args_vars;
+	t_array		files_vars;
 }	t_raw_command;
 
 typedef struct s_chain {

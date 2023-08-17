@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 15:26:31 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/06 15:07:44 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/09 14:19:24 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	arr_insert_at(t_array *arr, unsigned int index, void *element)
 	dst = arr_get(arr, index + 1);
 	src = arr_get(arr, index);
 	len = (arr->size - index) * arr->bytes;
-	mem_ncpy(dst, src, len);
+	mem_nmov(dst, src, len);
 	mem_ncpy(src, element, arr->bytes);
 	arr->size++;
 	return (0);
