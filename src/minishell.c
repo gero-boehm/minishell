@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 16:02:18 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/16 18:06:04 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 07:59:08 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv)
 	signals();
 	// *------RETURN PARSER------*
 	// char *cmd_args[] = {"ls", NULL , NULL};
-	sequence_factory(F_SINGLE_CHAIN_SINGLE_BUILTIN, &sequence);
+	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
 	// sequence_print(&sequence);
 	// *----------------*
 	while (1)

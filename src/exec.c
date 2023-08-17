@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:05:20 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/16 18:05:24 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 12:57:50 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static int	get_cmd_path(t_array *paths, char *cmd, char *cmd_path)
 	while (paths->elements != NULL)
 	{
 		if (str_join(&cmd_path, "", *paths, "/", cmd, NULL))
+		// if (str_join(&cmd_path, "/", paths, cmd, NULL))
 			return (1);
+		printf(cmd_path);
 		if (!access(cmd_path, X_OK))
 			return (0);
 		paths++;
@@ -108,13 +110,13 @@ int	exec_chain(t_chain *chain)
 	pid_t			pid;
 	int				ports[2];
 	int				i;
-	int				amount_cmds;
+	// int				amount_cmds;
 	// t_raw_command	*raw;
 	t_command		*cmd;
 
-	amount_cmds = arr_size(&chain->commands);
+	// amount_cmds = arr_size(&chain->commands);
 	i = 0;
-	while (i < amount_cmds)
+	while (i < arr_size(&chain->commands))
 	{
 		cmd = (t_command *) arr_get(&chain->commands, i);
 		// raw = (t_raw_command *) arr_get(&chain->commands, i);
