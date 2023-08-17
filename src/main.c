@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/10 01:36:16 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/17 14:21:21 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,27 +58,12 @@ void	arr_print(t_array *arr)
 // 	printf("\n");
 // }
 
-void	test_fancy(void)
-{
-	char *str;
-
-	mem_alloc(6, (void **) &str);
-
-	error(1);
-}
-
-void	test_normal(void)
-{
-	char *str = malloc(6);
-
-	error(1);
-}
-
 int	is_dir(char *path)
 {
 	struct stat	stats;
 
 	stat(path, &stats);
+	return (0);
 }
 
 void iterateDirectories(const char *path) {
