@@ -6,7 +6,11 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/08/14 22:31:31 by gbohm            ###   ########.fr       */
+=======
 /*   Updated: 2023/08/15 13:43:56 by cmeng            ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +49,12 @@ typedef enum e_command_type {
 	COMMAND_EXTERNAL
 }	t_command_type;
 
+typedef enum e_file_type {
+	FILE_IN,
+	FILE_OUT,
+	FILE_OUT_APPEND,
+}	t_file_type;
+
 typedef struct s_var {
 	char	*key;
 	long	index;
@@ -61,12 +71,10 @@ typedef struct s_heredoc {
 typedef struct s_builtin_echo {
 	char	*str;
 	int		newline;
-	t_array	vars;
 }	t_builtin_echo;
 
 typedef struct s_builtin_cd {
 	char	*path;
-	t_array	vars;
 }	t_builtin_cd;
 
 typedef struct s_builtin_export {
@@ -103,6 +111,14 @@ typedef struct s_command {
 	t_command_data	data;
 }	t_command;
 
+<<<<<<< HEAD
+typedef struct s_file {
+	char		*path;
+	t_file_type	type;
+}	t_file;
+
+=======
+>>>>>>> master
 typedef struct s_raw_command {
 	t_array		args;
 	t_array		files;

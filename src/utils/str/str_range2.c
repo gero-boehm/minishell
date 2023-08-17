@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:56:14 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 13:56:27 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/09 21:13:50 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,36 @@ int	str_range_of(char *str, char *pattern,
 	}
 	range->start = i;
 	range->length = len;
+	return (0);
+}
+
+int	str_range_of_set(char *str, char *set,
+	unsigned long start, t_range *range)
+{
+	unsigned long	i;
+	int				toggle;
+
+	i = start;
+	toggle = 0;
+	range->length = 0;
+	while (1)
+	{
+		if (str[i] == '\0')
+			return (!toggle);
+		if (str_char_in_set(set, str[i]))
+		{
+			if (!toggle)
+			{
+				range->start = i;
+				toggle = 1;
+			}
+			range->length++;
+		}
+		else if(toggle)
+			return (0);
+		i++;
+	}
+	range->start = i;
 	return (0);
 }
 

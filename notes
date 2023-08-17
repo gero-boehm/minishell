@@ -1,1 +1,11 @@
- - gero: these chars form a boundary for variables " !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
+- these chars form a boundary for variables " !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~"
+  - variable boundaries within variable names cause error in export and unset. except in export one or more minuses "-" cause usage to be printed "export: usage: export [-nf] [name[=value] ...] or export -p"
+
+- export and unset can have multiple variables defined at the same time
+- unset does nothing without args
+
+- heredocs
+  - they can have quotes in delimiter which results in no expansion of variables. quotes don't necessarily need to surround the entire delimiter, they just have to be present. e.g. >>"eof" >>e"of" >>""eof >> eof""
+  - variables are not expanded in the delimiter. e.g. <<eof$USER will match eof$USER literally
+
+- '~' expands to home directory only if preceeded by whitepace and followed by whitepace or slash

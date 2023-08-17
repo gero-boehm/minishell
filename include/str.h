@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 12:12:43 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 15:18:53 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/08 16:01:10 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int		str_str_to_exclusive(char *str, char *pattern, unsigned long start, char **
 int		str_str_from_inclusive(char *str, char *pattern, unsigned long start, char **sub);
 int		str_str_from_exclusive(char *str, char *pattern, unsigned long start, char **sub);
 int		str_range_of(char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_of_set(char *str, char *set, unsigned long start, t_range *range);
 int		str_range_between(char *str, char *pattern, unsigned long start, t_range *range);
 
 size_t	str_cpyn(char *dst, const char *src);
@@ -54,5 +55,8 @@ int		str_arr_from_arr(t_array *arr, char ***strs);
 int		str_from_arr(t_array *arr, char **str);
 
 int		str_random(size_t length, char **str);
+
+int		str_char_in_set(char *set, char c);
+
 
 #endif

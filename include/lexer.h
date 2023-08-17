@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   global.h                                           :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 17:23:16 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/06 15:05:15 by gbohm            ###   ########.fr       */
+/*   Created: 2023/08/09 20:58:06 by gbohm             #+#    #+#             */
+/*   Updated: 2023/08/10 12:15:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBAL_H
-# define GLOBAL_H
+#include "lexerdef.h"
+#include "arraydef.h"
 
-# include "globaldef.h"
+#ifndef LEXER_H
+# define LEXER_H
 
-t_global	*global(void);
-int			global_init(void);
-void		cleanup(void);
-void		error(int code);
-void		success(void);
+int	lexer_get_boundaries(char *str, t_array *boundaries);
+int	lexer_get_fragments(char *str, t_array *fragments);
 
 #endif

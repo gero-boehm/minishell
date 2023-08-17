@@ -1,3 +1,49 @@
+<<<<<<< HEAD
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
+/*   Updated: 2023/08/17 14:21:21 by gbohm            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <dirent.h>
+#include <limits.h>
+#include <sys/stat.h>
+#include "globaldef.h"
+#include "global.h"
+#include "array.h"
+#include "assoc.h"
+#include "memory.h"
+#include "env.h"
+#include "str.h"
+#include "wildcard.h"
+#include "sequence.h"
+#include "tmp.h"
+#include "vars.h"
+#include "lexer.h"
+
+extern char	**environ;
+
+void	arr_print(t_array *arr)
+{
+	for (unsigned int i = 0; i < arr->size; i++)
+	{
+		int	element = *((int *) arr_get(arr, i));
+		printf("%d ", element);
+	}
+	printf("\n");
+}
+
+// void	arr_print_str(t_array *arr)
+=======
 // /* ************************************************************************** */
 // /*                                                                            */
 // /*                                                        :::      ::::::::   */
@@ -31,6 +77,7 @@
 // extern char	**environ;
 
 // void	arr_print(t_array *arr)
+>>>>>>> master
 // {
 // 	for (unsigned int i = 0; i < arr->size; i++)
 // 	{
@@ -40,6 +87,15 @@
 // 	printf("\n");
 // }
 
+<<<<<<< HEAD
+int	is_dir(char *path)
+{
+	struct stat	stats;
+
+	stat(path, &stats);
+	return (0);
+}
+=======
 // // void	arr_print_str(t_array *arr)
 // // {
 // // 	for (unsigned int i = 0; i < arr->size; i++)
@@ -72,6 +128,7 @@
 
 // // 	error(1);
 // // }
+>>>>>>> master
 
 // // int	is_dir(char *path)
 // // {
@@ -108,8 +165,18 @@
 // // 			iterateDirectories(fullpath);
 // // 		}
 
+<<<<<<< HEAD
+int	sort_int(void *element1, void *element2)
+{
+	int a = *(int *) element1;
+	int b = *(int *) element2;
+
+	return (b - a);
+}
+=======
 // // 		// Process the entry (you can modify this part to suit your needs)
 // // 	}
+>>>>>>> master
 
 // // 	// Close the directory
 // // 	closedir(dir);
@@ -124,6 +191,78 @@
 // 	(void) argv;
 // 	global_init();
 
+<<<<<<< HEAD
+	char *str = "echo a\\  \\''test' && cat <<'eof'";
+	// char *str = "t.";
+	if (lexer_get_fragments(str, &arr))
+		return (1);
+
+	arr_print_str(&arr);
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
+
+	// char *str = "this 'is' \ta \n  test.";
+	// char *set = " \n\t\r\f\v";
+
+	// t_range range;
+
+	// str_range_of_set(str, set, 9, &range);
+	// printf("%lu..%lu\n", range.start, range.start + range.length);
+
+	// if (arr_create(&arr, sizeof(int)))
+	// 	return (1);
+
+	// int nums[] = {4, 3, 1, 1, 5, 6, 5};
+	// int c = 7;
+
+	// for (int i = 0; i < c; i++)
+	// {
+	// 	if (arr_add(&arr, nums + i))
+	// 		return (2);
+	// }
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
+
+	// // int n = 4;
+	// // if(arr_insert_at(&arr, 1, &n))
+	// // 	return (3);
+
+	// if (arr_sort(&arr, sort_int))
+	// 	return (3);
+
+	// for (int i = 0; i < arr_size(&arr); i++)
+	// {
+	// 	int v = *(int *) arr_get(&arr, i);
+	// 	printf("%d ", v);
+	// }
+	// printf("\n");
+
+	// if (arr_create(&arr, sizeof(int)))
+	// 	return (1);
+	// int n = 1;
+	// if (arr_add(&arr, &n))
+	// 	return (2);
+	// n = 3;
+	// if (arr_add(&arr, &n))
+	// 	return (3);
+
+	// printf("size: %zu\n", arr.size);
+	// printf("max: %zu\n", arr.max_size);
+
+	// n = 2;
+	// if(arr_insert_at(&arr, 1, &n))
+	// 	return (4);
+=======
 // 	t_array sequence;
 
 // 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
@@ -134,9 +273,19 @@
 // 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
 // 	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
 // 	sequence_print(&sequence);
+>>>>>>> master
 
 
+	// for(int i = 0; i < arr_size(&arr); i++)
+	// 	printf("%d\n", *(int *) arr_get(&arr, i));
 
+<<<<<<< HEAD
+	// printf("size: %zu\n", arr.size);
+	// printf("max: %zu\n", arr.max_size);
+
+	// for(int i = 0; i < arr_size(&global()->allocs); i++)
+	// 	printf("%p\n", *(void **) arr_get(&global()->allocs, i));
+=======
 // 	if (arr_create(&arr, sizeof(int)))
 // 	return (1);
 // 	int n = 1;
@@ -148,6 +297,7 @@
 
 // 	printf("size: %zu\n", arr.size);
 // 	printf("max: %zu\n", arr.max_size);
+>>>>>>> master
 
 // 	n = 2;
 // 	if(arr_insert_at(&arr, 1, &n))
@@ -290,6 +440,19 @@
 
 
 
+<<<<<<< HEAD
+	// arr_print_ptr(&global()->allocs);
+	// arr_create(&arr, sizeof(int));
+	// arr_print_ptr(&global()->allocs);
+
+	// var_set("test", "abc");
+	// var_set("abc", "def");
+	// arr_print_ptr(&global()->allocs);
+	// vars_print();
+	// char *v;
+	// var_get("test", &v);
+	// printf("%s\n", v);
+=======
 // 	// arr_print_ptr(&g_global.allocs);
 // 	// arr_create(&arr, sizeof(int));
 // 	// arr_print_ptr(&g_global.allocs);
@@ -301,6 +464,7 @@
 // 	// char *v;
 // 	// var_get("test", &v);
 // 	// printf("%s\n", v);
+>>>>>>> master
 
 // 	// t_array split;
 // 	// ft_split("  a b c def ", ' ', &split);
@@ -341,8 +505,13 @@
 // 	// while (*arr != NULL)
 // 	// 	printf("%d\n", strcmp(*arr++, *envp++));
 
+<<<<<<< HEAD
+	// assoc_print(&global()->env);
+	// printf("===============\n");
+=======
 // 	// assoc_print(&g_global.env);
 // 	// printf("===============\n");
+>>>>>>> master
 
 
 // 	// char **env;

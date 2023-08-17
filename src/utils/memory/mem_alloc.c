@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "globaldef.h"
+#include "global.h"
 #include "array.h"
 
 int	malloc2(size_t count, void **ptr)
@@ -22,7 +22,7 @@ int	malloc2(size_t count, void **ptr)
 
 int	mem_add(void *ptr)
 {
-	return (arr_add(&g_global.allocs, &ptr));
+	return (arr_add(&global()->allocs, &ptr));
 }
 
 int	mem_alloc(size_t count, void **ptr)
@@ -36,7 +36,7 @@ int	mem_alloc(size_t count, void **ptr)
 
 int	mem_free(void *ptr)
 {
-	if (arr_remove(&g_global.allocs, &ptr))
+	if (arr_remove(&global()->allocs, &ptr))
 		return (1);
 	free(ptr);
 	return (0);

@@ -6,23 +6,12 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 14:00:02 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/20 15:00:37 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/06 09:44:06 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str.h"
 #include "memory.h"
-
-static int	str_char_in_set(char *set, char c)
-{
-	while (*set != '\0')
-	{
-		if (*set == c)
-			return (1);
-		set++;
-	}
-	return (0);
-}
 
 int	str_trim_start(char **str, char *set)
 {

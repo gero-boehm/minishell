@@ -3,10 +3,12 @@ CC				= 	cc
 CFLAGS			=
 READLINE_FLAGS	=	-L lib/readline_out/lib -l readline -l history
 
+SRC_DIR			=	src
+OBJ_DIR			=	obj
 INCLUDE 		= 	-I include -I include/defs -I lib/libft
 READLINE_INCLUDE=	-I ./lib/readline_out/include/
 
-# MAN_FILES		=	src/main.c src/minishell.c src/prompt.c src/signals.c src/exec.c \
+# SRCS			=	src/main.c src/minishell.c src/prompt.c src/signals.c src/exec.c \
 					\
 				 	src/builtins/builtin_cd.c src/builtins/builtin_echo.c src/builtins/builtin_env.c src/builtins/builtin_exit.c \
 					src/builtins/builtin_export.c src/builtins/builtin_pwd.c src/builtins/builtin_unset.c \
@@ -27,11 +29,9 @@ READLINE_INCLUDE=	-I ./lib/readline_out/include/
 					src/utils/str/str_compare.c src/utils/str/str_range2.c src/utils/str/str_range_action.c src/utils/str/str_substring.c \
 					src/utils/str/str_from_array.c src/utils/str/str_arr_from_array.c src/utils/str/str_copy.c src/utils/str/str_duplicate.c \
 					src/utils/str/str_length.c src/utils/str/str_cut.c src/utils/str/str_join.c src/utils/str/str_split.c
-MAN_FILES		=	$(shell find src -type f -name '*.c')
-BONUS_FILES		=	src_bonus/bonus.c
+SRCS			=	$(shell find src -type f -name '*.c')
 
-MAN_OBJ			=	$(MAN_FILES:.c=.o)
-BONUS_OBJ		=	$(BONUS_FILES:.c=.o)
+OBJS			=	$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
 LIBFT			=	lib/libft/libft.a
 READLINE		=	lib/readline_out/lib/libreadline.a
@@ -57,12 +57,12 @@ CFLAGS += $(INCLUDE) $(READLINE_INCLUDE)
 
 all: $(NAME)
 
-$(NAME): $(READLINE) $(LIBFT) $(MAN_OBJ)
+$(NAME): $(READLINE) $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $@ $^
 	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
 
-
-%.o: %.c $(HEADERS) Makefile
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) Makefile
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
@@ -86,8 +86,7 @@ $(READLINE):
 #####################################################################################
 
 clean:
-	$(RM) $(MAN_OBJ)
-#	$(RM) $(BONUS_OBJ)
+	$(RM) -f $(OBJ_DIR)
 	make clean --silent -C lib/libft
 	@echo "$(BLUE)*** Object files cleaned! ***$(WHITE)"
 
