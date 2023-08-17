@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include "builtins.h"
-#include "global.h"
+#include "error.h"
 #include "cmddef.h"
 
 // str doesn't needs '/' before the dir name for relative but for absolute

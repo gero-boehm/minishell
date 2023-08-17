@@ -45,12 +45,6 @@ void	cleanup(void)
 	}
 }
 
-void	error(int code)
-{
-	cleanup();
-	exit(code);
-}
-
 void	success(void)
 {
 	cleanup();

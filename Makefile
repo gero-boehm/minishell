@@ -36,7 +36,7 @@ OBJS			=	$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 LIBFT			=	lib/libft/libft.a
 READLINE		=	lib/readline_out/lib/libreadline.a
 
-HEADERS			=	$(wildcard include/*.h) $(wildcard include/def/*.h) lib/libft/libft.h
+HEADERS			=	$(wildcard include/*.h) $(wildcard include/defs/*.h) lib/libft/libft.h
 
 RM				=	rm -rf
 GREEN			= 	\033[0;32m
@@ -86,7 +86,7 @@ $(READLINE):
 #####################################################################################
 
 clean:
-	$(RM) -f $(OBJ_DIR)
+	$(RM) -rf $(OBJ_DIR)
 	make clean --silent -C lib/libft
 	@echo "$(BLUE)*** Object files cleaned! ***$(WHITE)"
 

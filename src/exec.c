@@ -4,12 +4,12 @@
 #include <sys/wait.h>
 #include "minishell.h"
 #include "env.h"
-#include "global.h"
 #include "builtins.h"
 #include "array.h"
 #include "cmddef.h"
 #include "str.h"
 #include "memory.h"
+#include "error.h"
 
 static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 {
@@ -21,7 +21,7 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 	{
 		path = *(char **) arr_get(paths, i);
 		if (str_join(cmd_path, "", path, "/", cmd, NULL))
-			error(134);
+			error_fatal();
 		if (!access(*cmd_path, X_OK))
 			return (0);
 		mem_free(*cmd_path);
@@ -59,16 +59,13 @@ int	exec_cmd(t_command *cmd)
 	{
 		//TODO: find proper exit code
 		if (env_get_all(&env))
-			error(134);
+			error_fatal();
 		if (env_get("PATH", &paths_str))
-			error(134);
+			error_fatal();
 		if (str_split(paths_str, ':', &paths))
-			error(134);
+			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-		{
-			printf("bash: %s: command not found\n", cmd->data.external.args[0]);
-			error(127);
-		}
+			error_command_not_found(cmd->data.external.args[0]);
 		execve(cmd_path, cmd->data.external.args, env);
 	}
 	else

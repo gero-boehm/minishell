@@ -6,7 +6,6 @@
 t_global	*global(void);
 int			global_init(void);
 void		cleanup(void);
-void		error(int code);
 void		success(void);
 
 #endif

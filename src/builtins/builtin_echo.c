@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "builtins.h"
 #include "cmddef.h"
-#include "global.h"
+#include "error.h"
 
 void	builtin_echo(t_builtin_echo	*echo)
 {

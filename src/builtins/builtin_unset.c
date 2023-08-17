@@ -1,5 +1,5 @@
 #include "builtins.h"
-#include "global.h"
+#include "error.h"
 #include "env.h"
 #include "cmddef.h"
 

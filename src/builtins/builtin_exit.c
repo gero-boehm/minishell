@@ -2,7 +2,7 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include "builtins.h"
-#include "global.h"
+#include "error.h"
 
 void	builtin_exit(void)
 {

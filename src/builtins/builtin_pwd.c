@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "builtins.h"
-#include "global.h"
+#include "error.h"
 
 void	builtin_pwd(void)
 {

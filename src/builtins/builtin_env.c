@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "builtins.h"
-#include "global.h"
+#include "error.h"
 #include "env.h"
 #include "memory.h"
 
