@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 16:02:18 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/17 07:59:08 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 13:33:54 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@
 
 void	exec_sequence(t_array *sequence)
 {
-	int		i;
-	int		last_return_chain;
-	int		amount_chains;
-	t_chain	*chain;
+	unsigned long	i;
+	int				last_return_chain;
+	t_chain			*chain;
 
 	i = 0;
-	last_return_chain = 0;
-	amount_chains = arr_size(sequence);
-	while (i < amount_chains)
+	while (i < arr_size(sequence))
 	{
 		chain = (t_chain *)arr_get(sequence, i);
 		last_return_chain = exec_chain(chain);

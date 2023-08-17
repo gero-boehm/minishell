@@ -6,7 +6,7 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 18:05:20 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/17 12:57:50 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 13:34:43 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,23 @@
 #include "array.h"
 #include "cmddef.h"
 #include "str.h"
+#include "memory.h"
 
-// void	print_environ(void)
-// {
-// 	while (*environ != NULL)
-// 		printf("%s\n", *environ++);
-// }
-
-static int	get_cmd_path(t_array *paths, char *cmd, char *cmd_path)
+static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 {
-	while (paths->elements != NULL)
+	unsigned long	i;
+	char			*path;
+
+	i = 0;
+	while (i < arr_size(paths))
 	{
-		if (str_join(&cmd_path, "", *paths, "/", cmd, NULL))
-		// if (str_join(&cmd_path, "/", paths, cmd, NULL))
-			return (1);
-		printf(cmd_path);
-		if (!access(cmd_path, X_OK))
+		path = *(char **) arr_get(paths, i);
+		if (str_join(cmd_path, "", path, "/", cmd, NULL))
+			error(134);
+		if (!access(*cmd_path, X_OK))
 			return (0);
-		paths++;
+		mem_free(*cmd_path);
+		i++;
 	}
 	return (1);
 }
@@ -77,15 +76,19 @@ int	exec_cmd(t_command *cmd)
 			error(134);
 		if (str_split(paths_str, ':', &paths))
 			error(134);
-		if (!get_cmd_path(&paths, cmd->data.external.args[0], cmd_path))
-			execve(cmd_path, cmd->data.external.args, env);
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+		{
+			printf("bash: %s: command not found\n", cmd->data.external.args[0]);
+			error(127);
+		}
+		execve(cmd_path, cmd->data.external.args, env);
 	}
 	else
 		exec_builtin(cmd);
 	return (0);
 }
 
-int	run_child(t_command *cmd, int port)
+void	run_child(t_command *cmd, int port)
 {
 	// close(ports[0]);
 	// dup2("fd", STDIN);
@@ -97,7 +100,7 @@ int	run_child(t_command *cmd, int port)
 	exec_cmd(cmd);
 }
 
-int	run_parent(t_command *command, int port)
+void	run_parent(t_command *command, int port)
 {
 	// close(ports[1]);
 	// close("fd");
@@ -113,6 +116,7 @@ int	exec_chain(t_chain *chain)
 	// int				amount_cmds;
 	// t_raw_command	*raw;
 	t_command		*cmd;
+	int				exit_code;
 
 	// amount_cmds = arr_size(&chain->commands);
 	i = 0;
@@ -134,23 +138,8 @@ int	exec_chain(t_chain *chain)
 		i++;
 	}
 	//----------Parent process--------//
-	// wait(NULL);
-	// int status;
-	// waitpid(pid[0], &status, NULL);
+	wait(&exit_code);
 	//--------------------------------//
 	// close("fd");
-	error(0);
-	return (0);
+	return (exit_code);
 }
-
-/*--------------sequence tools--------------------------*/
-	// int amount_chains = arr_size(sequence);
-	// t_chain	*chain;
-	// chain = (t_chain *) arr_get(sequence, 0);
-	// t_command	*command;
-	// command = (t_command *) arr_get(&chain->commands, 0);
-	// if (command->type == COMMAND_EXTERNAL)
-	// 	command->data.external.cmd;
-	// if (command->type == COMMAND_CD)
-	// 	command->data.builtin_cd.path;
-/*------------------------------------------------------*/
