@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sequence_factory.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 18:04:06 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/16 10:22:02 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 14:11:57 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,8 +256,6 @@ int	multiple_chains_single_external_and_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "echo echo echo";
 	command00.data.builtin_echo.newline = 1;
-	if (arr_create(&command00.data.builtin_echo.vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -301,8 +299,6 @@ int	multiple_chains_multiple_external_and_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "this is a string with spaces";
 	command00.data.builtin_echo.newline = 1;
-	if (arr_create(&command00.data.builtin_echo.vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -417,8 +413,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "just a regular string";
 	command00.data.builtin_echo.newline = 1;
-	if (arr_create(&command00.data.builtin_echo.vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -434,8 +428,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 	t_command command10;
 	command10.type = COMMAND_BUILTIN_CD;
 	command10.data.builtin_cd.path = "~/Documents";
-	if (arr_create(&command10.data.builtin_cd.vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain1.commands, &command10))
 		return (1);
 
@@ -464,12 +456,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 
 	t_command command30;
 	command30.type = COMMAND_BUILTIN_EXPORT;
-	command30.data.builtin_export.key = "VAR";
-	command30.data.builtin_export.value = "42";
-	if (arr_create(&command30.data.builtin_export.key_vars, sizeof(t_var)))
-		return (1);
-	if (arr_create(&command30.data.builtin_export.value_vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain3.commands, &command30))
 		return (1);
 
@@ -484,9 +470,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 
 	t_command command40;
 	command40.type = COMMAND_BUILTIN_UNSET;
-	command40.data.builtin_unset.key = "VAR";
-	if (arr_create(&command40.data.builtin_unset.key_vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain4.commands, &command40))
 		return (1);
 
@@ -516,8 +499,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 	command60.type = COMMAND_BUILTIN_EXIT;
 	command60.data.builtin_exit.arg = NULL;
 	command60.data.builtin_exit.too_many_args = 1;
-	if (arr_create(&command60.data.builtin_exit.vars, sizeof(t_var)))
-		return (1);
 	if (arr_add(&chain6.commands, &command60))
 		return (1);
 

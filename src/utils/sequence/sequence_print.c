@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sequence_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 19:21:05 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/16 10:32:08 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 14:12:21 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ void command_builtin_echo_print(t_builtin_echo *data_echo)
 	printf(RESET WHITE "    echo " GRAY "{\n");
 	printf("      str:     %s'%s'%s\n", ORANGE, data_echo->str, GRAY);
 	printf("      newline: %s%s%s\n", data_echo->newline ? GREEN : RED, data_echo->newline ? "true" : "false", GRAY);
-	print_vars(&data_echo->vars, "vars", 0, "    ");
 	printf("    }\n");
 }
 
@@ -54,7 +53,6 @@ void command_builtin_cd_print(t_builtin_cd *data_cd)
 {
 	printf(RESET WHITE "    cd " GRAY "{\n");
 	printf("      path: %s'%s'%s\n", ORANGE, data_cd->path, GRAY);
-	print_vars(&data_cd->vars, "vars", 0, " ");
 	printf("    }\n");
 }
 
@@ -90,7 +88,6 @@ void command_builtin_exit_print(t_builtin_exit *data_exit)
 	printf(RESET WHITE "    exit " GRAY "{\n");
 	printf("      arg:           %s'%s'%s\n", ORANGE, data_exit->arg, GRAY);
 	printf("      too_many_args: %s%s%s\n", data_exit->too_many_args ? GREEN : RED, data_exit->too_many_args ? "true" : "false", GRAY);
-	print_vars(&data_exit->vars, "vars", 0, "          ");
 	printf("    }\n");
 }
 
