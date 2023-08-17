@@ -6,21 +6,13 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 17:22:10 by gbohm             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/08 12:17:07 by gbohm            ###   ########.fr       */
-=======
-/*   Updated: 2023/08/17 14:13:48 by gbohm            ###   ########.fr       */
->>>>>>> master
+/*   Updated: 2023/08/17 14:36:37 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
-<<<<<<< HEAD
-#include "global.h"
-=======
 #include "globaldef.h"
->>>>>>> master
 #include "array.h"
 #include "env.h"
 #include "cmddef.h"

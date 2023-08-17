@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmddef.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/14 22:31:31 by gbohm            ###   ########.fr       */
-=======
-/*   Updated: 2023/08/15 13:43:56 by cmeng            ###   ########.fr       */
->>>>>>> master
+/*   Updated: 2023/08/17 14:33:29 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +107,11 @@ typedef struct s_command {
 	t_command_data	data;
 }	t_command;
 
-<<<<<<< HEAD
 typedef struct s_file {
 	char		*path;
 	t_file_type	type;
 }	t_file;
 
-=======
->>>>>>> master
 typedef struct s_raw_command {
 	t_array		args;
 	t_array		files;

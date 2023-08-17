@@ -3,30 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 14:31:57 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/16 10:25:24 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/17 14:39:23 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include "builtins.h"
 #include "global.h"
 #include "env.h"
 #include "cmddef.h"
 #include "str.h"
-#include <stdio.h>
-
-int	str_char_in_set(char *set, char c)
-{
-	while (*set != '\0')
-	{
-		if (*set == c)
-			return (1);
-		set++;
-	}
-	return (0);
-}
 
 int	contains_invalid_sign(char *key)
 {
