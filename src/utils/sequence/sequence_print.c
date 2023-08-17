@@ -18,8 +18,10 @@
 #define GREEN			"\033[32m"
 #define YELLOW			"\033[33m"
 #define CYAN			"\033[38;5;216m"
+#define ORANGE			"\033[38;5;216m"
 #define WHITE			"\033[37m"
 #define PURPLE			"\033[38;2;81;97;205m"
+#define TURQUOISE		"\033[38;2;71;176;157m"
 #define GRAY			"\033[38;5;245m"
 #define RESET			"\033[0m"
 
@@ -32,65 +34,27 @@ void	print_str_arr(char **arr)
 	{
 		if (!first)
 			printf(", ");
-		printf("%s'%s'%s", CYAN, *arr, GRAY);
+		printf("%s'%s'%s", ORANGE, *arr, GRAY);
 		first = 0;
 		arr++;
 	}
 	printf("]\n");
 }
 
-// void	print_heredoc_var(t_heredoc_var *var)
-// {
-// 	printf(RESET WHITE"          var " GRAY "{\n");
-// 	printf("            key:   %s'%s'%s\n", CYAN, var->key, GRAY);
-// 	printf("            range: %s%d..%d%s\n", PURPLE, var->range.start, var->range.start + var->range.length, GRAY);
-// 	printf("          }\n");
-// }
-
-// void	print_heredoc_vars(t_array *vars)
-// {
-// 	unsigned long	i;
-// 	t_heredoc_var	*var;
-
-// 	i = 0;
-// 	printf(RESET WHITE "        vars:         " GRAY "[\n");
-// 	while (i < arr_size(vars))
-// 	{
-// 		var = (t_heredoc_var *) arr_get(vars, i);
-// 		print_heredoc_var(var);
-// 		i++;
-// 	}
-// 	printf("        ]\n");
-// }
-
-// void	heredoc_print(t_heredoc *heredoc)
-// {
-// 	printf(RESET WHITE "      heredoc: " GRAY "{\n");
-// 	printf("        available:    %s%s%s\n", heredoc->available ? GREEN : RED, heredoc->available ? "true" : "false", GRAY);
-// 	if (heredoc->available)
-// 	{
-// 		printf("        expand:       %s%s%s\n", heredoc->expand ? GREEN : RED, heredoc->expand ? "true" : "false", GRAY);
-// 		printf("        str:          %s'%s'%s\n", CYAN, heredoc->str, GRAY);
-// 		if (heredoc->expand)
-// 		{
-// 			print_heredoc_vars(&heredoc->vars);
-// 		}
-// 	}
-// 	printf("      }\n");
-// }
-
 void command_builtin_echo_print(t_builtin_echo *data_echo)
 {
 	printf(RESET WHITE "    echo " GRAY "{\n");
-	printf("      str:     %s'%s'%s\n", CYAN, data_echo->str, GRAY);
+	printf("      str:     %s'%s'%s\n", ORANGE, data_echo->str, GRAY);
 	printf("      newline: %s%s%s\n", data_echo->newline ? GREEN : RED, data_echo->newline ? "true" : "false", GRAY);
+	print_vars(&data_echo->vars, "vars", 0, "    ");
 	printf("    }\n");
 }
 
 void command_builtin_cd_print(t_builtin_cd *data_cd)
 {
 	printf(RESET WHITE "    cd " GRAY "{\n");
-	printf("      path: %s'%s'%s\n", CYAN, data_cd->path, GRAY);
+	printf("      path: %s'%s'%s\n", ORANGE, data_cd->path, GRAY);
+	print_vars(&data_cd->vars, "vars", 0, " ");
 	printf("    }\n");
 }
 
@@ -121,9 +85,12 @@ void command_builtin_env_print(void)
 	printf("    }\n");
 }
 
-void command_builtin_exit_print(void)
+void command_builtin_exit_print(t_builtin_exit *data_exit)
 {
 	printf(RESET WHITE "    exit " GRAY "{\n");
+	printf("      arg:           %s'%s'%s\n", ORANGE, data_exit->arg, GRAY);
+	printf("      too_many_args: %s%s%s\n", data_exit->too_many_args ? GREEN : RED, data_exit->too_many_args ? "true" : "false", GRAY);
+	print_vars(&data_exit->vars, "vars", 0, "          ");
 	printf("    }\n");
 }
 
@@ -154,7 +121,7 @@ void	command_print(t_command *command)
 	if(command->type == COMMAND_BUILTIN_ENV)
 		command_builtin_env_print();
 	if(command->type == COMMAND_BUILTIN_EXIT)
-		command_builtin_exit_print();
+		command_builtin_exit_print(&command->data.builtin_exit);
 	if(command->type == COMMAND_EXTERNAL)
 		command_external_print(&command->data.external);
 }
@@ -162,11 +129,10 @@ void	command_print(t_command *command)
 char	*chain_op_str(t_chain *chain)
 {
 	if (chain->op == OP_AND)
-		return ("OP_AND");
+		return ("&&");
 	if (chain->op == OP_OR)
-		return ("OP_OR");
-	if (chain->op == OP_END)
-		return ("OP_END");
+		return ("||");
+	return NULL;
 }
 
 static void	chain_print(t_chain *chain)
@@ -176,7 +142,7 @@ static void	chain_print(t_chain *chain)
 
 	i = 0;
 	printf(RESET WHITE "  chain " GRAY "[\n");
-	while(i < arr_size(&chain->commands))
+	while (i < arr_size(&chain->commands))
 	{
 		command = (t_command *) arr_get(&chain->commands, i);
 		command_print(command);

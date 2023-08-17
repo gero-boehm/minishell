@@ -61,10 +61,12 @@ typedef struct s_heredoc {
 typedef struct s_builtin_echo {
 	char	*str;
 	int		newline;
+	t_array	vars;
 }	t_builtin_echo;
 
 typedef struct s_builtin_cd {
 	char	*path;
+	t_array	vars;
 }	t_builtin_cd;
 
 typedef struct s_builtin_export {
@@ -102,11 +104,11 @@ typedef struct s_command {
 }	t_command;
 
 typedef struct s_raw_command {
-	char		**args;
-	int			fd_in;
-	int			fd_out;
+	t_array		args;
+	t_array		files;
 	int			heredoc_id;
-	t_array		vars;
+	t_array		args_vars;
+	t_array		files_vars;
 }	t_raw_command;
 
 typedef struct s_chain {

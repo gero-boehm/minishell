@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   globaldef.h                                        :+:      :+:    :+:   */
+/*   tmp.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/07 16:33:08 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/05 18:33:36 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/26 12:55:17 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/26 12:59:29 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBALDEF_H
-# define GLOBALDEF_H
+#ifndef TMP_H
+# define TMP_H
 
-# include "arraydef.h"
-# include "assocdef.h"
-
-typedef struct s_global {
-	t_array	fds;
-	t_assoc	env;
-	t_array	allocs;
-	t_array	heredocs;
-}	t_global;
-
-t_global g_global;
+int		tmp_create(int *fd);
+int		tmp_write(int fd, char *str);
+void	tmp_close(int fd);
 
 #endif

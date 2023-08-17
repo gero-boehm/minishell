@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 13:32:49 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/17 15:15:42 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/04 14:16:55 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 int		arr_create(t_array *arr, unsigned int bytes);
 int		arr_add(t_array *arr, void *element);
+int		arr_insert_at(t_array *arr, unsigned int index, void *element);
 void	*arr_get(t_array *arr, unsigned int index);
 void	arr_set(t_array *arr, unsigned int index, void *element);
 int		arr_index(t_array *arr, void *element, unsigned int *index);

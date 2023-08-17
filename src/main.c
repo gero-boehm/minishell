@@ -25,6 +25,8 @@
 #include "str.h"
 #include "wildcard.h"
 #include "sequence.h"
+#include "tmp.h"
+#include "vars.h"
 
 extern char	**environ;
 
@@ -122,7 +124,6 @@ void	arr_print(t_array *arr)
 // 	(void) argv;
 // 	global_init();
 
-
 // 	t_array sequence;
 
 // 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
@@ -133,6 +134,122 @@ void	arr_print(t_array *arr)
 // 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
 // 	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
 // 	sequence_print(&sequence);
+
+if (arr_create(&arr, sizeof(int)))
+  return (1);
+int n = 1;
+if (arr_add(&arr, &n))
+  return (2);
+n = 3;
+if (arr_add(&arr, &n))
+  return (3);
+
+printf("size: %zu\n", arr.size);
+printf("max: %zu\n", arr.max_size);
+
+n = 2;
+if(arr_insert_at(&arr, 1, &n))
+  return (4);
+
+
+for(int i = 0; i < arr_size(&arr); i++)
+  printf("%d\n", *(int *) arr_get(&arr, i));
+
+printf("size: %zu\n", arr.size);
+printf("max: %zu\n", arr.max_size);
+
+// t_array vars0;
+
+// arr_create(&vars0, sizeof(t_var));
+
+// t_var var00;
+// var00.key = "USER";
+// var00.index = -1;
+// var00.range.start = 11;
+// var00.range.length = 5;
+
+// t_var var01;
+// var01.key = "HOME";
+// var01.index = -1;
+// var01.range.start = 32;
+// var01.range.length = 5;
+
+// arr_add(&vars0, &var00);
+// arr_add(&vars0, &var01);
+
+// char *str = strdup("my name is $USER and my home is $HOME");
+// printf("%s\n", str);
+// vars_expand_str(&vars0, &str);
+// printf("%s\n", str);
+
+
+
+// t_array vars1;
+
+// arr_create(&vars1, sizeof(t_var));
+
+// t_var var10;
+// var10.key = "PWD";
+// var10.index = 0;
+// var10.range.start = 10;
+// var10.range.length = 4;
+
+// t_var var11;
+// var11.key = "SHELL";
+// var11.index = 1;
+// var11.range.start = 15;
+// var11.range.length = 6;
+
+// t_var var12;
+// var12.key = "TERM";
+// var12.index = 1;
+// var12.range.start = 25;
+// var12.range.length = 5;
+
+// arr_add(&vars1, &var10);
+// arr_add(&vars1, &var11);
+// arr_add(&vars1, &var12);
+
+// // char **str_arr = {"i am here $PWD", "and i am using $SHELL in $TERM"};
+// char **str_arr;
+// mem_alloc_str_arr(2, &str_arr);
+// str_arr[0] = strdup("i am here $PWD");
+// str_arr[1] = strdup("and i am using $SHELL in $TERM");
+
+// char **cursor = str_arr;
+// printf("\n");
+// while (*cursor != NULL)
+// 	printf("%s\n", *cursor++);
+
+// vars_expand_str_arr(&vars1, str_arr);
+
+// cursor = str_arr;
+// while (*cursor != NULL)
+// 	printf("%s\n", *cursor++);
+
+
+
+
+// char *str;
+// str_random(16, &str);
+// printf("%s\n", str);
+
+// int	fd;
+// tmp_create(&fd);
+// tmp_write(fd, "sadjn sjd sad jk");
+// tmp_close(fd);
+
+
+// char *str = strdup("hello shitty world");
+
+// printf("%s\n", str);
+// t_range range;
+// str_range_of(str, "shitty", 0, &range);
+
+// str_sub_range(&str, &range, "awesome");
+
+// printf("%s\n", str);
+
 
 // 	// if (arr_create(&arr, sizeof(char *)))
 // 	// 	return (1);

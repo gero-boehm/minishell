@@ -1,35 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mem_alloc_str.c                                    :+:      :+:    :+:   */
+/*   tmp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 14:57:26 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 19:04:13 by gbohm            ###   ########.fr       */
+/*   Created: 2023/07/26 12:45:42 by gbohm             #+#    #+#             */
+/*   Updated: 2023/07/26 13:04:41 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "memory.h"
+#include <fcntl.h>
+#include <unistd.h>
+#include "str.h"
 
-int	mem_alloc_str_arr(size_t count, char ***arr)
+int	tmp_create(int *fd)
 {
-	size_t	bytes;
+	char	*random;
+	char	*path;
 
-	bytes = (count + 1) * sizeof(char *);
-	if (mem_alloc(bytes, (void **) arr))
+	if (str_random(8, &random))
 		return (1);
-	(*arr)[count] = NULL;
+	if (str_join(&path, "", "/tmp/heredoc_", random, NULL))
+		return (2);
+	*fd = open(path, O_CREAT | O_TRUNC | O_APPEND, 0644);
+	if (*fd == -1)
+		return (2);
 	return (0);
 }
 
-int	mem_alloc_str(size_t count, char **str)
+int	tmp_write(int fd, char *str)
 {
-	size_t	bytes;
+	size_t	len;
 
-	bytes = count + 1;
-	if (mem_alloc(bytes, (void **) str))
-		return (1);
-	(*str)[count] = '\0';
-	return (0);
+	len = str_len(str);
+	return (write(fd, str, len) == -1);
+}
+
+void	tmp_close(int fd)
+{
+	close(fd);
 }

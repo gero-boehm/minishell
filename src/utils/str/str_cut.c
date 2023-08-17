@@ -6,7 +6,7 @@
 /*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/17 13:58:38 by gbohm             #+#    #+#             */
-/*   Updated: 2023/07/20 15:00:37 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/03 15:13:19 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 int	str_cut_start(char **str, char *cut)
 {
 	t_range			range;
-	char			*new;
 	unsigned long	len;
 
 	len = str_len(cut);
@@ -24,17 +23,14 @@ int	str_cut_start(char **str, char *cut)
 		return (0);
 	range.start = 0;
 	range.length = len;
-	if (str_cut_range(*str, &range, &new))
+	if (str_cut_range(str, &range))
 		return (1);
-	mem_free(*str);
-	*str = new;
 	return (0);
 }
 
 int	str_cut_end(char **str, char *cut)
 {
 	t_range			range;
-	char			*new;
 	unsigned long	len;
 	unsigned long	start;
 
@@ -44,26 +40,21 @@ int	str_cut_end(char **str, char *cut)
 		return (0);
 	range.start = start;
 	range.length = len;
-	if (str_cut_range(*str, &range, &new))
+	if (str_cut_range(str, &range))
 		return (1);
-	mem_free(*str);
-	*str = new;
 	return (0);
 }
 
 int	str_cut(char **str, char *cut)
 {
-	t_range			range;
-	char			*new;
+	t_range	range;
 
 	while (1)
 	{
 		if (str_range_of(*str, cut, 0, &range))
 			return (0);
-		if (str_cut_range(*str, &range, &new))
+		if (str_cut_range(str, &range))
 			return (1);
-		mem_free(*str);
-		*str = new;
 	}
 	return (0);
 }
