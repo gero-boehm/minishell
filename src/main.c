@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:55:21 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/04 14:23:39 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/07/25 17:17:19 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,324 +57,320 @@ void	arr_print(t_array *arr)
 // 	printf("\n");
 // }
 
-void	test_fancy(void)
-{
-	char *str;
+// void	test_fancy(void)
+// {
+// 	char *str;
 
-	mem_alloc(6, (void **) &str);
+// 	mem_alloc(6, (void **) &str);
 
-	error(1);
-}
+// 	error(1);
+// }
 
-void	test_normal(void)
-{
-	char *str = malloc(6);
+// void	test_normal(void)
+// {
+// 	char *str = malloc(6);
 
-	error(1);
-}
+// 	error(1);
+// }
 
-int	is_dir(char *path)
-{
-	struct stat	stats;
+// int	is_dir(char *path)
+// {
+// 	struct stat	stats;
 
-	stat(path, &stats);
-}
+// 	stat(path, &stats);
+// }
 
-void iterateDirectories(const char *path) {
-	DIR *dir;
-	struct dirent *entry;
+// void iterateDirectories(const char *path) {
+// 	DIR *dir;
+// 	struct dirent *entry;
 
-	// Open the directory
-	dir = opendir(path);
-	if (dir == NULL) {
-		perror("opendir");
-		return;
-	}
+// 	// Open the directory
+// 	dir = opendir(path);
+// 	if (dir == NULL) {
+// 		perror("opendir");
+// 		return;
+// 	}
 
-	// Iterate over entries in the directory
-	while ((entry = readdir(dir)) != NULL) {
-		// Skip current directory (.) and parent directory (..)
-		if (str_eq(entry->d_name, ".") || str_eq(entry->d_name, ".."))
-			continue;
+// 	// Iterate over entries in the directory
+// 	while ((entry = readdir(dir)) != NULL) {
+// 		// Skip current directory (.) and parent directory (..)
+// 		if (str_eq(entry->d_name, ".") || str_eq(entry->d_name, ".."))
+// 			continue;
 
-		// Construct the full path of the entry
-		char fullpath[PATH_MAX];
-		snprintf(fullpath, PATH_MAX, "%s/%s", path, entry->d_name);
+// 		// Construct the full path of the entry
+// 		char fullpath[PATH_MAX];
+// 		snprintf(fullpath, PATH_MAX, "%s/%s", path, entry->d_name);
 
-		// Recurse if the entry is a directory
-		printf("%s\n", fullpath);
+// 		// Recurse if the entry is a directory
+// 		printf("%s\n", fullpath);
 
-		if (entry->d_type == DT_DIR) {
-			iterateDirectories(fullpath);
-		}
+// 		if (entry->d_type == DT_DIR) {
+// 			iterateDirectories(fullpath);
+// 		}
 
-		// Process the entry (you can modify this part to suit your needs)
-	}
+// 		// Process the entry (you can modify this part to suit your needs)
+// 	}
 
-	// Close the directory
-	closedir(dir);
-}
+// 	// Close the directory
+// 	closedir(dir);
+// }
 
 
-int	main(int argc, char **argv)
-{
-	t_array arr;
+// int	main(int argc, char **argv)
+// {
+// 	t_array arr;
 
-	(void) argc;
-	(void) argv;
-	global_init();
+// 	(void) argc;
+// 	(void) argv;
+// 	global_init();
 
+// 	t_array sequence;
 
-	if (arr_create(&arr, sizeof(int)))
-		return (1);
-	int n = 1;
-	if (arr_add(&arr, &n))
-		return (2);
-	n = 3;
-	if (arr_add(&arr, &n))
-		return (3);
+// 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
+// 	sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
+// 	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
+// 	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
+// 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
+// 	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
+// 	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
+// 	sequence_print(&sequence);
 
-	printf("size: %zu\n", arr.size);
-	printf("max: %zu\n", arr.max_size);
+if (arr_create(&arr, sizeof(int)))
+  return (1);
+int n = 1;
+if (arr_add(&arr, &n))
+  return (2);
+n = 3;
+if (arr_add(&arr, &n))
+  return (3);
 
-	n = 2;
-	if(arr_insert_at(&arr, 1, &n))
-		return (4);
+printf("size: %zu\n", arr.size);
+printf("max: %zu\n", arr.max_size);
 
+n = 2;
+if(arr_insert_at(&arr, 1, &n))
+  return (4);
 
-	for(int i = 0; i < arr_size(&arr); i++)
-		printf("%d\n", *(int *) arr_get(&arr, i));
 
-	printf("size: %zu\n", arr.size);
-	printf("max: %zu\n", arr.max_size);
+for(int i = 0; i < arr_size(&arr); i++)
+  printf("%d\n", *(int *) arr_get(&arr, i));
 
-	// t_array vars0;
+printf("size: %zu\n", arr.size);
+printf("max: %zu\n", arr.max_size);
 
-	// arr_create(&vars0, sizeof(t_var));
+// t_array vars0;
 
-	// t_var var00;
-	// var00.key = "USER";
-	// var00.index = -1;
-	// var00.range.start = 11;
-	// var00.range.length = 5;
+// arr_create(&vars0, sizeof(t_var));
 
-	// t_var var01;
-	// var01.key = "HOME";
-	// var01.index = -1;
-	// var01.range.start = 32;
-	// var01.range.length = 5;
+// t_var var00;
+// var00.key = "USER";
+// var00.index = -1;
+// var00.range.start = 11;
+// var00.range.length = 5;
 
-	// arr_add(&vars0, &var00);
-	// arr_add(&vars0, &var01);
+// t_var var01;
+// var01.key = "HOME";
+// var01.index = -1;
+// var01.range.start = 32;
+// var01.range.length = 5;
 
-	// char *str = strdup("my name is $USER and my home is $HOME");
-	// printf("%s\n", str);
-	// vars_expand_str(&vars0, &str);
-	// printf("%s\n", str);
+// arr_add(&vars0, &var00);
+// arr_add(&vars0, &var01);
 
+// char *str = strdup("my name is $USER and my home is $HOME");
+// printf("%s\n", str);
+// vars_expand_str(&vars0, &str);
+// printf("%s\n", str);
 
 
-	// t_array vars1;
 
-	// arr_create(&vars1, sizeof(t_var));
+// t_array vars1;
 
-	// t_var var10;
-	// var10.key = "PWD";
-	// var10.index = 0;
-	// var10.range.start = 10;
-	// var10.range.length = 4;
+// arr_create(&vars1, sizeof(t_var));
 
-	// t_var var11;
-	// var11.key = "SHELL";
-	// var11.index = 1;
-	// var11.range.start = 15;
-	// var11.range.length = 6;
+// t_var var10;
+// var10.key = "PWD";
+// var10.index = 0;
+// var10.range.start = 10;
+// var10.range.length = 4;
 
-	// t_var var12;
-	// var12.key = "TERM";
-	// var12.index = 1;
-	// var12.range.start = 25;
-	// var12.range.length = 5;
+// t_var var11;
+// var11.key = "SHELL";
+// var11.index = 1;
+// var11.range.start = 15;
+// var11.range.length = 6;
 
-	// arr_add(&vars1, &var10);
-	// arr_add(&vars1, &var11);
-	// arr_add(&vars1, &var12);
+// t_var var12;
+// var12.key = "TERM";
+// var12.index = 1;
+// var12.range.start = 25;
+// var12.range.length = 5;
 
-	// // char **str_arr = {"i am here $PWD", "and i am using $SHELL in $TERM"};
-	// char **str_arr;
-	// mem_alloc_str_arr(2, &str_arr);
-	// str_arr[0] = strdup("i am here $PWD");
-	// str_arr[1] = strdup("and i am using $SHELL in $TERM");
+// arr_add(&vars1, &var10);
+// arr_add(&vars1, &var11);
+// arr_add(&vars1, &var12);
 
-	// char **cursor = str_arr;
-	// printf("\n");
-	// while (*cursor != NULL)
-	// 	printf("%s\n", *cursor++);
+// // char **str_arr = {"i am here $PWD", "and i am using $SHELL in $TERM"};
+// char **str_arr;
+// mem_alloc_str_arr(2, &str_arr);
+// str_arr[0] = strdup("i am here $PWD");
+// str_arr[1] = strdup("and i am using $SHELL in $TERM");
 
-	// vars_expand_str_arr(&vars1, str_arr);
+// char **cursor = str_arr;
+// printf("\n");
+// while (*cursor != NULL)
+// 	printf("%s\n", *cursor++);
 
-	// cursor = str_arr;
-	// while (*cursor != NULL)
-	// 	printf("%s\n", *cursor++);
+// vars_expand_str_arr(&vars1, str_arr);
 
+// cursor = str_arr;
+// while (*cursor != NULL)
+// 	printf("%s\n", *cursor++);
 
 
 
-	// char *str;
-	// str_random(16, &str);
-	// printf("%s\n", str);
 
-	// int	fd;
-	// tmp_create(&fd);
-	// tmp_write(fd, "sadjn sjd sad jk");
-	// tmp_close(fd);
+// char *str;
+// str_random(16, &str);
+// printf("%s\n", str);
 
+// int	fd;
+// tmp_create(&fd);
+// tmp_write(fd, "sadjn sjd sad jk");
+// tmp_close(fd);
 
-	// char *str = strdup("hello shitty world");
 
-	// printf("%s\n", str);
-	// t_range range;
-	// str_range_of(str, "shitty", 0, &range);
+// char *str = strdup("hello shitty world");
 
-	// str_sub_range(&str, &range, "awesome");
+// printf("%s\n", str);
+// t_range range;
+// str_range_of(str, "shitty", 0, &range);
 
-	// printf("%s\n", str);
+// str_sub_range(&str, &range, "awesome");
 
+// printf("%s\n", str);
 
 
-	t_array sequence;
+// 	// if (arr_create(&arr, sizeof(char *)))
+// 	// 	return (1);
 
-	// sequence_factory(F_SINGLE_CHAIN_SINGLE_BUILTIN, &sequence);
-	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
-	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
-	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
-	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL_WITH_HEREDOC, &sequence);
-	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
-	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
-	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
-	// sequence_factory(F_MULTIPLE_CHAINS_ALL_BUILTINS, &sequence);
-	// sequence_print(&sequence);
+// 	// char *a = "a";
+// 	// arr_add(&arr, &a);
+// 	// char *b = "b";
+// 	// arr_add(&arr, &b);
+// 	// char *c = "c";
+// 	// arr_add(&arr, &c);
 
-	// if (arr_create(&arr, sizeof(char *)))
-	// 	return (1);
+// 	// arr_print_str(&arr);
 
-	// char *a = "a";
-	// arr_add(&arr, &a);
-	// char *b = "b";
-	// arr_add(&arr, &b);
-	// char *c = "c";
-	// arr_add(&arr, &c);
+// 	// char *str;
+// 	// arr_to_str(&arr, &str);
 
-	// arr_print_str(&arr);
+// 	// str_join(&str, ", ", "a", "b", "c", NULL);
 
-	// char *str;
-	// arr_to_str(&arr, &str);
+// 	// printf("%zu |  %s\n", str_len(str), str);
 
-	// str_join(&str, ", ", "a", "b", "c", NULL);
+// 	// printf("%s\n", argv[1]);
+// 	// get_paths(argv[1], &arr);
+// 	// arr_print_str(&arr);
 
-	// printf("%zu |  %s\n", str_len(str), str);
+// 	// char *str = strdup("__bc_sdbc_b__");
+// 	// str_cut(&str, "_");
+// 	// // printf("%c\n", *str);
+// 	// printf("%s\n", str);
 
-	// printf("%s\n", argv[1]);
-	// get_paths(argv[1], &arr);
-	// arr_print_str(&arr);
+// 	// char *str = "abbbbc";
+// 	// char *pat = "*a*c*";
+// 	// printf("'%s' '%s' | %d\n", str, pat, is_pattern_matching(str, pat));
 
-	// char *str = strdup("__bc_sdbc_b__");
-	// str_cut(&str, "_");
-	// // printf("%c\n", *str);
-	// printf("%s\n", str);
 
-	// char *str = "abbbbc";
-	// char *pat = "*a*c*";
-	// printf("'%s' '%s' | %d\n", str, pat, is_pattern_matching(str, pat));
 
+// 	// iterateDirectories("test");
 
 
-	// iterateDirectories("test");
 
+// 	// arr_print_ptr(&g_global.allocs);
+// 	// arr_create(&arr, sizeof(int));
+// 	// arr_print_ptr(&g_global.allocs);
 
+// 	// var_set("test", "abc");
+// 	// var_set("abc", "def");
+// 	// arr_print_ptr(&g_global.allocs);
+// 	// vars_print();
+// 	// char *v;
+// 	// var_get("test", &v);
+// 	// printf("%s\n", v);
 
-	// arr_print_ptr(&g_global.allocs);
-	// arr_create(&arr, sizeof(int));
-	// arr_print_ptr(&g_global.allocs);
+// 	// t_array split;
+// 	// ft_split("  a b c def ", ' ', &split);
 
-	// var_set("test", "abc");
-	// var_set("abc", "def");
-	// arr_print_ptr(&g_global.allocs);
-	// vars_print();
-	// char *v;
-	// var_get("test", &v);
-	// printf("%s\n", v);
+// 	// arr_print_str(&split);
 
-	// t_array split;
-	// ft_split("  a b c def ", ' ', &split);
+// 	// t_range range;
+// 	// char *str = "abc*def";
+// 	// int found = str_range_of("abc*def", "def", 0, &range);
+// 	// printf("%d | %lu -> %zu\n", found, range.start, range.length);
 
-	// arr_print_str(&split);
+// 	// char *sub;
+// 	// str_extract_range(str, &range, &sub);
+// 	// printf("%s\n", sub);
 
-	// t_range range;
-	// char *str = "abc*def";
-	// int found = str_range_of("abc*def", "def", 0, &range);
-	// printf("%d | %lu -> %zu\n", found, range.start, range.length);
+// 	// char *str = strdup("xxxxxx");
+// 	// str_trim(&str, "x");
+// 	// printf("%s\n", str);
 
-	// char *sub;
-	// str_extract_range(str, &range, &sub);
-	// printf("%s\n", sub);
+// 	// t_assoc	assoc;
+// 	// int	fail = assoc_from_str_arr(&assoc, envp);
 
-	// char *str = strdup("xxxxxx");
-	// str_trim(&str, "x");
-	// printf("%s\n", str);
+// 	// assoc_print(&assoc);
 
-	// t_assoc	assoc;
-	// int	fail = assoc_from_str_arr(&assoc, envp);
+// 	// assoc_init(&assoc);
 
-	// assoc_print(&assoc);
+// 	// assoc_set(&assoc, "key", "value");
+// 	// assoc_set(&assoc, "test", "123");
 
-	// assoc_init(&assoc);
+// 	// printf("===============\n");
 
-	// assoc_set(&assoc, "key", "value");
-	// assoc_set(&assoc, "test", "123");
+// 	// char **arr;
+// 	// assoc_to_str_arr(&assoc, &arr);
 
-	// printf("===============\n");
+// 	// while (*arr != NULL)
+// 	// 	printf("%s\n", *arr++);
 
-	// char **arr;
-	// assoc_to_str_arr(&assoc, &arr);
+// 	// while (*arr != NULL)
+// 	// 	printf("%d\n", strcmp(*arr++, *envp++));
 
-	// while (*arr != NULL)
-	// 	printf("%s\n", *arr++);
+// 	// assoc_print(&g_global.env);
+// 	// printf("===============\n");
 
-	// while (*arr != NULL)
-	// 	printf("%d\n", strcmp(*arr++, *envp++));
 
-	// assoc_print(&g_global.env);
-	// printf("===============\n");
+// 	// char **env;
+// 	// env_get_all(&env);
 
+// 	// while (*env != NULL)
+// 	// 	printf("%s\n", *env++);
 
-	// char **env;
-	// env_get_all(&env);
+// 	// printf("%d\n", strncmp("abcdef", "abc", 3));
 
-	// while (*env != NULL)
-	// 	printf("%s\n", *env++);
+// 	// char *paths;
+// 	// env_get("PATH", &paths);
 
-	// printf("%d\n", strncmp("abcdef", "abc", 3));
+// 	// printf("%s\n", paths);
+// 	// env_set("VAR", "test");
 
-	// char *paths;
-	// env_get("PATH", &paths);
+// 	// env_get("VAR", &paths);
 
-	// printf("%s\n", paths);
-	// env_set("VAR", "test");
+// 	// printf("%s\n", paths);
 
-	// env_get("VAR", &paths);
 
-	// printf("%s\n", paths);
+// 	// while (*envp != NULL)
+// 	// 	printf("%d\n", strcmp(*envp++, *environ++));
+// 	// printf("===============\n");
+// 	// while (*environ != NULL)
+// 		// printf("%s\n", *environ++);
 
 
-	// while (*envp != NULL)
-	// 	printf("%d\n", strcmp(*envp++, *environ++));
-	// printf("===============\n");
-	// while (*environ != NULL)
-		// printf("%s\n", *environ++);
-
-
-	// error(0);
-	cleanup();
-	return (0);
-}
+// 	// error(0);
+// 	cleanup();
+// 	return (0);
+// }

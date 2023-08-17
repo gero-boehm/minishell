@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmddef.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 13:44:17 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 16:19:46 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/15 13:43:56 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,29 +70,21 @@ typedef struct s_builtin_cd {
 }	t_builtin_cd;
 
 typedef struct s_builtin_export {
-	char	*key;
-	char	*value;
-	t_array	key_vars;
-	t_array	value_vars;
+	char	**keys;
+	char	**values;
 }	t_builtin_export;
 
 typedef struct s_builtin_unset {
-	char	*key;
-	t_array	key_vars;
+	char	**keys;
 }	t_builtin_unset;
 
 typedef struct s_builtin_exit {
 	char	*arg;
 	int		too_many_args;
-	t_array	vars;
 }	t_builtin_exit;
 
 typedef struct s_external {
 	char		**args;
-	int			fd_in;
-	int			fd_out;
-	t_heredoc	heredoc;
-	t_array		vars;
 }	t_external;
 
 typedef union u_command_data {
@@ -105,9 +97,19 @@ typedef union u_command_data {
 }	t_command_data;
 
 typedef struct s_command {
+	int				fd_in;
+	int				fd_out;
 	t_command_type	type;
 	t_command_data	data;
 }	t_command;
+
+typedef struct s_raw_command {
+	t_array		args;
+	t_array		files;
+	int			heredoc_id;
+	t_array		args_vars;
+	t_array		files_vars;
+}	t_raw_command;
 
 typedef struct s_chain {
 	t_array		commands;

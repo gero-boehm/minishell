@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sequence_print.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/24 19:21:05 by gbohm             #+#    #+#             */
-/*   Updated: 2023/08/03 17:27:08 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/16 10:32:08 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 #define RED				"\033[31m"
 #define GREEN			"\033[32m"
+#define YELLOW			"\033[33m"
+#define CYAN			"\033[38;5;216m"
 #define ORANGE			"\033[38;5;216m"
 #define WHITE			"\033[37m"
 #define PURPLE			"\033[38;2;81;97;205m"
@@ -37,50 +39,6 @@ void	print_str_arr(char **arr)
 		arr++;
 	}
 	printf("]\n");
-}
-
-void	print_var(t_var *var, char *pre)
-{
-	printf(RESET WHITE"%s        var " GRAY "{\n", pre);
-	printf("%s          key:   %s'%s'%s\n", pre, ORANGE, var->key, GRAY);
-	printf("%s          index: %s%ld%s\n", pre, PURPLE, var->index, GRAY);
-	printf("%s          range: %s%lu..%lu%s\n", pre, PURPLE, var->range.start, var->range.start + var->range.length, GRAY);
-	printf("%s        }\n", pre);
-}
-
-void	print_vars(t_array *vars, char *name, int in_heredoc, char *padding)
-{
-	char			*pre;
-	unsigned long	i;
-	t_var			*var;
-
-
-	i = 0;
-	pre = in_heredoc ? "  " : "";
-	printf(RESET WHITE "%s      %s:%s" GRAY "[\n", pre, name, padding);
-	while (i < arr_size(vars))
-	{
-		var = (t_var *) arr_get(vars, i);
-		print_var(var, pre);
-		i++;
-	}
-	printf("%s      ]\n", pre);
-}
-
-void	heredoc_print(t_heredoc *heredoc)
-{
-	printf(RESET WHITE "      heredoc: " GRAY "{\n");
-	printf("        available: %s%s%s\n", heredoc->available ? GREEN : RED, heredoc->available ? "true" : "false", GRAY);
-	if (heredoc->available)
-	{
-		printf("        expand:    %s%s%s\n", heredoc->expand ? GREEN : RED, heredoc->expand ? "true" : "false", GRAY);
-		printf("        str:       %s'%s'%s\n", ORANGE, heredoc->str, GRAY);
-		if (heredoc->expand)
-		{
-			print_vars(&heredoc->vars, "vars", 1, "      ");
-		}
-	}
-	printf("      }\n");
 }
 
 void command_builtin_echo_print(t_builtin_echo *data_echo)
@@ -109,18 +67,15 @@ void command_builtin_pwd_print(void)
 void command_builtin_export_print(t_builtin_export *data_export)
 {
 	printf(RESET WHITE "    export " GRAY "{\n");
-	printf("      key:        %s'%s'%s\n", ORANGE, data_export->key, GRAY);
-	printf("      value:      %s'%s'%s\n", ORANGE, data_export->value, GRAY);
-	print_vars(&data_export->key_vars, "key_vars", 0, "   ");
-	print_vars(&data_export->value_vars, "value_vars", 0, " ");
+	printf("      key:   %s'%s'%s\n", CYAN, *data_export->keys, GRAY);
+	printf("      value: %s'%s'%s\n", CYAN, *data_export->keys, GRAY);
 	printf("    }\n");
 }
 
 void command_builtin_unset_print(t_builtin_unset *data_unset)
 {
 	printf(RESET WHITE "    unset " GRAY "{\n");
-	printf("      key:      %s'%s'%s\n", ORANGE, data_unset->key, GRAY);
-	print_vars(&data_unset->key_vars, "key_vars", 0, " ");
+	printf("      key: %s'%s'%s\n", CYAN, *data_unset->keys, GRAY);
 	printf("    }\n");
 }
 
@@ -142,12 +97,12 @@ void command_builtin_exit_print(t_builtin_exit *data_exit)
 void command_external_print(t_external *data_external)
 {
 	printf(RESET WHITE "    external " GRAY "{\n");
+	printf("      cmd:     %s'%s'%s\n", CYAN, data_external->args[0], GRAY);
 	printf("      args:    ");
 	print_str_arr(data_external->args);
-	printf("      fd_in:   %s%d%s\n", PURPLE, data_external->fd_in, GRAY);
-	printf("      fd_out:  %s%d%s\n", PURPLE, data_external->fd_out, GRAY);
-	heredoc_print(&data_external->heredoc);
-	print_vars(&data_external->vars, "vars", 0, "    ");
+	// printf("      fd_in:   %s%d%s\n", PURPLE, data_external->fd_in, GRAY);
+	// printf("      fd_out:  %s%d%s\n", PURPLE, data_external->fd_out, GRAY);
+	// heredoc_print(&data_external->heredoc);
 	printf("    }\n");
 }
 
@@ -194,8 +149,7 @@ static void	chain_print(t_chain *chain)
 		i++;
 	}
 	printf("  ]\n");
-	if (chain->op != OP_END)
-		printf("\n  %s%s%s\n\n", TURQUOISE, chain_op_str(chain), GRAY);
+	printf("  %s%s%s\n", YELLOW, chain_op_str(chain), GRAY);
 }
 
 void	sequence_print(t_array *sequence)

@@ -6,11 +6,12 @@
 /*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:33:14 by christianme       #+#    #+#             */
-/*   Updated: 2023/07/20 18:12:46 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/08/16 18:09:14 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <unistd.h>
 #include <readline/readline.h>
 #include <signal.h>
 #include "minishell.h"
