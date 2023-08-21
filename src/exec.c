@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -58,14 +59,14 @@ int	exec_cmd(t_command *cmd)
 	if (cmd->type == COMMAND_EXTERNAL)
 	{
 		//TODO: find proper exit code
-		if (env_get_all(&env))
-			error_fatal();
 		if (env_get("PATH", &paths_str))
 			error_fatal();
 		if (str_split(paths_str, ':', &paths))
 			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
 			error_command_not_found(cmd->data.external.args[0]);
+		if (env_get_all(&env))
+			error_fatal();
 		execve(cmd_path, cmd->data.external.args, env);
 	}
 	else
@@ -73,58 +74,108 @@ int	exec_cmd(t_command *cmd)
 	return (0);
 }
 
-void	run_child(t_command *cmd, int port)
+int	super_duper(int fd_src, int fd_dst)
 {
-	// close(ports[0]);
-	// dup2("fd", STDIN);
-	// dup2(ports[1], STDOUT);
-	// close("fd");
-	// close(ports[1]);
-	// if ("fd" == -1)
-	// 	return ;
+	if (dup2(fd_src, fd_dst) == -1)
+	{
+		close(fd_src);
+		return (1);
+	}
+	close(fd_src);
+	return (0);
+}
+
+int	redirect(t_command *cmd, int input, int ports[2])
+{
+	printf("ri %d ro %d, in %d out %d\n", cmd->fd_in, cmd->fd_out, input, ports[1]);
+	// TODO: close input and ports[1] when stdio deviates
+	if (cmd->fd_in != STDIN_FILENO)
+	{
+		if (super_duper(cmd->fd_in, STDIN_FILENO))
+			return (1);
+	}
+	else
+	{
+		if (super_duper(input, STDIN_FILENO))
+			return (2);
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		if (super_duper(cmd->fd_out, STDOUT_FILENO))
+			return (3);
+	}
+	else
+	{
+		if (super_duper(ports[1], STDOUT_FILENO))
+			return (4);
+	}
+	return (0);
+}
+
+void	run_child(t_command *cmd, int input, int ports[2])
+{
+	close(ports[0]);
+	// if (redirect(cmd, input, ports))
+		// error_fatal();
+	close(cmd->fd_in);
+	close(ports[1]);
+	if (cmd->fd_in == -1)
+		return ;
 	exec_cmd(cmd);
 }
 
-void	run_parent(t_command *command, int port)
+void	run_parent(t_command *cmd, int *fd, int ports[2])
 {
-	// close(ports[1]);
-	// close("fd");
-	// "fd" = ports[0];
+	(void) cmd;
+
+	close(ports[1]);
+	close(*fd);
+	*fd = ports[0];
+	// close(cmd->fd_out);
+	// cmd->fd_out = ports[0];
 }
 
 //TODO mem_alloc amount_cmds
 int	exec_chain(t_chain *chain)
 {
-	pid_t			pid;
-	int				ports[2];
-	int				i;
-	// int				amount_cmds;
-	// t_raw_command	*raw;
-	t_command		*cmd;
 	int				exit_code;
+	int				ports[2];
+	pid_t			pid;
+	t_command		*cmd;
+	unsigned long	i;
+	int				fd;
+	// t_raw_command	*raw;
+	int				stdin;
+	int				stdout;
 
-	// amount_cmds = arr_size(&chain->commands);
 	i = 0;
+	fd = 0;
+	// TODO: protect this crap
+	stdin = dup(STDIN_FILENO);
+	stdout = dup(STDOUT_FILENO);
 	while (i < arr_size(&chain->commands))
 	{
 		cmd = (t_command *) arr_get(&chain->commands, i);
 		// raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// cmd = 2nd_parse(raw);
-		// if (amount_cmds - 1 > i)
-		// 	if (pipe(ports) == -1)
-		// 		perror("pipe failed");
+		if (arr_size(&chain->commands) - 1 > i)
+			if (pipe(ports) == -1)
+				perror("pipe failed");
 		pid = fork();
 		if (pid == -1)
 			perror("fork failed");
 		if (pid == 0)
-			run_child(cmd, ports[1]);
+			run_child(cmd, fd, ports);
 		else
-			run_parent(cmd, ports[0]);
+			run_parent(cmd, &fd, ports);
 		i++;
 	}
 	//----------Parent process--------//
-	wait(&exit_code);
-	//--------------------------------//
+	while (i--)
+		wait(&exit_code);
 	// close("fd");
+	// TODO: protect this crap aswell
+	dup2(stdin, STDIN_FILENO);
+	dup2(stdout, STDOUT_FILENO);
 	return (exit_code);
 }
