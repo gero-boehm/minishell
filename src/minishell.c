@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/16 16:02:18 by cmeng             #+#    #+#             */
-/*   Updated: 2023/08/17 15:01:13 by gbohm            ###   ########.fr       */
+/*   Updated: 2023/08/22 15:52:31 by cmeng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,21 @@ int	main(int argc, char **argv)
 	signals();
 	// *------RETURN PARSER------*
 	// char *cmd_args[] = {"ls", NULL , NULL};
-	sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_SINGLE_EXTERNAL, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_SINGLE_BUILTIN, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL, &sequence);
+	// sequence_factory(F_SINGLE_CHAIN_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
+
+	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL, &sequence);
+	// sequence_factory(F_MULTIPLE_CHAINS_SINGLE_EXTERNAL_AND_BUILTINS, &sequence);
+	// sequence_factory(F_MULTIPLE_CHAINS_MULTIPLE_EXTERNAL_AND_BUILTINS, &sequence);
+	sequence_factory(F_MULTIPLE_CHAINS_ALL_BUILTINS, &sequence);
+
 	// sequence_print(&sequence);
 	// *----------------*
 	while (1)
 	{
+		// prompt(&input);
 		if (prompt(&input))
 			break ;
 		// ft_parse (&input, &sequence) //
