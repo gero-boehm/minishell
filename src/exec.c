@@ -1,8 +1,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <errno.h>
 #include "minishell.h"
 #include "env.h"
 #include "builtins.h"
@@ -76,8 +78,10 @@ int	exec_cmd(t_command *cmd)
 
 int	super_duper(int fd_src, int fd_dst)
 {
+	printf("%d -> %d\n", fd_src, fd_dst);
 	if (dup2(fd_src, fd_dst) == -1)
 	{
+		printf("fail %d %s\n", errno, strerror(errno));
 		close(fd_src);
 		return (1);
 	}
@@ -85,42 +89,44 @@ int	super_duper(int fd_src, int fd_dst)
 	return (0);
 }
 
-int	redirect(t_command *cmd, int input, int ports[2])
+int	redirect(t_command *cmd, int input, int ports[2], int last)
 {
-	printf("ri %d ro %d, in %d out %d\n", cmd->fd_in, cmd->fd_out, input, ports[1]);
+	// printf("ri %d ro %d, in %d out %d | last %d\n", cmd->fd_in, cmd->fd_out, input, ports[1], last);
 	// TODO: close input and ports[1] when stdio deviates
 	if (cmd->fd_in != STDIN_FILENO)
 	{
+		printf("1\n");
 		if (super_duper(cmd->fd_in, STDIN_FILENO))
 			return (1);
 	}
-	else
+	else if (input != STDIN_FILENO)
 	{
+		printf("2\n");
 		if (super_duper(input, STDIN_FILENO))
 			return (2);
 	}
 	if (cmd->fd_out != STDOUT_FILENO)
 	{
+		printf("3\n");
 		if (super_duper(cmd->fd_out, STDOUT_FILENO))
 			return (3);
 	}
-	else
+	else if (!last)
 	{
+		printf("4\n");
 		if (super_duper(ports[1], STDOUT_FILENO))
 			return (4);
 	}
 	return (0);
 }
 
-void	run_child(t_command *cmd, int input, int ports[2])
+void	run_child(t_command *cmd, int input, int ports[2], int last)
 {
-	close(ports[0]);
-	// if (redirect(cmd, input, ports))
-		// error_fatal();
-	close(cmd->fd_in);
-	close(ports[1]);
-	if (cmd->fd_in == -1)
-		return ;
+	printf("=============\n");
+	if (!last)
+		close(ports[0]);
+	if (redirect(cmd, input, ports, last))
+		error_fatal();
 	exec_cmd(cmd);
 }
 
@@ -158,14 +164,22 @@ int	exec_chain(t_chain *chain)
 		cmd = (t_command *) arr_get(&chain->commands, i);
 		// raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// cmd = 2nd_parse(raw);
-		if (arr_size(&chain->commands) - 1 > i)
+		if (i < arr_size(&chain->commands) - 1)
+		{
+			printf("create pipe\n");
 			if (pipe(ports) == -1)
-				perror("pipe failed");
+			{
+				printf("pipe failed\n");
+				error_fatal();
+			}
+			// printf("%d <- %d\n", ports[0], ports[1]);
+		}
+		// abort();
 		pid = fork();
 		if (pid == -1)
 			perror("fork failed");
 		if (pid == 0)
-			run_child(cmd, fd, ports);
+			run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
 		else
 			run_parent(cmd, &fd, ports);
 		i++;
