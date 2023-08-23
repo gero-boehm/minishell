@@ -1,6 +1,9 @@
 #ifndef LEXERDEF_H
 # define LEXERDEF_H
 
+# include "fragmentdef.h"
+# include "strdef.h"
+
 typedef enum e_token_type {
 	TOKEN_COMMAND,
 	TOKEN_ARG,
@@ -35,5 +38,10 @@ typedef struct s_lexer_state
 	int				is_escaped;
 }	t_lexer_state;
 
+typedef struct s_quote_range
+{
+	t_quote	quote;
+	t_range	range;
+}	t_quote_range;
 
 #endif

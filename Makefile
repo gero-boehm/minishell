@@ -33,15 +33,14 @@ SRCS			=	$(shell find src -type f -name '*.c')
 
 OBJS			=	$(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-LIBFT			=	lib/libft/libft.a
 READLINE		=	lib/readline_out/lib/libreadline.a
 
-HEADERS			=	$(wildcard include/*.h) $(wildcard include/defs/*.h) lib/libft/libft.h
+HEADERS			=	$(wildcard include/*.h) $(wildcard include/defs/*.h)
 
 RM				=	rm -rf
 GREEN			= 	\033[0;32m
 BLUE			=	\033[0;94m
-WHITE			=	\033[0m
+RESET			=	\033[0m
 
 ifndef LENIENT
 	CFLAGS += -Wall -Werror -Wextra
@@ -57,17 +56,13 @@ CFLAGS += $(INCLUDE) $(READLINE_INCLUDE)
 
 all: $(NAME)
 
-$(NAME): $(READLINE) $(LIBFT) $(OBJS)
+$(NAME): $(READLINE) $(OBJS)
 	$(CC) $(CFLAGS) $(READLINE_FLAGS) -o $@ $^
-	@echo "$(GREEN)*** Minishell compiled!***$(WHITE)"
+	@echo "$(GREEN)*** Minishell compiled!***$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) Makefile
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
-
-$(LIBFT):
-	@if [ ! -d "./lib/libft" ]; then git clone https://github.com/gero-boehm/libft.git ./lib/libft; fi
-	@make  --silent DEBUG=$(DEBUG) -C lib/libft
 
 #####################################################################################
 READLINE_VERSION=	readline-8.1.2
@@ -81,26 +76,24 @@ $(READLINE):
 	@make install -C lib/$(READLINE_VERSION)
 	@rm -rf lib/$(READLINE_VERSION)
 	@rm -f lib/$(READLINE_VERSION).tar.gz
-	@echo "$(GREEN)*** Readline compiled!***$(WHITE)"
+	@echo "$(GREEN)*** Readline compiled!***$(RESET)"
 
 #####################################################################################
 
 clean:
 	$(RM) -rf $(OBJ_DIR)
-	make clean --silent -C lib/libft
-	@echo "$(BLUE)*** Object files cleaned! ***$(WHITE)"
+	@echo "$(BLUE)*** Object files cleaned! ***$(RESET)"
 
 fclean: clean
 	$(RM) $(NAME)
-	make fclean --silent -C lib/libft
-	@echo "$(BLUE)*** Executable cleaned! ***$(WHITE)"
+	@echo "$(BLUE)*** Executable cleaned! ***$(RESET)"
 
 re: fclean all
-	@echo "$(GREEN)*** Cleaned and rebuilt minishell! ***$(WHITE)"
+	@echo "$(GREEN)*** Cleaned and rebuilt minishell! ***$(RESET)"
 
 delete:
 	$(RM) lib/
-	@echo "$(BLUE)*** Lib deleted! ***$(WHITE)"
+	@echo "$(BLUE)*** Lib deleted! ***$(RESET)"
 
 test: all
 	./$(NAME)

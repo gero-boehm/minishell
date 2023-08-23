@@ -40,11 +40,12 @@ int		str_trim_end(char **str, char *set);
 int		str_trim(char **str, char *set);
 
 int		str_arr_from_arr(t_array *arr, char ***strs);
+int		str_from_arr_range(t_array *arr, t_range *range, char **str);
 int		str_from_arr(t_array *arr, char **str);
 
 int		str_random(size_t length, char **str);
 
 int		str_char_in_set(char *set, char c);
-
+int		str_char_repeat(char c, size_t count, char **str);
 
 #endif
