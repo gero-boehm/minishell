@@ -508,7 +508,7 @@ int	multiple_chains_all_builtins(t_array *sequence)
 
 	t_command command60;
 	command60.type = COMMAND_BUILTIN_CD;
-	command60.data.builtin_cd.path = NULL;
+	command60.data.builtin_cd.path = "-";
 	command60.fd_in = 0;
 	command60.fd_out = 1;
 	if (arr_add(&chain6.commands, &command60))

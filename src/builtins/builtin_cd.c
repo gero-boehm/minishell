@@ -1,45 +1,90 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <errno.h>
+#include <unistd.h>
+#include <sys/stat.h>
 #include "builtins.h"
 #include "error.h"
 #include "cmddef.h"
 #include "str.h"
 #include "env.h"
 
-static void	builtin_cd_go_back(void)
+static void	ret_env_not_set(char *var)
 {
-	char	*pwd;
-	char	*old_pwd;
-
-	if (env_get("OLDPWD", &old_pwd))
-		error_env_not_set("OLDPWD");
-	if (env_get("PWD", &pwd))
-		error_fatal();
-	if (env_set("PWD", old_pwd))
-		error_fatal();
-	if (env_set("OLDPWD", pwd))
-		error_fatal();
-	printf("%s\n", old_pwd);
+	printf("miniheaven: cd: %s not set\n", var);
 }
 
-static void	builtin_cd_go_home(void)
+static void	ret_dir_not_exist(char *dir)
 {
-	char	*home;
+	printf("miniheaven: cd: %s: No such file or directory\n", dir);
+}
+
+static void	ret_permission_denied(char *dir)
+{
+	printf("miniheaven: cd: %s: Permission denied\n", dir);
+}
+
+static void	ret_not_dir(char *path)
+{
+	printf("miniheaven: cd: %s: Not a directory\n", path);
+}
+
+static int	dir_check(char *path)
+{
+	struct stat	file_stat;
+
+	if (stat(path, &file_stat))
+	{
+		if (errno == ENOENT)
+			return (ret_dir_not_exist(path), 1);
+		else if (errno == EACCES)
+			return (ret_permission_denied(path), 1);
+		else
+			error_fatal();
+	}
+	if (S_ISDIR(file_stat.st_mode))
+		return (0);
+	return (ret_not_dir(path), 1);
+}
+
+static int	dir_change(char *to)
+{
 	char	*old_pwd;
 
-	if (env_get("HOME", &home))
-		error_env_not_set("HOME");
-	if (env_get("PWD", &old_pwd))
-		error_fatal();
-	if (env_set("PWD", home))
+	if (dir_check(to))
+		return (1);
+	// TODO: insert path resolve function
+	env_get("PWD", &old_pwd);
+	if (env_set("PWD", to))
 		error_fatal();
 	if (env_set("OLDPWD", old_pwd))
 		error_fatal();
-	success();
+	// TODO: protect this sucker
+	chdir(to);
+	return (0);
 }
 
-void	builtin_cd(t_builtin_cd *cd)
+static int	builtin_cd_go_back(void)
+{
+	char	*old_pwd;
+
+	if (env_get("OLDPWD", &old_pwd))
+		return (ret_env_not_set("OLDPWD"), 1);
+	if (dir_change(old_pwd))
+		return (1);
+	printf("%s\n", old_pwd);
+	return (0);
+}
+
+static int	builtin_cd_go_home(void)
+{
+	char	*home;
+
+	if (env_get("HOME", &home))
+		return (ret_env_not_set("HOME"), 1);
+	return (dir_change(home));
+}
+
+int	builtin_cd(t_builtin_cd *cd)
 {
 	char	*path;
 	char	**env;
@@ -48,9 +93,10 @@ void	builtin_cd(t_builtin_cd *cd)
 	if (env_get_all(&env))
 		error_fatal();
 	if (str_eq(path, "-"))
-		builtin_cd_go_back();
+		return (builtin_cd_go_back());
 	if (path == NULL)
-		builtin_cd_go_home();
+		return (builtin_cd_go_home());
+	return (dir_change(path));
 
 	// TODO: if str is NULL goto home
 	// TODO: rebuild chdir for own environment

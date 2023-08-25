@@ -48,7 +48,7 @@ void	exec_builtin(t_command *command)
 	else if (command->type == COMMAND_BUILTIN_ENV)
 		builtin_env();
 	else if (command->type == COMMAND_BUILTIN_EXIT)
-		builtin_exit();
+		builtin_exit(&command->data.builtin_exit);
 }
 
 int	exec_cmd(t_command *cmd)
@@ -142,7 +142,23 @@ void	run_parent(t_command *cmd, int *fd, int ports[2])
 	// cmd->fd_out = ports[0];
 }
 
-//TODO mem_alloc amount_cmds
+void	run_builtin_in_main(t_command *cmd)
+{
+	if (cmd->fd_in != STDIN_FILENO)
+	{
+		printf("1\n");
+		if (super_duper(cmd->fd_in, STDIN_FILENO))
+			error_fatal();
+	}
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		printf("3\n");
+		if (super_duper(cmd->fd_out, STDOUT_FILENO))
+			error_fatal();
+	}
+	exec_builtin(cmd);
+}
+
 int	exec_chain(t_chain *chain)
 {
 	int				exit_code;

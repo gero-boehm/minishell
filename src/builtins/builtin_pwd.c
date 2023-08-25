@@ -3,16 +3,14 @@
 #include <errno.h>
 #include "builtins.h"
 #include "error.h"
+#include "env.h"
 
-void	builtin_pwd(void)
+int	builtin_pwd(void)
 {
 	char	*pwd;
 
-	//TODO check getcwd()!
-	pwd = NULL;
-	pwd = getcwd(pwd, 1);
-	if (pwd == NULL)
-		error(errno);
+	if (env_get("PWD", &pwd))
+		return (134);
 	printf("%s\n", pwd);
-	error(0);
+	return (0);
 }
