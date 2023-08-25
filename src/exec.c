@@ -33,22 +33,25 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 	return (1);
 }
 
-void	exec_builtin(t_command *command)
+int	exec_builtin(t_command *command)
 {
 	if (command->type == COMMAND_BUILTIN_ECHO)
-		builtin_echo(&command->data.builtin_echo);
+		return (builtin_echo(&command->data.builtin_echo));
 	else if (command->type == COMMAND_BUILTIN_CD)
-		builtin_cd(&command->data.builtin_cd);
+		return (builtin_cd(&command->data.builtin_cd));
 	else if (command->type == COMMAND_BUILTIN_PWD)
-		builtin_pwd();
+		return (builtin_pwd());
 	else if (command->type == COMMAND_BUILTIN_EXPORT)
-		builtin_export(&command->data.builtin_export);
+		return (builtin_export(&command->data.builtin_export));
 	else if (command->type == COMMAND_BUILTIN_UNSET)
-		builtin_unset(&command->data.builtin_unset);
+		return (builtin_unset(&command->data.builtin_unset));
 	else if (command->type == COMMAND_BUILTIN_ENV)
-		builtin_env();
+		return (builtin_env());
 	else if (command->type == COMMAND_BUILTIN_EXIT)
-		builtin_exit();
+		return (builtin_exit(&command->data.builtin_exit));
+	// TODO: print proper error message
+	printf("blaaaah i don't wanna command");
+	return (127);
 }
 
 int	exec_cmd(t_command *cmd)
@@ -69,10 +72,12 @@ int	exec_cmd(t_command *cmd)
 			error_command_not_found(cmd->data.external.args[0]);
 		if (env_get_all(&env))
 			error_fatal();
-		execve(cmd_path, cmd->data.external.args, env);
+		if (execve(cmd_path, cmd->data.external.args, env) == -1)
+			error_fatal();
 	}
 	else
-		exec_builtin(cmd);
+		if (!exec_builtin(cmd))
+			error(0);
 	return (0);
 }
 
@@ -141,7 +146,18 @@ void	run_parent(t_command *cmd, int *fd, int ports[2])
 	// cmd->fd_out = ports[0];
 }
 
-//TODO mem_alloc amount_cmds
+int	run_builtin_in_main(t_command *cmd)
+{
+	if (cmd->fd_out != STDOUT_FILENO)
+	{
+		printf("3\n");
+		if (super_duper(cmd->fd_out, STDOUT_FILENO))
+			error_fatal();
+	}
+	// printf("pre exec_builtin\n");
+	return (exec_builtin(cmd));
+}
+
 int	exec_chain(t_chain *chain)
 {
 	int				exit_code;
@@ -175,13 +191,19 @@ int	exec_chain(t_chain *chain)
 			// printf("%d <- %d\n", ports[0], ports[1]);
 		}
 		// abort();
-		pid = fork();
-		if (pid == -1)
-			perror("fork failed");
-		if (pid == 0)
-			run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
+		// TODO: Handle if amount_cmds == 1 and builtin execute builtin in parent
+		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
+			return (run_builtin_in_main(cmd));
 		else
-			run_parent(cmd, &fd, ports);
+		{
+			pid = fork();
+			if (pid == -1)
+				perror("fork failed");
+			if (pid == 0)
+				run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
+			else
+				run_parent(cmd, &fd, ports);
+		}
 		i++;
 	}
 	//----------Parent process--------//

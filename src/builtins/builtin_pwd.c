@@ -1,17 +1,21 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include "builtins.h"
 #include "error.h"
+#include "env.h"
 
-void	builtin_pwd(void)
+int	builtin_pwd(void)
 {
 	char	*pwd;
 
 	pwd = NULL;
-	pwd = getcwd(pwd, 1);
+	pwd = getcwd(pwd, 0);
 	if (pwd == NULL)
-		error(errno);
+	// TODO: implement proper error handling. see "man getcwd"
+		error_fatal();
 	printf("%s\n", pwd);
-	error(0);
+	free(pwd);
+	return (0);
 }

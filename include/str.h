@@ -46,5 +46,6 @@ int		str_random(size_t length, char **str);
 
 int		str_char_in_set(char *set, char c);
 
+int		str_to_long_unsafe(const char *str, long *num);
 
 #endif
