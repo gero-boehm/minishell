@@ -33,22 +33,25 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 	return (1);
 }
 
-void	exec_builtin(t_command *command)
+int	exec_builtin(t_command *command)
 {
 	if (command->type == COMMAND_BUILTIN_ECHO)
-		builtin_echo(&command->data.builtin_echo);
+		return (builtin_echo(&command->data.builtin_echo));
 	else if (command->type == COMMAND_BUILTIN_CD)
-		builtin_cd(&command->data.builtin_cd);
+		return (builtin_cd(&command->data.builtin_cd));
 	else if (command->type == COMMAND_BUILTIN_PWD)
-		builtin_pwd();
+		return (builtin_pwd());
 	else if (command->type == COMMAND_BUILTIN_EXPORT)
-		builtin_export(&command->data.builtin_export);
+		return (builtin_export(&command->data.builtin_export));
 	else if (command->type == COMMAND_BUILTIN_UNSET)
-		builtin_unset(&command->data.builtin_unset);
+		return (builtin_unset(&command->data.builtin_unset));
 	else if (command->type == COMMAND_BUILTIN_ENV)
-		builtin_env();
+		return (builtin_env());
 	else if (command->type == COMMAND_BUILTIN_EXIT)
-		builtin_exit(&command->data.builtin_exit);
+		return (builtin_exit(&command->data.builtin_exit));
+	// TODO: print proper error message
+	printf("blaaaah i don't wanna command");
+	return (127);
 }
 
 int	exec_cmd(t_command *cmd)
@@ -73,7 +76,8 @@ int	exec_cmd(t_command *cmd)
 			error_fatal();
 	}
 	else
-		exec_builtin(cmd);
+		if (!exec_builtin(cmd))
+			error(0);
 	return (0);
 }
 
@@ -142,21 +146,16 @@ void	run_parent(t_command *cmd, int *fd, int ports[2])
 	// cmd->fd_out = ports[0];
 }
 
-void	run_builtin_in_main(t_command *cmd)
+int	run_builtin_in_main(t_command *cmd)
 {
-	if (cmd->fd_in != STDIN_FILENO)
-	{
-		printf("1\n");
-		if (super_duper(cmd->fd_in, STDIN_FILENO))
-			error_fatal();
-	}
 	if (cmd->fd_out != STDOUT_FILENO)
 	{
 		printf("3\n");
 		if (super_duper(cmd->fd_out, STDOUT_FILENO))
 			error_fatal();
 	}
-	exec_builtin(cmd);
+	// printf("pre exec_builtin\n");
+	return (exec_builtin(cmd));
 }
 
 int	exec_chain(t_chain *chain)
@@ -194,7 +193,7 @@ int	exec_chain(t_chain *chain)
 		// abort();
 		// TODO: Handle if amount_cmds == 1 and builtin execute builtin in parent
 		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
-			run_builtin_in_main(cmd);
+			return (run_builtin_in_main(cmd));
 		else
 		{
 			pid = fork();

@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <errno.h>
 #include "builtins.h"
 #include "error.h"
@@ -9,8 +10,12 @@ int	builtin_pwd(void)
 {
 	char	*pwd;
 
-	if (env_get("PWD", &pwd))
-		return (134);
+	pwd = NULL;
+	pwd = getcwd(pwd, 0);
+	if (pwd == NULL)
+	// TODO: implement proper error handling. see "man getcwd"
+		error_fatal();
 	printf("%s\n", pwd);
+	free(pwd);
 	return (0);
 }
