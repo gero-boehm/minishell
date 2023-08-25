@@ -69,7 +69,8 @@ int	exec_cmd(t_command *cmd)
 			error_command_not_found(cmd->data.external.args[0]);
 		if (env_get_all(&env))
 			error_fatal();
-		execve(cmd_path, cmd->data.external.args, env);
+		if (execve(cmd_path, cmd->data.external.args, env) == -1)
+			error_fatal();
 	}
 	else
 		exec_builtin(cmd);
@@ -175,13 +176,19 @@ int	exec_chain(t_chain *chain)
 			// printf("%d <- %d\n", ports[0], ports[1]);
 		}
 		// abort();
-		pid = fork();
-		if (pid == -1)
-			perror("fork failed");
-		if (pid == 0)
-			run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
+		// TODO: Handle if amount_cmds == 1 and builtin execute builtin in parent
+		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
+			run_builtin_in_main(cmd);
 		else
-			run_parent(cmd, &fd, ports);
+		{
+			pid = fork();
+			if (pid == -1)
+				perror("fork failed");
+			if (pid == 0)
+				run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
+			else
+				run_parent(cmd, &fd, ports);
+		}
 		i++;
 	}
 	//----------Parent process--------//

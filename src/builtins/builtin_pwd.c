@@ -8,6 +8,7 @@ void	builtin_pwd(void)
 {
 	char	*pwd;
 
+	//TODO check getcwd()!
 	pwd = NULL;
 	pwd = getcwd(pwd, 1);
 	if (pwd == NULL)
