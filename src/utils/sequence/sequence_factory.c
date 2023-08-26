@@ -548,7 +548,7 @@ int	multiple_chains_all_builtins(t_array *sequence)
 
 	t_command command80;
 	command80.type = COMMAND_BUILTIN_EXIT;
-	command80.data.builtin_exit.arg = "5";
+	command80.data.builtin_exit.arg = "";
 	command80.data.builtin_exit.too_many_args = 1;
 	command80.fd_in = 0;
 	command80.fd_out = 8;

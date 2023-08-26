@@ -2,30 +2,31 @@
 #include <errno.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include "cmddef.h"
+#include "global.h"
 #include "builtins.h"
 #include "error.h"
-#include "cmddef.h"
 #include "str.h"
 #include "env.h"
 
 static void	ret_env_not_set(char *var)
 {
-	printf("miniheaven: cd: %s not set\n", var);
+	printf("%s: cd: %s not set\n", shell_name(), var);
 }
 
 static void	ret_dir_not_exist(char *dir)
 {
-	printf("miniheaven: cd: %s: No such file or directory\n", dir);
+	printf("%s: cd: %s: No such file or directory\n", shell_name(), dir);
 }
 
 static void	ret_permission_denied(char *dir)
 {
-	printf("miniheaven: cd: %s: Permission denied\n", dir);
+	printf("%s: cd: %s: Permission denied\n", shell_name(), dir);
 }
 
 static void	ret_not_dir(char *path)
 {
-	printf("miniheaven: cd: %s: Not a directory\n", path);
+	printf("%s: cd: %s: Not a directory\n", shell_name(), path);
 }
 
 static int	dir_check(char *path)
@@ -97,16 +98,4 @@ int	builtin_cd(t_builtin_cd *cd)
 	if (path == NULL)
 		return (builtin_cd_go_home());
 	return (dir_change(path));
-
-	// TODO: if str is NULL goto home
-	// TODO: rebuild chdir for own environment
-	// if (cd->path == NULL)
-	// 	cd->path = "~";
-	// if (chdir(cd->path) == -1)
-	// 	error(ENOENT);
-	// error(0);
-	// if (str == NULL)
-	// 	str = "~";
-	// if (chdir(str) == -1)
-	// 	error(ENOENT);
 }

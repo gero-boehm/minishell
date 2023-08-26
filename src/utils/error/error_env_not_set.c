@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "globaldef.h"
+#include "global.h"
 #include "error.h"
 
 void	error_env_not_set(char *var)
 {
-	printf("miniheaven: cd: %s not set\n", var);
+	printf("%s: cd: %s not set\n", shell_name(), var);
 	error(1);
 }

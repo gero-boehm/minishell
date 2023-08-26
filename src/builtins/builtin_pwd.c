@@ -13,7 +13,6 @@ int	builtin_pwd(void)
 	pwd = NULL;
 	pwd = getcwd(pwd, 0);
 	if (pwd == NULL)
-	// TODO: implement proper error handling. see "man getcwd"
 		error_fatal();
 	printf("%s\n", pwd);
 	free(pwd);
