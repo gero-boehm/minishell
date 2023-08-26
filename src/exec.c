@@ -49,36 +49,41 @@ int	exec_builtin(t_command *command)
 		return (builtin_env());
 	else if (command->type == COMMAND_BUILTIN_EXIT)
 		return (builtin_exit(&command->data.builtin_exit));
-	// TODO: print proper error message
-	printf("blaaaah i don't wanna command");
+	printf("(⊃｡•́‿•̀｡)⊃");
 	return (127);
 }
 
-int	exec_cmd(t_command *cmd)
+int	cmd_is_external(t_command *cmd)
+{
+	return (cmd->type == COMMAND_EXTERNAL);
+}
+
+void	exec_external(t_command *cmd)
 {
 	char		*paths_str;
 	t_array		paths;
 	char		**env;
 	char		*cmd_path;
 
-	if (cmd->type == COMMAND_EXTERNAL)
-	{
-		//TODO: find proper exit code
-		if (env_get("PATH", &paths_str))
-			error_fatal();
-		if (str_split(paths_str, ':', &paths))
-			error_fatal();
-		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-			error_command_not_found(cmd->data.external.args[0]);
-		if (env_get_all(&env))
-			error_fatal();
-		if (execve(cmd_path, cmd->data.external.args, env) == -1)
-			error_fatal();
-	}
+	if (env_get("PATH", &paths_str))
+		error_no_file_or_dir(cmd->data.external.args[0]);
+	if (str_split(paths_str, ':', &paths))
+		error_fatal();
+	if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+		error_command_not_found(cmd->data.external.args[0]);
+	if (env_get_all(&env))
+		error_fatal();
+	if (execve(cmd_path, cmd->data.external.args, env) == -1)
+	// TESTER: check if total failure is ok
+		error_fatal();
+}
+
+void	exec_cmd(t_command *cmd)
+{
+	if (cmd_is_external(cmd))
+		exec_external(cmd);
 	else
-		if (!exec_builtin(cmd))
-			error(0);
-	return (0);
+		error(exec_builtin(cmd));
 }
 
 int	super_duper(int fd_src, int fd_dst)
@@ -188,10 +193,7 @@ int	exec_chain(t_chain *chain)
 				printf("pipe failed\n");
 				error_fatal();
 			}
-			// printf("%d <- %d\n", ports[0], ports[1]);
 		}
-		// abort();
-		// TODO: Handle if amount_cmds == 1 and builtin execute builtin in parent
 		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
 			return (run_builtin_in_main(cmd));
 		else
@@ -209,7 +211,6 @@ int	exec_chain(t_chain *chain)
 	//----------Parent process--------//
 	while (i--)
 		wait(&exit_code);
-	// close("fd");
 	// TODO: protect this crap aswell
 	dup2(stdin, STDIN_FILENO);
 	dup2(stdout, STDOUT_FILENO);

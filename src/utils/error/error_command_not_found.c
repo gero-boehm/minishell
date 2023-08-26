@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include "globaldef.h"
+#include "global.h"
 #include "error.h"
 
 void	error_command_not_found(char *cmd)
 {
-	printf("happy_hippo: %s: command not found\n", cmd);
+	printf("%s: %s: command not found\n", shell_name(), cmd);
 	error(127);
 }

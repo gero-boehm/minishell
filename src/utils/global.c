@@ -12,6 +12,11 @@ t_global	*global(void)
 	return (&global);
 }
 
+char	*shell_name(void)
+{
+	return ("☁️  miniheaven");
+}
+
 int	global_init(void)
 {
 	if (arr_create(&global()->allocs, sizeof(void *)))
