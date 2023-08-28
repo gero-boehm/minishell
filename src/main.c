@@ -110,7 +110,8 @@ int	main(int argc, char **argv)
 	t_array quote_ranges;
 	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
 	// char *str = "t.";
-	char *str = "echo 'a'\"b\"";
+	// char *str = "echo 'a'\"b\"";
+	char *str = "echo 'a\''b'";
 	if (lexer_get_fragments(str, &fragments))
 		return (1);
 

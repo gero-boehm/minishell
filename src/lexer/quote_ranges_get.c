@@ -29,7 +29,7 @@ static int	lexer_get_next_quote(t_array *fragments, unsigned long start, t_quote
 	return (1);
 }
 
-char	*lexer_get_invalid_token(t_quote quote)
+static char	*lexer_get_invalid_token(t_quote quote)
 {
 	if (quote == QUOTE_SINGLE)
 		return ("'");
