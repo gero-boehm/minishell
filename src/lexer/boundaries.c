@@ -2,7 +2,7 @@
 #include "array.h"
 #include "str.h"
 
-static char *symbols[] = {" ", "\n", "\t", "\r", "\f", "\v", "\"", "&", "'", "(", ")", "<", ">", "\\","|", NULL};
+static char *symbols[] = {" ", "\n", "\t", "\r", "\f", "\v", "\"", "&", "'", "(", ")", "<", ">", "\\", "|", NULL};
 static char *var_boundaries[] = {" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "`", "{", "|", "}", "~", NULL};
 
 static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)

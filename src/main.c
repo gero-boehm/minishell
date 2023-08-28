@@ -108,8 +108,9 @@ int	main(int argc, char **argv)
 
 	t_array fragments;
 	t_array quote_ranges;
-	char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
+	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
 	// char *str = "t.";
+	char *str = "echo 'a'\"b\"";
 	if (lexer_get_fragments(str, &fragments))
 		return (1);
 
@@ -117,9 +118,21 @@ int	main(int argc, char **argv)
 	// printf("%d\n", lexer_quotes_unclosed(&fragments));
 
 
+
 	if (lexer_get_ranges_of_quotes(&fragments, &quote_ranges))
 		return (2);
 
+	printf("before expand\n");
+	for (int i = 0; i < arr_size(&quote_ranges); i++)
+	{
+		t_quote_range *r = (t_quote_range *) arr_get(&quote_ranges, i);
+		printf("%c %lu..%lu\n", r->quote, r->range.start, r->range.start + r->range.length);
+	}
+
+
+	lexer_expand_quote_ranges(&fragments, &quote_ranges);
+
+	printf("after expand\n");
 	for (int i = 0; i < arr_size(&quote_ranges); i++)
 	{
 		t_quote_range *r = (t_quote_range *) arr_get(&quote_ranges, i);

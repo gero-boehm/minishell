@@ -48,4 +48,6 @@ int		str_random(size_t length, char **str);
 int		str_char_in_set(char *set, char c);
 int		str_char_repeat(char c, size_t count, char **str);
 
+int		str_char_is_whitespace(char c);
+
 #endif
