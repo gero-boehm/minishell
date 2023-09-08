@@ -17,6 +17,7 @@
 #include "vars.h"
 #include "lexer.h"
 #include "error.h"
+#include "range.h"
 
 extern char	**environ;
 
@@ -107,38 +108,151 @@ int	main(int argc, char **argv)
 	global_init();
 
 	t_array fragments;
+	t_array indices;
 	t_array quote_ranges;
+	t_array spaces;
+	t_array tokens;
 	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
 	// char *str = "t.";
 	// char *str = "echo 'a'\"b\"";
-	char *str = "echo 'a\''b'";
+	// char *str = "echo 'a\\' 'b'";
+	// char *str = "echo 'a'bc\\'def";
+	// char *str = "echo 'ab\"c\\''d\"e'fgh";
+	// char *str = "echo 00'ab'\"fg\"h";
+	// char *str = "echo a'b c'de\"fg\"h";
+	// char *str = "echo a' 'b c d e f g h";
+	char *str = "echo 'a  a'\"$USER\"bb'$HOME' d";
 	if (lexer_get_fragments(str, &fragments))
 		return (1);
 
 	arr_print_str(&fragments);
 	// printf("%d\n", lexer_quotes_unclosed(&fragments));
 
-
-
-	if (lexer_get_ranges_of_quotes(&fragments, &quote_ranges))
+	if (lexer_quotes_indices(&fragments, &indices))
 		return (2);
 
-	printf("before expand\n");
-	for (int i = 0; i < arr_size(&quote_ranges); i++)
+	for (unsigned long i = 0; i < arr_size(&indices); i++)
 	{
-		t_quote_range *r = (t_quote_range *) arr_get(&quote_ranges, i);
-		printf("%c %lu..%lu\n", r->quote, r->range.start, r->range.start + r->range.length);
+		t_quote_index *qi = (t_quote_index *) arr_get(&indices, i);
+		printf("%c %lu %zu\n", qi->quote == QUOTE_SINGLE ? '\'' : '"', qi->index, qi->count);
 	}
 
+	printf("\nranges\n");
+	if (lexer_quotes_get(&indices, &quote_ranges))
+		return (3);
 
-	lexer_expand_quote_ranges(&fragments, &quote_ranges);
-
-	printf("after expand\n");
-	for (int i = 0; i < arr_size(&quote_ranges); i++)
+	for (unsigned long i = 0; i < arr_size(&quote_ranges); i++)
 	{
-		t_quote_range *r = (t_quote_range *) arr_get(&quote_ranges, i);
-		printf("%c %lu..%lu\n", r->quote, r->range.start, r->range.start + r->range.length);
+		t_range *range = (t_range *) arr_get(&quote_ranges, i);
+		printf("%c %lu..%lu\n", range->meta.quote == QUOTE_SINGLE ? '\'' : '"', range->start, range->start + range->length);
 	}
+
+	t_array array;
+	if (lexer_get_array(&fragments, &quote_ranges, &array))
+		return (4);
+
+	for (unsigned long i = 0; i < arr_size(&fragments); i++)
+	{
+		char *fragment = *(char **) arr_get(&fragments, i);
+		printf("\"%s\", ", fragment);
+	}
+	printf("\n");
+
+	for (unsigned long i = 0; i < arr_size(&fragments); i++)
+	{
+		char *fragment = *(char **) arr_get(&fragments, i);
+		int keep = *(int *) arr_get(&array, i);
+		printf(" %-*d   ", str_len(fragment), keep);
+		// printf("%zu  ", str_len(fragment));
+	}
+	printf("\n");
+
+
+	// if (lexer_spaces_get(&fragments, &spaces))
+	// 	return (4);
+
+	// printf("\nspaces\n");
+	// for (unsigned long i = 0; i < arr_size(&spaces); i++)
+	// {
+	// 	unsigned long *si = *(unsigned long *) arr_get(&spaces, i);
+	// 	printf("  %lu\n", si);
+	// }
+
+	// if (lexer_token_ranges_get(&spaces, &ranges, &tokens))
+	// 	return (4);
+	// if (lexer_vars_extract(&fragments, &tokens))
+	// 	return (5);
+
+	// printf("\ntoken ranges\n");
+	// for (unsigned long i = 0; i < arr_size(&tokens); i++)
+	// {
+	// 	t_range *range = (t_range *) arr_get(&tokens, i);
+
+	// 	printf("%lu..%lu\n", range_start(range), range_end(range));
+	// }
+
+	// printf("\ntokens %zu\n", arr_size(&tokens));
+	// for (unsigned long i = 0; i < arr_size(&tokens); i++)
+	// {
+	// 	t_range *range = (t_range *) arr_get(&tokens, i);
+
+	// 	printf("%lu..%lu > ", range_start(range), range_end(range));
+
+	// 	for (unsigned long j = range_start(range); j < range_end(range); j++)
+	// 	{
+	// 		char *fragment = *(char **) arr_get(&fragments, j);
+
+	// 		if (j > range_start(range))
+	// 			printf(", ");
+	// 		printf("\"%s\"", fragment);
+	// 	}
+	// 	printf("\n");
+
+
+	// 	printf("quotes: ");
+	// 	for (unsigned long j = 0; j < arr_size(&range->meta.token_data.quote_ranges); j++)
+	// 	{
+	// 		t_range *qr = (t_range *) arr_get(&range->meta.token_data.quote_ranges, j);
+	// 		printf(" %c> %lu..%lu", qr->meta.quote == QUOTE_SINGLE ? '\'' : '"', range_start(qr), range_end(qr));
+	// 	}
+	// 	printf("\n");
+
+	// 	printf("vars:   ");
+	// 	for (unsigned long j = 0; j < arr_size(&range->meta.token_data.var_ranges); j++)
+	// 	{
+	// 		t_range *vr = (t_range *) arr_get(&range->meta.token_data.var_ranges, j);
+	// 		printf(" %lu \"%s\"> %lu..%lu", vr->meta.var_data.index, vr->meta.var_data.key, range_start(vr), range_end(vr));
+	// 	}
+	// 	printf("\n");
+
+	// }
+
+	// t_array	test;
+	// if (lexer_fragments_to_tokens(&fragments, &tokens, &test))
+	// 	return (6);
+
+	// for (unsigned long i = 0; i < arr_size(&fragments); i++)
+	// {
+	// 	char *fragment = *(char **) arr_get(&fragments, i);
+	// 	int keep = *(int *) arr_get(&test, i);
+	// 	printf("\"%s\", ", fragment);
+	// }
+	// printf("\n");
+
+	// for (unsigned long i = 0; i < arr_size(&fragments); i++)
+	// {
+	// 	char *fragment = *(char **) arr_get(&fragments, i);
+	// 	int keep = *(int *) arr_get(&test, i);
+	// 	printf(" %-*d   ", str_len(fragment), keep);
+	// 	// printf("%zu  ", str_len(fragment));
+	// }
+	// printf("\n");
+
+
+
+
+
+
 
 	// char *str = "this 'is' \ta \n  test.";
 	// char *set = " \n\t\r\f\v";

@@ -2,8 +2,8 @@
 # define STR_H
 
 # include <stddef.h>
-# include "strdef.h"
 # include "arraydef.h"
+# include "rangedef.h"
 
 size_t	str_len(const char *s);
 int		str_split(char *str, char c, t_array *arr);
@@ -45,9 +45,10 @@ int		str_from_arr(t_array *arr, char **str);
 
 int		str_random(size_t length, char **str);
 
-int		str_char_in_set(char *set, char c);
+int		str_char_in_set(const char *set, char c);
 int		str_char_repeat(char c, size_t count, char **str);
 
 int		str_char_is_whitespace(char c);
+int		str_char_is_quote(char c);
 
 #endif

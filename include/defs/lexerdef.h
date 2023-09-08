@@ -1,8 +1,7 @@
 #ifndef LEXERDEF_H
 # define LEXERDEF_H
 
-# include "fragmentdef.h"
-# include "strdef.h"
+#include <stddef.h>
 
 // typedef enum e_token_type {
 // 	TOKEN_COMMAND,
@@ -38,16 +37,24 @@
 // 	int				is_escaped;
 // }	t_lexer_state;
 
-typedef enum e_quote_range_boundary
-{
-	QUOTE_RANGE_BOUNDARY_START = -1,
-	QUOTE_RANGE_BOUNDARY_END = 1,
-}	t_quote_range_boundary;
+// typedef enum e_quote_range_boundary
+// {
+// 	QUOTE_RANGE_BOUNDARY_START = -1,
+// 	QUOTE_RANGE_BOUNDARY_END = 1,
+// }	t_quote_range_boundary;
 
-typedef struct s_quote_range
+typedef enum e_quote {
+	QUOTE_SINGLE = '\'',
+	QUOTE_DOUBLE = '"',
+	QUOTE_NONE = 0,
+}	t_quote;
+
+typedef struct s_quote_index
 {
-	t_quote	quote;
-	t_range	range;
-}	t_quote_range;
+	t_quote			quote;
+	unsigned long	index;
+	size_t			count;
+}	t_quote_index;
+
 
 #endif
