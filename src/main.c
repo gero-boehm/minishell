@@ -121,7 +121,7 @@ int	main(int argc, char **argv)
 	// char *str = "echo 00'ab'\"fg\"h";
 	// char *str = "echo a'b c'de\"fg\"h";
 	// char *str = "echo a' 'b c d e f g h";
-	char *str = "echo 'a  a'\"$USER\"bb'$HOME' d";
+	char *str = "  echo 'a  a'\"$USER\"bb'$HOME' d";
 	if (lexer_get_fragments(str, &fragments))
 		return (1);
 

@@ -63,7 +63,7 @@ static int	lexer_token_range_add(t_array *quote_ranges, t_array *token_ranges, u
 	return (arr_add(token_ranges, &token_range));
 }
 
-int	lexer_token_ranges_get(t_array *spaces, t_array *quote_ranges, t_array *token_ranges)
+int	lexer_token_ranges_get(t_array *array, t_array *token_ranges)
 {
 	unsigned long	i;
 	unsigned long	start;
