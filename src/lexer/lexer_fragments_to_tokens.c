@@ -3,22 +3,22 @@
 #include "range.h"
 #include "str.h"
 
-static int	lexer_omit_quote(t_range *token_range, unsigned long index, t_quote quote)
+static int	lexer_fragment_keep(char *fragment, unsigned long index, t_array *quote_ranges)
 {
 	unsigned long	i;
-	t_array			*quote_ranges;
 	t_range			*quote_range;
 
+	if (!str_char_is_quote(*fragment))
+		return (1);
 	i = 0;
-	quote_ranges = &token_range->meta.token_data.quote_ranges;
 	while (i < arr_size(quote_ranges))
 	{
 		quote_range = (t_range *) arr_get(quote_ranges, i);
 		if (range_contains(quote_range, index))
-			return (quote_range->meta.quote == quote);
+			return (quote_range->meta.quote != *fragment);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 static int	lexer_fragments_to_token(t_array *fragments, t_range *token_range, t_array *tokens)
@@ -26,40 +26,65 @@ static int	lexer_fragments_to_token(t_array *fragments, t_range *token_range, t_
 
 }
 
-int	lexer_determine_final_fragments(t_array *fragments, t_range *token_range, t_array *flags)
+static int	lexer_token_mask_get(t_array *token_fragments, t_range *token_range, t_ranges *ranges, t_array *mask)
 {
 	unsigned long	i;
 	char			*fragment;
 	int				keep;
 
-	// if (arr_create(flags, sizeof(int)))
-	// 	return (1);
+	if (arr_create(mask, sizeof(int)))
+		return (1);
 	i = 0;
-	while (i < arr_size(fragments))
+	while (i < arr_size(token_fragments))
 	{
-		fragment = *(char **) arr_get(fragments, i);
-		keep = 1;
-		if (str_char_is_quote(*fragment))
-			keep = !lexer_omit_quote(token_range, i, *fragment);
-		if (arr_add(flags, &keep))
+		fragment = *(char **) arr_get(token_fragments, i);
+		keep = lexer_fragment_keep(fragment, i, &ranges->quote_ranges);
+		if (arr_add(mask, &keep))
 			return (2);
 		i++;
 	}
 	return (0);
 }
 
-int	lexer_fragments_to_tokens(t_array *fragments, t_array *token_ranges, t_array *tokens)
+static int	lexer_token_get(t_array *fragments, t_range *token_range, t_ranges *ranges, t_array *tokens)
+{
+	t_array	token_fragments;
+	t_array	token_mask;
+
+	if (arr_sub(fragments, token_range, &token_fragments))
+		return (1);
+	if (lexer_token_mask_get(&token_fragments, token_range, ranges, &token_mask))
+		return (2);
+
+	for (unsigned long i = 0; i < arr_size(&token_fragments); i++)
+	{
+		char *fragment = *(char **) arr_get(&token_fragments, i);
+		printf("\"%s\", ", fragment);
+	}
+	printf("\n");
+
+	for (unsigned long i = 0; i < arr_size(&token_fragments); i++)
+	{
+		char *fragment = *(char **) arr_get(&token_fragments, i);
+		int keep = *(int *) arr_get(&token_mask, i);
+		printf(" %-*d   ", str_len(fragment), keep);
+	}
+	printf("\n");
+}
+
+
+int	lexer_fragments_to_tokens(t_array *fragments, t_ranges *ranges, t_array *tokens)
 {
 	unsigned long	i;
 	t_range			*token_range;
 
-	if (arr_create(tokens, sizeof(int)))
+	if (arr_create(tokens, sizeof(t_token)))
 		return (1);
 	i = 0;
-	while (i < arr_size(token_ranges))
+	while (i < arr_size(&ranges->token_ranges))
 	{
-		token_range = (t_range *) arr_get(token_ranges, i);
-		if (lexer_determine_final_fragments(fragments, token_range, tokens))
+		token_range = (t_range *) arr_get(&ranges->token_ranges, i);
+		if (lexer_token_get(fragments, token_range, ranges, tokens))
 			return (2);
 		i++;
 	}
