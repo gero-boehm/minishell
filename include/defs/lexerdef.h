@@ -21,6 +21,13 @@ typedef enum e_quote
 // 	TOKEN_
 // }	t_token_subtype;
 
+typedef struct s_fragment
+{
+	char	*str;
+	size_t	length;
+	t_quote	quote;
+}	t_fragment;
+
 typedef struct s_quote_index
 {
 	t_quote			quote;
@@ -31,7 +38,6 @@ typedef struct s_quote_index
 typedef struct s_ranges
 {
 	t_array	token_ranges;
-	t_array	quote_ranges;
 	t_array	var_ranges;
 }	t_ranges;
 
@@ -40,7 +46,6 @@ typedef struct s_token
 	char	*str;
 	size_t	length;
 	t_array	vars;
-
 }	t_token;
 
 #endif

@@ -62,7 +62,7 @@ static int lexer_remove_duplicate_boundaries(t_array *boundaries)
 	return (0);
 }
 
-int	lexer_get_boundaries(char *str, t_array *boundaries)
+int	lexer_boundaries_get(char *str, t_array *boundaries)
 {
 	size_t	len;
 
