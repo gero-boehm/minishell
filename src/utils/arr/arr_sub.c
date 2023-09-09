@@ -10,10 +10,10 @@ int	arr_sub(t_array *arr, t_range *range, t_array *sub)
 	if (arr_create(sub, arr->bytes))
 		return (1);
 	i = range_start(range);
-	while (i < range_end(arr))
+	while (i < range_end(range))
 	{
 		tmp = arr_get(arr, i);
-		if (arr_add(sub, &tmp))
+		if (arr_add(sub, tmp))
 			return (2);
 		i++;
 	}
@@ -35,7 +35,7 @@ int	arr_sub_mask(t_array *arr, t_array *mask, t_array *sub)
 		if (mask_value == 0)
 			SKIP(i);
 		tmp = arr_get(arr, i);
-		if (arr_add(sub, &tmp))
+		if (arr_add(sub, tmp))
 			return (2);
 		i++;
 	}

@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "skipdef.h"
 #include "array.h"
 #include "range.h"
@@ -21,11 +22,6 @@ static int	lexer_fragment_keep(char *fragment, unsigned long index, t_array *quo
 	return (1);
 }
 
-static int	lexer_fragments_to_token(t_array *fragments, t_range *token_range, t_array *tokens)
-{
-
-}
-
 static int	lexer_token_mask_get(t_array *token_fragments, t_range *token_range, t_ranges *ranges, t_array *mask)
 {
 	unsigned long	i;
@@ -38,7 +34,7 @@ static int	lexer_token_mask_get(t_array *token_fragments, t_range *token_range, 
 	while (i < arr_size(token_fragments))
 	{
 		fragment = *(char **) arr_get(token_fragments, i);
-		keep = lexer_fragment_keep(fragment, i, &ranges->quote_ranges);
+		keep = lexer_fragment_keep(fragment, i + range_start(token_range), &ranges->quote_ranges);
 		if (arr_add(mask, &keep))
 			return (2);
 		i++;
@@ -50,11 +46,20 @@ static int	lexer_token_get(t_array *fragments, t_range *token_range, t_ranges *r
 {
 	t_array	token_fragments;
 	t_array	token_mask;
+	t_array	masked_fragments;
+	t_token	token;
 
 	if (arr_sub(fragments, token_range, &token_fragments))
 		return (1);
 	if (lexer_token_mask_get(&token_fragments, token_range, ranges, &token_mask))
 		return (2);
+	if (arr_sub_mask(&token_fragments, &token_mask, &masked_fragments))
+		return (3);
+	if (str_from_arr(&masked_fragments, &token.str))
+		return (4);
+	token.length = str_len(token.str);
+	if (arr_add(tokens, &token))
+		return (5);
 
 	for (unsigned long i = 0; i < arr_size(&token_fragments); i++)
 	{
@@ -70,6 +75,15 @@ static int	lexer_token_get(t_array *fragments, t_range *token_range, t_ranges *r
 		printf(" %-*d   ", str_len(fragment), keep);
 	}
 	printf("\n");
+
+	for (unsigned long i = 0; i < arr_size(&masked_fragments); i++)
+	{
+		char *fragment = *(char **) arr_get(&masked_fragments, i);
+		printf("\"%s\", ", fragment);
+	}
+	printf("\n");
+	printf("%s\n", token.str);
+	return (0);
 }
 
 
@@ -77,6 +91,7 @@ int	lexer_fragments_to_tokens(t_array *fragments, t_ranges *ranges, t_array *tok
 {
 	unsigned long	i;
 	t_range			*token_range;
+
 
 	if (arr_create(tokens, sizeof(t_token)))
 		return (1);
