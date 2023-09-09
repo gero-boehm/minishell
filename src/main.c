@@ -110,8 +110,8 @@ int	main(int argc, char **argv)
 	t_array fragments;
 	t_array indices;
 	t_array quote_ranges;
-	t_array spaces;
-	t_array tokens;
+	t_array token_ranges;
+	t_array vars;
 	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
 	// char *str = "t.";
 	// char *str = "echo 'a'\"b\"";
@@ -122,6 +122,8 @@ int	main(int argc, char **argv)
 	// char *str = "echo a'b c'de\"fg\"h";
 	// char *str = "echo a' 'b c d e f g h";
 	char *str = "  echo 'a  a'\"$USER\"bb'$HOME' d";
+	// char *str = " ";
+	// char *str = "";
 	if (lexer_get_fragments(str, &fragments))
 		return (1);
 
@@ -163,9 +165,30 @@ int	main(int argc, char **argv)
 		char *fragment = *(char **) arr_get(&fragments, i);
 		int keep = *(int *) arr_get(&array, i);
 		printf(" %-*d   ", str_len(fragment), keep);
-		// printf("%zu  ", str_len(fragment));
 	}
 	printf("\n");
+
+	if (lexer_token_ranges_get(&array, &token_ranges))
+		return (5);
+
+	printf("\ntoken ranges\n");
+	for (unsigned long i = 0; i < arr_size(&token_ranges); i++)
+	{
+		t_range *range = (t_range *) arr_get(&token_ranges, i);
+
+		printf("%lu..%lu\n", range_start(range), range_end(range));
+	}
+
+	if (lexer_vars_get(&fragments, &quote_ranges, &vars))
+		return (5);
+
+	printf("\nvars:\n");
+	for (unsigned long i = 0; i < arr_size(&vars); i++)
+	{
+		t_range *var = (t_range *) arr_get(&vars, i);
+		printf("%lu \"%s\" %lu..%lu\n", var->meta.var_data.index, var->meta.var_data.key, range_start(var), range_end(var));
+	}
+
 
 
 	// if (lexer_spaces_get(&fragments, &spaces))

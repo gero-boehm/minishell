@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "skipdef.h"
 #include "array.h"
 #include "range.h"
@@ -19,41 +18,43 @@ static void	lexer_var_get_range(char *fragment, t_range *var_range)
 	}
 }
 
-static int	lexer_var_get(t_array *fragments, unsigned long index, t_range *token_range)
+static int	lexer_vars_extract(char *fragment, unsigned long index, t_range *vars)
 {
 	unsigned long	start;
-	char			*fragment;
 	t_range			var_range;
 	t_range			key_range;
 
 	start = 0;
 	while (1)
 	{
-		fragment = *(char **) arr_get(fragments, index);
 		if (str_range_of(fragment, "$", start, &var_range))
 			return (0);
 		var_range.start += var_range.length - 1;
+		var_range.length = 1;
 		lexer_var_get_range(fragment, &var_range);
+		if (range_length(&var_range) == 1)
+		{
+			start = range_end(&var_range);
+			continue ;
+		}
 		var_range.meta.var_data.index = index;
 		key_range.start = var_range.start + 1;
 		key_range.length = var_range.length - 1;
 		if (str_extract_range(fragment, &key_range, &var_range.meta.var_data.key))
 			return (1);
-		if (arr_add(&token_range->meta.token_data.var_ranges, &var_range))
+		if (arr_add(vars, &var_range))
 			return (2);
 		start = range_end(&var_range);
 	}
-	return (2);
+	return (3);
 }
 
-static int	lexer_index_in_single_quotes(t_range *token_range, unsigned long index)
+static int	lexer_fragment_ignore(t_array *quote_ranges, unsigned long index)
 {
 	unsigned long	i;
-	t_array			*quote_ranges;
 	t_range			*quote_range;
 
 	i = 0;
-	quote_ranges = &token_range->meta.token_data.quote_ranges;
 	while (i < arr_size(quote_ranges))
 	{
 		quote_range = (t_range *) arr_get(quote_ranges, i);
@@ -66,42 +67,20 @@ static int	lexer_index_in_single_quotes(t_range *token_range, unsigned long inde
 	return (0);
 }
 
-static int lexer_create_var_ranges(t_range *token_range)
-{
-	t_array	*var_ranges;
-
-	var_ranges = &token_range->meta.token_data.var_ranges;
-	return (arr_create(var_ranges, sizeof(t_range)));
-}
-
-static int	lexer_vars_get(t_array *fragments, t_range *token_range)
+int	lexer_vars_get(t_array *fragments, t_array *quote_ranges, t_array *vars)
 {
 	unsigned long	i;
+	char			*fragment;
 
-	if (lexer_create_var_ranges(token_range))
+	if (arr_create(vars, sizeof(t_range)))
 		return (1);
-	i = range_start(token_range);
-	while (i < range_end(token_range))
-	{
-		if (lexer_index_in_single_quotes(token_range, i))
-			SKIP(i);
-		if (lexer_var_get(fragments, i, token_range))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	lexer_vars_extract(t_array *fragments, t_array *token_ranges)
-{
-	unsigned long	i;
-	t_range			*token_range;
-
 	i = 0;
-	while (i < arr_size(token_ranges))
+	while (i < arr_size(fragments))
 	{
-		token_range = (t_range *) arr_get(token_ranges, i);
-		if (lexer_vars_get(fragments, token_range))
+		if (lexer_fragment_ignore(quote_ranges, i))
+			SKIP(i);
+		fragment = *(char **) arr_get(fragments, i);
+		if (lexer_vars_extract(fragment, i, vars))
 			return (2);
 		i++;
 	}

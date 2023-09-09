@@ -1,3 +1,4 @@
+#include "skipdef.h"
 #include "lexer.h"
 #include "array.h"
 #include "str.h"
@@ -10,17 +11,15 @@ static int	lexer_get_fragments_from_boundaries(char *str, t_array *boundaries, t
 	char			*token;
 
 	if (arr_size(boundaries) == 0)
-	{
-		if (arr_add(fragments, &str))
-			return (1);
-		return (0);
-	}
+		return (arr_add(fragments, &str));
 	i = 0;
 	range.start = 0;
 	while (i < arr_size(boundaries))
 	{
 		end = *(unsigned long*) arr_get(boundaries, i);
 		range.length = end - range.start;
+		if (range.length == 0)
+			SKIP(i);
 		if (str_extract_range(str, &range, &token))
 			return (2);
 		if (arr_add(fragments, &token))

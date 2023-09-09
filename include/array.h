@@ -3,6 +3,7 @@
 
 # include <stddef.h>
 # include "arraydef.h"
+# include "rangedef.h"
 
 int		arr_create(t_array *arr, unsigned int bytes);
 int		arr_add(t_array *arr, void *element);
@@ -17,6 +18,9 @@ void	arr_free(t_array *arr);
 size_t	arr_size(t_array *arr);
 
 int		arr_sort(t_array *arr, int (fn)(void *, void *));
+
+int		arr_sub(t_array *arr, t_range *range, t_array *sub);
+int		arr_sub_mask(t_array *arr, t_array *mask, t_array *sub);
 
 void	arr_print_str(t_array *arr);
 

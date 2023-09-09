@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "lexerdef.h"
 #include "array.h"
 #include "str.h"
@@ -71,6 +72,9 @@ int	lexer_get_boundaries(char *str, t_array *boundaries)
 		return (2);
 	if (arr_sort(boundaries, lexer_sort_boundaries))
 		return (3);
+	for (unsigned long i = 0; i < arr_size(boundaries); i++)
+		printf("%lu ", *(unsigned long *) arr_get(boundaries, i));
+	printf("\n");
 	len = str_len(str);
 	if (arr_add(boundaries, &len))
 		return (4);
