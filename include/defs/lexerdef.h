@@ -35,12 +35,6 @@ typedef struct s_quote_index
 	size_t			count;
 }	t_quote_index;
 
-typedef struct s_ranges
-{
-	t_array	token_ranges;
-	t_array	var_ranges;
-}	t_ranges;
-
 typedef struct s_token
 {
 	char	*str;

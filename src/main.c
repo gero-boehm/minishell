@@ -110,7 +110,7 @@ int	main(int argc, char **argv)
 	t_array fragments;
 	t_array mask;
 	t_array tokens;
-	t_ranges ranges;
+	t_array	token_ranges;
 	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
 	// char *str = "t.";
 	// char *str = "echo 'a'\"b\"";
@@ -183,18 +183,18 @@ int	main(int argc, char **argv)
 	}
 	printf("\n");
 
-	if (lexer_token_ranges_get(&mask, &ranges.token_ranges))
+	if (lexer_token_ranges_get(&mask, &token_ranges))
 		return (3);
 
 	printf("\ntoken ranges\n");
-	for (unsigned long i = 0; i < arr_size(&ranges.token_ranges); i++)
+	for (unsigned long i = 0; i < arr_size(&token_ranges); i++)
 	{
-		t_range *range = (t_range *) arr_get(&ranges.token_ranges, i);
+		t_range *range = (t_range *) arr_get(&token_ranges, i);
 
 		printf("%lu..%lu\n", range_start(range), range_end(range));
 	}
 
-	if (lexer_fragments_to_tokens(&fragments, &ranges.token_ranges, &tokens))
+	if (lexer_fragments_to_tokens(&fragments, &token_ranges, &tokens))
 		return (4);
 
 	printf("\ntokens\n");
