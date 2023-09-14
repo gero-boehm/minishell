@@ -1,18 +1,30 @@
 #include "array.h"
 #include "range.h"
 
-static unsigned long	lexer_token_range_end(t_array *mask, unsigned long i)
+static int	lexer_token_range_start(t_array *mask, unsigned long *start, int *mask_value)
 {
-	int	value;
-
-	while (i < arr_size(mask))
+	while (*start < arr_size(mask))
 	{
-		value = *(int *) arr_get(mask, i);
-		if (value == 0)
-			return (i);
-		i++;
+		*mask_value = *(int *) arr_get(mask, *start);
+		if (*mask_value != 0)
+			return (0);
+		(*start)++;
 	}
-	return (i);
+	return (1);
+}
+
+static unsigned long	lexer_token_range_end(t_array *mask, unsigned long index, int match)
+{
+	int	mask_value;
+
+	while (index < arr_size(mask))
+	{
+		mask_value = *(int *) arr_get(mask, index);
+		if (mask_value != match)
+			return (index);
+		index++;
+	}
+	return (index);
 }
 
 static int	lexer_token_range_add(unsigned long start, unsigned long end, t_array *token_ranges)
@@ -24,28 +36,23 @@ static int	lexer_token_range_add(unsigned long start, unsigned long end, t_array
 	return (arr_add(token_ranges, &token_range));
 }
 
-static unsigned long	lexer_get_start(t_array *mask)
-{
-	unsigned long	value;
-
-	value = *(int *) arr_get(mask, 0);
-	return (value == 0);
-}
-
 int	lexer_token_ranges_get(t_array *mask, t_array *token_ranges)
 {
 	unsigned long	start;
 	unsigned long	end;
+	int				mask_value;
 
 	if (arr_create(token_ranges, sizeof(t_range)))
 		return (1);
-	start = lexer_get_start(mask);
-	while (start < arr_size(mask))
+	start = 0;
+	while (1)
 	{
-		end = lexer_token_range_end(mask, start);
+		if (lexer_token_range_start(mask, &start, &mask_value))
+			return (0);
+		end = lexer_token_range_end(mask, start, mask_value);
 		if (lexer_token_range_add(start, end, token_ranges))
 			return (2);
-		start = end + 1;
+		start = end;
 	}
 	return (0);
 }

@@ -111,7 +111,8 @@ int	main(int argc, char **argv)
 	t_array mask;
 	t_array tokens;
 	t_array	token_ranges;
-	// char *str = "e\"ch\"o a\\  \\''test' && cat <<'eof'";
+	// char *str = "pwd&&cd /home";
+	// char *str = "e\"ch\"o a  'test' && cat <<e''of\"\"";
 	// char *str = "t.";
 	// char *str = "echo 'a'\"b\"";
 	// char *str = "echo 'a\\' 'b'";
@@ -120,9 +121,12 @@ int	main(int argc, char **argv)
 	// char *str = "echo 00'ab'\"fg\"h";
 	// char *str = "echo a'b c'de\"fg\"h";
 	// char *str = "echo a' 'b c d e f g h";
-	char *str = "  echo 'a  a'\"$USER\"bb''''''$HOME\"'\"d";
+	// char *str = "  echo 'a  a'\"'$USER'\"bb'''''''$HOME'\"'\" d";
 	// char *str = " ";
 	// char *str = "";
+	// char *str = "echo a&&echo b";
+	// char *str = "echo a&&||(cat /dev/urandom | head -5)";
+	char *str = "echo a&&|||cat <<eof";
 	if (lexer_fragments_get(str, &fragments))
 		return (1);
 
@@ -194,6 +198,7 @@ int	main(int argc, char **argv)
 		printf("%lu..%lu\n", range_start(range), range_end(range));
 	}
 
+
 	if (lexer_fragments_to_tokens(&fragments, &token_ranges, &tokens))
 		return (4);
 
@@ -204,6 +209,14 @@ int	main(int argc, char **argv)
 		printf("\"%s\", ", token->str);
 	}
 	printf("\n");
+
+	for (unsigned long i = 0; i < arr_size(&tokens); i++)
+	{
+		t_token *token = (t_token *) arr_get(&tokens, i);
+		printf(" %-*d   ", token->length, token->contained_quotes);
+	}
+	printf("\n");
+
 
 	printf("\nvars\n");
 	for (unsigned long i = 0; i < arr_size(&tokens); i++)
@@ -219,6 +232,9 @@ int	main(int argc, char **argv)
 		printf("\n\n");
 	}
 
+	lexer_tokens_classify(&tokens);
+
+	printf("end\n");
 	// if (lexer_quotes_indices(&fragments, &indices))
 	// 	return (2);
 

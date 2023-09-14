@@ -4,6 +4,6 @@
 
 void	error_syntax(char *token)
 {
-	printf("miniheaven: syntax error near unexpected token `%s'\n", token);
+	printf("miniheaven: syntax error near unexpected token `%.1s'\n", token);
 	error(258);
 }
