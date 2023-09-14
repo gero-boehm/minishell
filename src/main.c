@@ -126,7 +126,7 @@ int	main(int argc, char **argv)
 	// char *str = "";
 	// char *str = "echo a&&echo b";
 	// char *str = "echo a&&||(cat /dev/urandom | head -5)";
-	char *str = "echo a&&|||cat <<eof";
+	char *str = "echo a&&||||||||||cat <<eof";
 	if (lexer_fragments_get(str, &fragments))
 		return (1);
 

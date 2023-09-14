@@ -1,9 +1,25 @@
-#include <stdio.h>
 #include "lexerdef.h"
+#include "range.h"
 #include "array.h"
 #include "str.h"
 
 static char *symbols[] = {" \n\t\r\f\v", "\"", "&", "'", "(", ")", "<", ">", "|", NULL};
+
+static int	lexer_split_pipe_range(char *set, t_range *range, t_array *boundaries)
+{
+	unsigned long	i;
+
+	if (*set != '|')
+		return (0);
+	i = range_start(range) + 2;
+	while (i < range_end(range))
+	{
+		if (arr_add(boundaries, &i))
+			return (1);
+		i += 2;
+	}
+	return (0);
+}
 
 static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)
 {
@@ -16,9 +32,11 @@ static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)
 	{
 		if (arr_add(boundaries, &range.start))
 			return (1);
-		end = range.start + range.length;
+		end = range_end(&range);
 		if (arr_add(boundaries, &end))
 			return (2);
+		if (lexer_split_pipe_range(set, &range, boundaries))
+			return (3);
 		start = end;
 	}
 	return (0);
@@ -72,9 +90,6 @@ int	lexer_boundaries_get(char *str, t_array *boundaries)
 		return (2);
 	if (arr_sort(boundaries, lexer_sort_boundaries))
 		return (3);
-	for (unsigned long i = 0; i < arr_size(boundaries); i++)
-		printf("%lu ", *(unsigned long *) arr_get(boundaries, i));
-	printf("\n");
 	len = str_len(str);
 	if (arr_add(boundaries, &len))
 		return (4);
