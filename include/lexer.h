@@ -1,8 +1,7 @@
-#include "lexerdef.h"
-#include "arraydef.h"
-
 #ifndef LEXER_H
 # define LEXER_H
+
+# include "arraydef.h"
 
 int		lexer_boundaries_get(char *str, t_array *boundaries);
 int		lexer_fragments_get(char *str, t_array *fragments);

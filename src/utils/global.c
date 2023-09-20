@@ -20,8 +20,10 @@ int	global_init(void)
 		return (2);
 	if (arr_create(&global()->heredocs, sizeof(t_heredoc)))
 		return (3);
-	if (env_init())
+	if (arr_create(&global()->sequences, sizeof(t_array)))
 		return (4);
+	if (env_init())
+		return (5);
 	return (0);
 }
 

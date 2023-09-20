@@ -9,6 +9,7 @@ typedef struct s_global {
 	t_assoc	env;
 	t_array	allocs;
 	t_array	heredocs;
+	t_array	sequences;
 }	t_global;
 
 int	g_signal;

@@ -1,4 +1,4 @@
-#include "lexerdef.h"
+#include "tokendef.h"
 #include "array.h"
 #include "str.h"
 #include "error.h"

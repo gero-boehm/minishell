@@ -97,9 +97,9 @@ typedef struct s_file {
 typedef struct s_raw_command {
 	t_array		args;
 	t_array		files;
-	int			heredoc_id;
 	t_array		vars_args;
 	t_array		vars_files;
+	int			heredoc_id;
 }	t_raw_command;
 
 typedef struct s_chain {

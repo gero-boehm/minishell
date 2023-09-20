@@ -18,6 +18,8 @@
 #include "lexer.h"
 #include "error.h"
 #include "range.h"
+#include "token.h"
+#include "parser.h"
 
 extern char	**environ;
 
@@ -126,7 +128,8 @@ int	main(int argc, char **argv)
 	// char *str = "";
 	// char *str = "echo a&&echo b";
 	// char *str = "echo a&&||(cat /dev/urandom | head -5)";
-	char *str = "echo a&&||||||||||cat <<eof";
+	char *str = "echo a|| cat < /home/$USER/test < other";
+	// char *str = "echo $HOME && echo b | echo test";
 	if (lexer_fragments_get(str, &fragments))
 		return (1);
 
@@ -232,9 +235,20 @@ int	main(int argc, char **argv)
 		printf("\n\n");
 	}
 
-	lexer_tokens_classify(&tokens);
+	// lexer_tokens_classify(&tokens);
 
-	printf("end\n");
+	// printf("end\n");
+
+	if (parser_parse(&tokens))
+		return (5);
+
+	for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
+	{
+		t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
+		printf("SEQUENCE %lu\n", i);
+		sequence_print_raw(sequence);
+	}
+
 	// if (lexer_quotes_indices(&fragments, &indices))
 	// 	return (2);
 
