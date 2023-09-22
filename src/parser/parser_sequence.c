@@ -33,16 +33,3 @@ int	parser_sequence_parse(t_array *tokens, unsigned long *index, t_array *sequen
 	}
 	return (3);
 }
-
-int	parser_sequence_new(t_array **sequence, unsigned long *index)
-{
-	t_array new;
-
-	if (arr_create(&new, sizeof(t_chain)))
-		return (1);
-	*index = global()->sequences.size;
-	if (arr_add(&global()->sequences, &new))
-		return (2);
-	*sequence = (t_array *) arr_get(&global()->sequences, *index);
-	return (0);
-}

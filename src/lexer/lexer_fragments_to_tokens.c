@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "tokendef.h"
 #include "skipdef.h"
 #include "lexer.h"

@@ -47,11 +47,14 @@ static void args_print(t_array *args)
 
 static void file_print(t_file *file)
 {
-	const char *types[] = {"FILE_IN", "FILE_OUT", "FILE_OUT_APPEND"};
+	const char *types[] = {"FILE_IN", "FILE_OUT", "FILE_IN_HEREDOC", "FILE_OUT_APPEND"};
 
 	printf(RESET WHITE "        file " GRAY "{\n");
-	printf("          path: %s'%s'%s\n", ORANGE, file->path, GRAY);
 	printf("          type: %s%s%s\n", PURPLE, types[file->type], GRAY);
+	if (file->type == FILE_IN_HEREDOC)
+		printf("          id:   %s%u%s\n", PURPLE, file->data.id, GRAY);
+	else
+		printf("          path: %s'%s'%s\n", ORANGE, file->data.path, GRAY);
 	printf("        }\n");
 }
 

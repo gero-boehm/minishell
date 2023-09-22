@@ -36,6 +36,7 @@ typedef enum e_command_type {
 typedef enum e_file_type {
 	FILE_IN,
 	FILE_OUT,
+	FILE_IN_HEREDOC,
 	FILE_OUT_APPEND,
 }	t_file_type;
 
@@ -89,17 +90,21 @@ typedef struct s_command {
 	t_command_data	data;
 }	t_command;
 
+typedef union u_file_data {
+	unsigned int	id;
+	char			*path;
+}	t_file_data;
+
 typedef struct s_file {
-	char		*path;
 	t_file_type	type;
+	t_file_data	data;
 }	t_file;
 
 typedef struct s_raw_command {
-	t_array		args;
-	t_array		files;
-	t_array		vars_args;
-	t_array		vars_files;
-	int			heredoc_id;
+	t_array	args;
+	t_array	files;
+	t_array	vars_args;
+	t_array	vars_files;
 }	t_raw_command;
 
 typedef struct s_chain {

@@ -20,6 +20,7 @@
 #include "range.h"
 #include "token.h"
 #include "parser.h"
+#include "number.h"
 
 extern char	**environ;
 
@@ -109,6 +110,20 @@ int	main(int argc, char **argv)
 	(void) argv;
 	global_init();
 
+
+	// char *num;
+	// lutoa(0, &num);
+	// printf("%s\n", num);
+	// lutoa(1, &num);
+	// printf("%s\n", num);
+	// lutoa(20, &num);
+	// printf("%s\n", num);
+	// lutoa(342, &num);
+	// printf("%s\n", num);
+	// lutoa(-1, &num);
+	// printf("%s\n", num);
+	// abort();
+
 	t_array fragments;
 	t_array mask;
 	t_array tokens;
@@ -128,8 +143,9 @@ int	main(int argc, char **argv)
 	// char *str = "";
 	// char *str = "echo a&&echo b";
 	// char *str = "echo a&&||(cat /dev/urandom | head -5)";
-	char *str = "echo a|| cat < /home/$USER/test < other";
+	// char *str = "echo a|| cat < /home/$USER/test << eof > out$USER >> out_append";
 	// char *str = "echo $HOME && echo b | echo test";
+	char *str = "echo $HOME && (echo b)";
 	if (lexer_fragments_get(str, &fragments))
 		return (1);
 

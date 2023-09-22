@@ -21,12 +21,10 @@ int	token_is_redir_out_append(t_token *token)
 	return (str_eq(token->str, ">>"));
 }
 
-int token_is_redir(t_token *token)
+int token_is_possibly_redir(t_token *token)
 {
-	return (
-		token_is_redir_in(token) ||
-		token_is_redir_out(token) ||
-		token_is_redir_heredoc(token) ||
-		token_is_redir_out_append(token)
-	);
+	char c;
+
+	c = *token->str;
+	return (c == '<' || c == '>');
 }
