@@ -4,7 +4,7 @@
 # include "globaldef.h"
 
 t_global	*global(void);
-int			global_init(void);
+int			global_init(char *exec_name);
 void		cleanup(void);
 void		success(void);
 

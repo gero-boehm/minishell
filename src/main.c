@@ -21,6 +21,7 @@
 #include "token.h"
 #include "parser.h"
 #include "number.h"
+#include "path.h"
 
 extern char	**environ;
 
@@ -108,9 +109,9 @@ int	main(int argc, char **argv)
 
 	(void) argc;
 	(void) argv;
-	global_init();
+	global_init(argv[0]);
 
-
+	printf("%s\n", global()->exec_path);
 	// char *num;
 	// lutoa(0, &num);
 	// printf("%s\n", num);
@@ -122,6 +123,30 @@ int	main(int argc, char **argv)
 	// printf("%s\n", num);
 	// lutoa(-1, &num);
 	// printf("%s\n", num);
+	// abort();
+
+	// char *paths[] = {
+	// 	"hello/./world",
+	// 	"hello/../../world",
+	// 	"hello/../../world/..",
+	// 	".",
+	// 	"..",
+	// 	"dir/..",
+	// 	"/hello/../../world/..",
+	// 	"/.",
+	// 	"/..",
+	// 	"/dir/..",
+	// 	"/test/../.dotfile///.",
+	// };
+
+	// for (int i = 0; i < sizeof(paths) / sizeof(char *); i++)
+	// {
+	// 	char *path;
+	// 	str_dup(paths[i], &path);
+	// 	printf("%s -> ", path);
+	// 	path_normalize(&path);
+	// 	printf("%s\n", path);
+	// }
 	// abort();
 
 	t_array fragments;

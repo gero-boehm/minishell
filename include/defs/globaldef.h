@@ -5,6 +5,7 @@
 # include "assocdef.h"
 
 typedef struct s_global {
+	char	*exec_path;
 	t_array	fds;
 	t_assoc	env;
 	t_array	allocs;

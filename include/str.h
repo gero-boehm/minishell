@@ -40,8 +40,8 @@ int		str_trim_end(char **str, char *set);
 int		str_trim(char **str, char *set);
 
 int		str_arr_from_arr(t_array *arr, char ***strs);
-int		str_from_arr_range(t_array *arr, t_range *range, char **str);
-int		str_from_arr(t_array *arr, char **str);
+int		str_from_arr_range(t_array *arr, t_range *range, char *sep, char **str);
+int		str_from_arr(t_array *arr, char *sep, char **str);
 
 int		str_random(size_t length, char **str);
 

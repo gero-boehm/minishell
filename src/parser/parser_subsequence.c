@@ -17,7 +17,7 @@ int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_comman
 	(*index)++;
 	if (parser_sequence_parse(tokens, index, &sequence))
 		return (2);
-	if (str_dup("./minishell", &exec_path))
+	if (str_dup(global()->exec_path, &exec_path))
 		return (3);
 	if (arr_add(&command->args, &exec_path))
 		return (4);

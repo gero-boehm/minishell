@@ -55,7 +55,7 @@ static int	lexer_token_get(t_array *fragments, t_range *token_range, t_array *to
 		return (3);
 	if (lexer_vars_get(&masked_fragments, &token.vars))
 		return (4);
-	if (str_from_arr(&masked_fragments, &token.str))
+	if (str_from_arr(&masked_fragments, "", &token.str))
 		return (5);
 	token.length = str_len(token.str);
 	lexer_token_contained_quotes(&token_fragments, &masked_fragments, &token);
