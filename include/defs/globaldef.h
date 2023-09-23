@@ -11,6 +11,7 @@ typedef struct s_global {
 	t_array	allocs;
 	t_array	heredocs;
 	t_array	sequences;
+	int		exit_code;
 }	t_global;
 
 int	g_signal;

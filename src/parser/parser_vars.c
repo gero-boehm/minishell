@@ -1,8 +1,9 @@
 #include "tokendef.h"
 #include "rangedef.h"
 #include "array.h"
+#include "error.h"
 
-int	parser_vars_copy(t_token *token, unsigned long index, t_array *vars)
+void	parser_vars_copy(t_token *token, unsigned long index, t_array *vars)
 {
 	unsigned long	i;
 	t_range			*var;
@@ -13,8 +14,7 @@ int	parser_vars_copy(t_token *token, unsigned long index, t_array *vars)
 		var = (t_range *) arr_get(&token->vars, i);
 		var->meta.var_data.index = index;
 		if (arr_add(vars, var))
-			return (1);
+			error_fatal();
 		i++;
 	}
-	return (0);
 }

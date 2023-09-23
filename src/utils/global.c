@@ -46,6 +46,7 @@ int	global_init(char *exec_name)
 		return (5);
 	if (global_get_exec_path(exec_name, &global()->exec_path))
 		return (6);
+	global()->exit_code = 0;
 	return (0);
 }
 

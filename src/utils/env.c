@@ -1,8 +1,7 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "global.h"
 #include "assoc.h"
+#include "str.h"
+#include "number.h"
 
 extern char	**environ;
 

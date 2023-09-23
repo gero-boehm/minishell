@@ -14,6 +14,7 @@ static int	sequence_end(t_array *tokens, unsigned long index)
 	if (*token->str != ')');
 		return (0);
 	if (token->length > 1)
+		// TODO: change this to return
 		error_syntax(")");
 	return (1);
 }
@@ -27,9 +28,10 @@ int	parser_sequence_parse(t_array *tokens, unsigned long *index, t_array *sequen
 		if (parser_chain_parse(tokens, index, &chain))
 			return (1);
 		if (arr_add(sequence, &chain))
-			return (2);
+			error_fatal();
 		if (sequence_end(tokens, *index))
 			return (0);
 	}
-	return (3);
+	error_what_happened();
+	return (0);
 }

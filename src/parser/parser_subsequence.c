@@ -4,6 +4,7 @@
 #include "str.h"
 #include "number.h"
 #include "global.h"
+#include "error.h"
 
 int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_command *command)
 {
@@ -13,19 +14,19 @@ int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_comman
 	char			*sequence_id;
 
 	if (arr_create(&sequence, sizeof(t_chain)))
-		return (1);
+		error_fatal();
 	(*index)++;
 	if (parser_sequence_parse(tokens, index, &sequence))
-		return (2);
+		return (1);
 	if (str_dup(global()->exec_path, &exec_path))
-		return (3);
+		error_fatal();
 	if (arr_add(&command->args, &exec_path))
-		return (4);
+		error_fatal();
 	if (lutoa(arr_size(&global()->sequences), &sequence_id))
-		return (5);
+		error_fatal();
 	if (arr_add(&command->args, &sequence_id))
-		return (6);
+		error_fatal();
 	if (arr_add(&global()->sequences, &sequence))
-		return (7);
+		error_fatal();
 	return (0);
 }
