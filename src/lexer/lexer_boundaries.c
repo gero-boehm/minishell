@@ -1,9 +1,32 @@
 #include "lexerdef.h"
+#include "range.h"
 #include "array.h"
 #include "str.h"
 
-static char *symbols[] = {" \n\t\r\f\v", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "_", "`", "{", "|", "}", "~", NULL};;
-static char *var_boundaries[] = {" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", ":", ";", "<", "=", ">", "?", "@", "[", "\\", "]", "^", "`", "{", "|", "}", "~", NULL};
+static char *symbols[] = {" \n\t\r\f\v", "'", "\"", "&", "|", "<", ">", "(", ")", NULL};
+
+static int	lexer_split_range(t_range *range, size_t length, t_array *boundaries)
+{
+	unsigned long	i;
+
+	i = range_start(range) + length;
+	while (i < range_end(range))
+	{
+		if (arr_add(boundaries, &i))
+			return (1);
+		i += length;
+	}
+	return (0);
+}
+
+static int	lexer_split_ranges(char *set, t_range *range, t_array *boundaries)
+{
+	if (str_char_in_set("|<>", *set))
+		return (lexer_split_range(range, 2, boundaries));
+	if (str_char_in_set("()", *set))
+		return (lexer_split_range(range, 1, boundaries));
+	return (0);
+}
 
 static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)
 {
@@ -16,9 +39,11 @@ static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)
 	{
 		if (arr_add(boundaries, &range.start))
 			return (1);
-		end = range.start + range.length;
+		end = range_end(&range);
 		if (arr_add(boundaries, &end))
 			return (2);
+		if (lexer_split_ranges(set, &range, boundaries))
+			return (3);
 		start = end;
 	}
 	return (0);
@@ -62,7 +87,7 @@ static int lexer_remove_duplicate_boundaries(t_array *boundaries)
 	return (0);
 }
 
-int	lexer_get_boundaries(char *str, t_array *boundaries)
+int	lexer_boundaries_get(char *str, t_array *boundaries)
 {
 	size_t	len;
 

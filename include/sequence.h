@@ -6,5 +6,6 @@
 
 int		sequence_factory(t_factory factory, t_array *sequence);
 void	sequence_print(t_array *sequence);
+void	sequence_print_raw(t_array *sequence, unsigned long index);
 
 #endif
