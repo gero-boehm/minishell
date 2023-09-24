@@ -1,6 +1,6 @@
 /* ************************************************************************** */
 
-int	str_char_in_set(char *set, char c)
+int	str_char_in_set(const char *set, char c)
 {
 	while (*set != '\0')
 	{

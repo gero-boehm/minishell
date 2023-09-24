@@ -5,10 +5,12 @@
 # include "assocdef.h"
 
 typedef struct s_global {
+	char	*exec_path;
 	t_array	fds;
 	t_assoc	env;
 	t_array	allocs;
 	t_array	heredocs;
+	t_array	sequences;
 }	t_global;
 
 int	g_signal;

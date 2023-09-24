@@ -19,7 +19,7 @@ int	contains_invalid_sign(char *key)
 	return (0);
 }
 
-int	builtin_export(t_builtin_export	*data_export)
+void	builtin_export(t_builtin_export	*data_export)
 {
 	char	**keys;
 	char	**values;
@@ -33,17 +33,17 @@ int	builtin_export(t_builtin_export	*data_export)
 		if (contains_invalid_sign(keys[i]))
 		{
 			printf("bash: export: `%s=%s`: not a valid identifier\n", keys[i], values[i]);
-			return (1);
+			error(1);
 		}
 		else if (keys[i][0] == '-')
 		{
 			printf("bash: export: %c%c: invalid option\n", keys[i][0], keys[i][1]);
 			printf("export: usage: export [-nf] [name[=value] ...] or export -p\n");
-			return (1);
+			error(1);
 		}
 		else if (env_set(keys[i], values[i]))
-			return (134);
+			error(134);
 		i++;
 	}
-	return (0);
+	error(0);
 }

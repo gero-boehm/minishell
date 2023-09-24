@@ -23,8 +23,6 @@ int	single_chain_single_builtin(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = (char *) "ECHO_TEST";
 	command00.data.builtin_echo.newline = 1;
-	command00.fd_in = 0;
-	command00.fd_out = 1;
 	if (arr_add(&chain0, &command00))
 		return (3);
 
@@ -130,8 +128,6 @@ int	single_chain_multiple_external_and_builtins(t_array *sequence)
 
 	t_command command00;
 	command00.type = COMMAND_BUILTIN_ENV;
-	command00.fd_in = 0;
-	command00.fd_out = 1;
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -248,8 +244,6 @@ int	multiple_chains_single_external_and_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "echo echo echo";
 	command00.data.builtin_echo.newline = 1;
-	command00.fd_in = 0;
-	command00.fd_out = 1;
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -293,8 +287,6 @@ int	multiple_chains_multiple_external_and_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "this is a string with spaces";
 	command00.data.builtin_echo.newline = 1;
-	command00.fd_in = 0;
-	command00.fd_out = 1;
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
@@ -409,25 +401,21 @@ int	multiple_chains_all_builtins(t_array *sequence)
 	command00.type = COMMAND_BUILTIN_ECHO;
 	command00.data.builtin_echo.str = "just a regular string";
 	command00.data.builtin_echo.newline = 1;
-	command00.fd_in = 0;
-	command00.fd_out = 1;
-
 	if (arr_add(&chain0.commands, &command00))
 		return (1);
 
 	if (arr_add(sequence, &chain0))
 		return (1);
 
+
 	t_chain chain1;
 	chain1.op = OP_AND;
-
 	if (arr_create(&chain1.commands, sizeof(t_command)))
 		return (1);
 
 	t_command command10;
-	command10.type = COMMAND_BUILTIN_PWD;
-	command10.fd_in = 0;
-	command10.fd_out = 1;
+	command10.type = COMMAND_BUILTIN_CD;
+	command10.data.builtin_cd.path = "~/Documents";
 	if (arr_add(&chain1.commands, &command10))
 		return (1);
 
@@ -441,9 +429,7 @@ int	multiple_chains_all_builtins(t_array *sequence)
 		return (1);
 
 	t_command command20;
-	command20.type = COMMAND_BUILTIN_ENV;
-	command20.fd_in = 0;
-	command20.fd_out = 1;
+	command20.type = COMMAND_BUILTIN_PWD;
 	if (arr_add(&chain2.commands, &command20))
 		return (1);
 
@@ -457,10 +443,7 @@ int	multiple_chains_all_builtins(t_array *sequence)
 		return (1);
 
 	t_command command30;
-	command30.type = COMMAND_BUILTIN_CD;
-	command30.data.builtin_cd.path = "-";
-	command30.fd_in = 0;
-	command30.fd_out = 1;
+	command30.type = COMMAND_BUILTIN_EXPORT;
 	if (arr_add(&chain3.commands, &command30))
 		return (1);
 
@@ -474,22 +457,13 @@ int	multiple_chains_all_builtins(t_array *sequence)
 		return (1);
 
 	t_command command40;
-	command40.type = COMMAND_BUILTIN_EXPORT;
-	if (mem_alloc_str_arr(2, &command40.data.builtin_export.keys))
-		return (1);
-	if (mem_alloc_str_arr(2, &command40.data.builtin_export.values))
-		return (1);
-	char	*args40k[] = {"A", "B", NULL};
-	char	*args40v[] = {"hello", "world", NULL};
-	copy_args(command40.data.builtin_export.keys, args40k);
-	copy_args(command40.data.builtin_export.values, args40v);
-	command40.fd_in = 0;
-	command40.fd_out = 1;
+	command40.type = COMMAND_BUILTIN_UNSET;
 	if (arr_add(&chain4.commands, &command40))
 		return (1);
 
 	if (arr_add(sequence, &chain4))
 		return (1);
+
 
 	t_chain chain5;
 	chain5.op = OP_AND;
@@ -498,8 +472,6 @@ int	multiple_chains_all_builtins(t_array *sequence)
 
 	t_command command50;
 	command50.type = COMMAND_BUILTIN_ENV;
-	command50.fd_in = 0;
-	command50.fd_out = 1;
 	if (arr_add(&chain5.commands, &command50))
 		return (1);
 
@@ -507,55 +479,18 @@ int	multiple_chains_all_builtins(t_array *sequence)
 		return (1);
 
 	t_chain chain6;
-	chain6.op = OP_AND;
+	chain6.op = OP_END;
 	if (arr_create(&chain6.commands, sizeof(t_command)))
 		return (1);
 
 	t_command command60;
-	command60.type = COMMAND_BUILTIN_UNSET;
-	if (mem_alloc_str_arr(2, &command60.data.builtin_unset.keys))
-		return (1);
-	char	*args60k[] = {"A", "B", NULL};
-	copy_args(command60.data.builtin_unset.keys, args60k);
-	command60.fd_in = 0;
-	command60.fd_out = 1;
+	command60.type = COMMAND_BUILTIN_EXIT;
+	command60.data.builtin_exit.arg = NULL;
+	command60.data.builtin_exit.too_many_args = 1;
 	if (arr_add(&chain6.commands, &command60))
 		return (1);
 
 	if (arr_add(sequence, &chain6))
-		return (1);
-
-
-	t_chain chain7;
-	chain7.op = OP_AND;
-	if (arr_create(&chain7.commands, sizeof(t_command)))
-		return (1);
-
-	t_command command70;
-	command70.type = COMMAND_BUILTIN_ENV;
-	command70.fd_in = 0;
-	command70.fd_out = 1;
-	if (arr_add(&chain7.commands, &command70))
-		return (1);
-
-	if (arr_add(sequence, &chain7))
-		return (1);
-
-	t_chain chain8;
-	chain8.op = OP_END;
-	if (arr_create(&chain8.commands, sizeof(t_command)))
-		return (8);
-
-	t_command command80;
-	command80.type = COMMAND_BUILTIN_EXIT;
-	command80.data.builtin_exit.arg = "";
-	command80.data.builtin_exit.too_many_args = 1;
-	command80.fd_in = 0;
-	command80.fd_out = 8;
-	if (arr_add(&chain8.commands, &command80))
-		return (8);
-
-	if (arr_add(sequence, &chain8))
 		return (1);
 
 	return (0);
