@@ -1,39 +1,28 @@
 #ifndef LEXERDEF_H
 # define LEXERDEF_H
 
-typedef enum e_token_type {
-	TOKEN_COMMAND,
-	TOKEN_ARG,
-	TOKEN_OPERAND,
-	TOKEN_REDIRECTION,
-	TOKEN_HEREDOC
-}	t_token_type;
+# include <stddef.h>
+# include "arraydef.h"
 
-typedef enum e_string_type {
-	STRING_NONE,
-	STRING_SINGLE,
-	STRING_DOUBLE,
-}	t_string_type;
-
-typedef enum e_lexer_mode {
-	MODE_COMMAND,
-	MODE_ARG,
-	MODE_OPERAND,
-	MODE_REDIRECTION,
-	MODE_HEREDOC
-}	t_lexer_mode;
-
-typedef struct s_token {
-	char			*str;
-	t_token_type	type;
-}	t_token;
-
-typedef struct s_lexer_state
+typedef enum e_quote
 {
-	t_lexer_mode	mode;
-	t_string_type	string_type;
-	int				is_escaped;
-}	t_lexer_state;
+	QUOTE_SINGLE = '\'',
+	QUOTE_DOUBLE = '"',
+	QUOTE_NONE = 0,
+}	t_quote;
 
+typedef struct s_fragment
+{
+	char	*str;
+	size_t	length;
+	t_quote	quote;
+}	t_fragment;
+
+typedef struct s_quote_index
+{
+	t_quote			quote;
+	unsigned long	index;
+	size_t			count;
+}	t_quote_index;
 
 #endif
