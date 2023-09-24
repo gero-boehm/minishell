@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <signal.h>
 #include "global.h"
 
 void	error(int code)
@@ -10,5 +9,5 @@ void	error(int code)
 
 void	error_fatal(void)
 {
-	kill(0, SIGTERM);
+	error(134);
 }

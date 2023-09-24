@@ -1,10 +1,7 @@
-
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
-#include <errno.h>
 #include "minishell.h"
 #include "env.h"
 #include "builtins.h"
@@ -33,186 +30,101 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 	return (1);
 }
 
-int	exec_builtin(t_command *command)
+void	exec_builtin(t_command *command)
 {
 	if (command->type == COMMAND_BUILTIN_ECHO)
-		return (builtin_echo(&command->data.builtin_echo));
+		builtin_echo(&command->data.builtin_echo);
 	else if (command->type == COMMAND_BUILTIN_CD)
-		return (builtin_cd(&command->data.builtin_cd));
+		builtin_cd(&command->data.builtin_cd);
 	else if (command->type == COMMAND_BUILTIN_PWD)
-		return (builtin_pwd());
+		builtin_pwd();
 	else if (command->type == COMMAND_BUILTIN_EXPORT)
-		return (builtin_export(&command->data.builtin_export));
+		builtin_export(&command->data.builtin_export);
 	else if (command->type == COMMAND_BUILTIN_UNSET)
-		return (builtin_unset(&command->data.builtin_unset));
+		builtin_unset(&command->data.builtin_unset);
 	else if (command->type == COMMAND_BUILTIN_ENV)
-		return (builtin_env());
+		builtin_env();
 	else if (command->type == COMMAND_BUILTIN_EXIT)
-		return (builtin_exit(&command->data.builtin_exit));
-	printf("(⊃｡•́‿•̀｡)⊃");
-	return (127);
+		builtin_exit();
 }
 
-int	cmd_is_external(t_command *cmd)
-{
-	return (cmd->type == COMMAND_EXTERNAL);
-}
-
-void	exec_external(t_command *cmd)
+int	exec_cmd(t_command *cmd)
 {
 	char		*paths_str;
 	t_array		paths;
 	char		**env;
 	char		*cmd_path;
 
-	if (env_get("PATH", &paths_str))
-		error_no_file_or_dir(cmd->data.external.args[0]);
-	if (str_split(paths_str, ':', &paths))
-		error_fatal();
-	if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-		error_command_not_found(cmd->data.external.args[0]);
-	if (env_get_all(&env))
-		error_fatal();
-	if (execve(cmd_path, cmd->data.external.args, env) == -1)
-	// TESTER: check if total failure is ok
-		error_fatal();
-}
-
-void	exec_cmd(t_command *cmd)
-{
-	if (cmd_is_external(cmd))
-		exec_external(cmd);
+	if (cmd->type == COMMAND_EXTERNAL)
+	{
+		//TODO: find proper exit code
+		if (env_get_all(&env))
+			error_fatal();
+		if (env_get("PATH", &paths_str))
+			error_fatal();
+		if (str_split(paths_str, ':', &paths))
+			error_fatal();
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+			error_command_not_found(cmd->data.external.args[0]);
+		execve(cmd_path, cmd->data.external.args, env);
+	}
 	else
-		error(exec_builtin(cmd));
-}
-
-int	super_duper(int fd_src, int fd_dst)
-{
-	printf("%d -> %d\n", fd_src, fd_dst);
-	if (dup2(fd_src, fd_dst) == -1)
-	{
-		printf("fail %d %s\n", errno, strerror(errno));
-		close(fd_src);
-		return (1);
-	}
-	close(fd_src);
+		exec_builtin(cmd);
 	return (0);
 }
 
-int	redirect(t_command *cmd, int input, int ports[2], int last)
+void	run_child(t_command *cmd, int port)
 {
-	// printf("ri %d ro %d, in %d out %d | last %d\n", cmd->fd_in, cmd->fd_out, input, ports[1], last);
-	// TODO: close input and ports[1] when stdio deviates
-	if (cmd->fd_in != STDIN_FILENO)
-	{
-		printf("1\n");
-		if (super_duper(cmd->fd_in, STDIN_FILENO))
-			return (1);
-	}
-	else if (input != STDIN_FILENO)
-	{
-		printf("2\n");
-		if (super_duper(input, STDIN_FILENO))
-			return (2);
-	}
-	if (cmd->fd_out != STDOUT_FILENO)
-	{
-		printf("3\n");
-		if (super_duper(cmd->fd_out, STDOUT_FILENO))
-			return (3);
-	}
-	else if (!last)
-	{
-		printf("4\n");
-		if (super_duper(ports[1], STDOUT_FILENO))
-			return (4);
-	}
-	return (0);
-}
-
-void	run_child(t_command *cmd, int input, int ports[2], int last)
-{
-	printf("=============\n");
-	if (!last)
-		close(ports[0]);
-	if (redirect(cmd, input, ports, last))
-		error_fatal();
+	// close(ports[0]);
+	// dup2("fd", STDIN);
+	// dup2(ports[1], STDOUT);
+	// close("fd");
+	// close(ports[1]);
+	// if ("fd" == -1)
+	// 	return ;
 	exec_cmd(cmd);
 }
 
-void	run_parent(t_command *cmd, int *fd, int ports[2])
+void	run_parent(t_command *command, int port)
 {
-	(void) cmd;
-
-	close(ports[1]);
-	close(*fd);
-	*fd = ports[0];
-	// close(cmd->fd_out);
-	// cmd->fd_out = ports[0];
+	// close(ports[1]);
+	// close("fd");
+	// "fd" = ports[0];
 }
 
-int	run_builtin_in_main(t_command *cmd)
-{
-	if (cmd->fd_out != STDOUT_FILENO)
-	{
-		printf("3\n");
-		if (super_duper(cmd->fd_out, STDOUT_FILENO))
-			error_fatal();
-	}
-	// printf("pre exec_builtin\n");
-	return (exec_builtin(cmd));
-}
-
+//TODO mem_alloc amount_cmds
 int	exec_chain(t_chain *chain)
 {
-	int				exit_code;
-	int				ports[2];
 	pid_t			pid;
-	t_command		*cmd;
-	unsigned long	i;
-	int				fd;
+	int				ports[2];
+	int				i;
+	// int				amount_cmds;
 	// t_raw_command	*raw;
-	int				stdin;
-	int				stdout;
+	t_command		*cmd;
+	int				exit_code;
 
+	// amount_cmds = arr_size(&chain->commands);
 	i = 0;
-	fd = 0;
-	// TODO: protect this crap
-	stdin = dup(STDIN_FILENO);
-	stdout = dup(STDOUT_FILENO);
 	while (i < arr_size(&chain->commands))
 	{
 		cmd = (t_command *) arr_get(&chain->commands, i);
 		// raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// cmd = 2nd_parse(raw);
-		if (i < arr_size(&chain->commands) - 1)
-		{
-			printf("create pipe\n");
-			if (pipe(ports) == -1)
-			{
-				printf("pipe failed\n");
-				error_fatal();
-			}
-		}
-		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
-			return (run_builtin_in_main(cmd));
+		// if (amount_cmds - 1 > i)
+		// 	if (pipe(ports) == -1)
+		// 		perror("pipe failed");
+		pid = fork();
+		if (pid == -1)
+			perror("fork failed");
+		if (pid == 0)
+			run_child(cmd, ports[1]);
 		else
-		{
-			pid = fork();
-			if (pid == -1)
-				perror("fork failed");
-			if (pid == 0)
-				run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
-			else
-				run_parent(cmd, &fd, ports);
-		}
+			run_parent(cmd, ports[0]);
 		i++;
 	}
 	//----------Parent process--------//
-	while (i--)
-		wait(&exit_code);
-	// TODO: protect this crap aswell
-	dup2(stdin, STDIN_FILENO);
-	dup2(stdout, STDOUT_FILENO);
+	wait(&exit_code);
+	//--------------------------------//
+	// close("fd");
 	return (exit_code);
 }

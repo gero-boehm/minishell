@@ -3,7 +3,7 @@
 #include "env.h"
 #include "cmddef.h"
 
-int	builtin_unset(t_builtin_unset *data_unset)
+void	builtin_unset(t_builtin_unset *data_unset)
 {
 	char	**keys;
 	int		i;
@@ -13,8 +13,8 @@ int	builtin_unset(t_builtin_unset *data_unset)
 	while (keys[i] != NULL)
 	{
 		if (env_remove(keys[i]))
-			return (134);
+			error(134);
 		i++;
 	}
-	return (0);
+	error(0);
 }

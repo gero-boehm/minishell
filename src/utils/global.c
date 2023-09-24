@@ -1,9 +1,29 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "globaldef.h"
+#include "cmddef.h"
 #include "array.h"
 #include "env.h"
-#include "cmddef.h"
+#include "str.h"
+#include "error.h"
+#include "path.h"
+
+static int	global_get_exec_path(char *exec_name, char **exec_path)
+{
+	char	*cwd;
+
+	if (*exec_name == '/')
+		return (str_dup(exec_name, exec_path));
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+		error_fatal();
+	// TODO: replace str_join with path normalizer
+	if (str_join(exec_path, "", cwd, "/", exec_name, NULL))
+		return (2);
+	if (path_normalize(exec_path))
+		return (3);
+	return (0);
+}
 
 t_global	*global(void)
 {
@@ -12,12 +32,7 @@ t_global	*global(void)
 	return (&global);
 }
 
-char	*shell_name(void)
-{
-	return ("☁️  miniheaven");
-}
-
-int	global_init(void)
+int	global_init(char *exec_name)
 {
 	if (arr_create(&global()->allocs, sizeof(void *)))
 		return (1);
@@ -25,8 +40,12 @@ int	global_init(void)
 		return (2);
 	if (arr_create(&global()->heredocs, sizeof(t_heredoc)))
 		return (3);
-	if (env_init())
+	if (arr_create(&global()->sequences, sizeof(t_array)))
 		return (4);
+	if (env_init())
+		return (5);
+	if (global_get_exec_path(exec_name, &global()->exec_path))
+		return (6);
 	return (0);
 }
 
