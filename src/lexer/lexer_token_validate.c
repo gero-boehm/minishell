@@ -61,6 +61,8 @@ int	lexer_tokens_validate(t_array *tokens)
 			return (return_syntax(current->str), 4);
 		if (lexer_token_subshell_depth(current, &depth))
 			return (return_syntax(current->str), 5);
+		if (i == arr_size(tokens) - 1 && token_is_any(current, TOKEN_OPERATOR | TOKEN_REDIRECTION))
+			return (return_syntax("newline"), 1);
 		last = current;
 		i++;
 	}
