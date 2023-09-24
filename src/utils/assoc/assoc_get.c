@@ -12,14 +12,11 @@ int	assoc_get(t_assoc *assoc, const char *key, char **value)
 	{
 		tmp = *(char **) arr_get(&assoc->keys, i);
 		if (str_eq(tmp, key))
-		{
-			*value = *(char **) arr_get(&assoc->values, i);
-			return (*value == NULL);
-		}
+			break ;
 		i++;
 	}
-	*value = NULL;
-	return (2);
+	*value = *(char **) arr_get(&assoc->values, i);
+	return (0);
 }
 
 char	*assoc_get_key_at(t_assoc *assoc, unsigned int index)

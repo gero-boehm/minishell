@@ -11,4 +11,7 @@ void	error_what_happened(void);
 
 void	return_syntax(char *token);
 
+void	return_syntax(char *token);
+void	error_syntax(char *token);
+
 #endif
