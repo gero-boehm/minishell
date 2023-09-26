@@ -11,22 +11,22 @@
 
 static void	ret_env_not_set(char *var)
 {
-	printf("%s: cd: %s not set\n", shell_name(), var);
+	// printf("%s: cd: %s not set\n", shell_name(), var);
 }
 
 static void	ret_dir_not_exist(char *dir)
 {
-	printf("%s: cd: %s: No such file or directory\n", shell_name(), dir);
+	// printf("%s: cd: %s: No such file or directory\n", shell_name(), dir);
 }
 
 static void	ret_permission_denied(char *dir)
 {
-	printf("%s: cd: %s: Permission denied\n", shell_name(), dir);
+	// printf("%s: cd: %s: Permission denied\n", shell_name(), dir);
 }
 
 static void	ret_not_dir(char *path)
 {
-	printf("%s: cd: %s: Not a directory\n", shell_name(), path);
+	// printf("%s: cd: %s: Not a directory\n", shell_name(), path);
 }
 
 static int	dir_check(char *path)
@@ -89,14 +89,11 @@ static int	builtin_cd_go_home(void)
 int	builtin_cd(t_builtin_cd *cd)
 {
 	char	*path;
-	char	**env;
 
 	path = cd->path;
-	if (env_get_all(&env))
-		error_fatal();
-	if (str_eq(path, "-"))
-		return (builtin_cd_go_back());
 	if (path == NULL)
 		return (builtin_cd_go_home());
+	if (str_eq(path, "-"))
+		return (builtin_cd_go_back());
 	return (dir_change(path));
 }
