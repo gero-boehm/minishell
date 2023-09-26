@@ -27,7 +27,7 @@ static int	global_get_exec_path(char *exec_name, char **exec_path)
 
 char	*shell_name(void)
 {
-	return ("☁️  miniheaven");
+	return ("miniheaven");
 }
 
 t_global	*global(void)

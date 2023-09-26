@@ -88,10 +88,10 @@ void	exec_cmd(t_command *cmd)
 
 int	super_duper(int fd_src, int fd_dst)
 {
-	printf("%d -> %d\n", fd_src, fd_dst);
+	// printf("%d -> %d\n", fd_src, fd_dst);
 	if (dup2(fd_src, fd_dst) == -1)
 	{
-		printf("fail %d %s\n", errno, strerror(errno));
+		// printf("fail %d %s\n", errno, strerror(errno));
 		close(fd_src);
 		return (1);
 	}
@@ -105,25 +105,21 @@ int	redirect(t_command *cmd, int input, int ports[2], int last)
 	// TODO: close input and ports[1] when stdio deviates
 	if (cmd->fd_in != STDIN_FILENO)
 	{
-		printf("1\n");
 		if (super_duper(cmd->fd_in, STDIN_FILENO))
 			return (1);
 	}
 	else if (input != STDIN_FILENO)
 	{
-		printf("2\n");
 		if (super_duper(input, STDIN_FILENO))
 			return (2);
 	}
 	if (cmd->fd_out != STDOUT_FILENO)
 	{
-		printf("3\n");
 		if (super_duper(cmd->fd_out, STDOUT_FILENO))
 			return (3);
 	}
 	else if (!last)
 	{
-		printf("4\n");
 		if (super_duper(ports[1], STDOUT_FILENO))
 			return (4);
 	}
@@ -132,7 +128,7 @@ int	redirect(t_command *cmd, int input, int ports[2], int last)
 
 void	run_child(t_command *cmd, int input, int ports[2], int last)
 {
-	printf("=============\n");
+	// printf("=============\n");
 	if (!last)
 		close(ports[0]);
 	if (redirect(cmd, input, ports, last))
@@ -155,7 +151,6 @@ int	run_builtin_in_main(t_command *cmd)
 {
 	if (cmd->fd_out != STDOUT_FILENO)
 	{
-		printf("3\n");
 		if (super_duper(cmd->fd_out, STDOUT_FILENO))
 			error_fatal();
 	}
@@ -189,10 +184,10 @@ static int	exec_chain(t_chain *chain)
 			error_fatal();
 		if (i < arr_size(&chain->commands) - 1)
 		{
-			printf("create pipe\n");
+			// printf("create pipe\n");
 			if (pipe(ports) == -1)
 			{
-				printf("pipe failed\n");
+				// printf("pipe failed\n");
 				error_fatal();
 			}
 		}
@@ -230,9 +225,9 @@ void	exec_sequence(t_array *sequence)
 	while (i < arr_size(sequence))
 	{
 		chain = (t_chain *) arr_get(sequence, i);
-		printf("\nchain %lu ============================================\n\n", i);
+		// printf("\nchain %lu ============================================\n\n", i);
 		last_return_chain = exec_chain(chain);
-		printf("\n");
+		// printf("\n");
 		// printf("chain %lu exit code %d\n", i, last_return_chain);
 		if (chain->op == OP_AND)
 			if (last_return_chain)
