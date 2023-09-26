@@ -8,5 +8,7 @@ char		*shell_name(void);
 int			global_init(char *exec_name);
 void		cleanup(void);
 void		success(void);
+void		set_exit_code(int code);
+
 
 #endif

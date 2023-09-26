@@ -14,6 +14,11 @@ static void	lexer_var_range_get(t_fragment *fragment, t_range *var_range)
 	while (1)
 	{
 		c = fragment->str[range_end(var_range)];
+		if (c == '?')
+		{
+			var_range->length++;
+			return ;
+		}
 		if (c == '\0' || str_char_in_set(boundaries, c))
 			return ;
 		var_range->length++;

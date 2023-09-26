@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "global.h"
 #include "assoc.h"
+#include "str.h"
 
 extern char	**environ;
 
@@ -14,6 +15,8 @@ int	env_init(void)
 
 int	env_get(const char *key, char **value)
 {
+	if (str_eq(key, "?"))
+		return (*value = global()->exit_code, 0);
 	return (assoc_get(&global()->env, key, value));
 }
 
