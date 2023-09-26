@@ -54,6 +54,7 @@ static int	dir_change(char *to)
 	if (dir_check(to))
 		return (1);
 	// TODO: insert path resolve function
+	// TODO: handle ~ to go home
 	env_get("PWD", &old_pwd);
 	if (env_set("PWD", to))
 		error_fatal();

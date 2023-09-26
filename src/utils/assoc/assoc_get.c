@@ -4,7 +4,7 @@
 
 int	assoc_get(t_assoc *assoc, const char *key, char **value)
 {
-	unsigned int	i;
+	unsigned long	i;
 	char			*tmp;
 
 	i = 0;

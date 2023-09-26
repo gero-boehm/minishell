@@ -119,12 +119,12 @@ void	sequence_print_raw(t_array *sequence, unsigned long index)
 	t_chain 		*chain;
 
 	i = 0;
-	printf(WHITE "\nsequence " GRAY "%lu [\n", index);
+	printf(RESET WHITE "\nsequence " GRAY "%lu [\n", index);
 	while(i < arr_size(sequence))
 	{
 		chain = (t_chain *) arr_get(sequence, i);
 		chain_print(chain, i);
 		i++;
 	}
-	printf("]\n");
+	printf("]\n" RESET);
 }

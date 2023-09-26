@@ -6,7 +6,7 @@
 # include "cmddef.h"
 
 int		prompt(char **input);
-int		exec_chain(t_chain *chain);
+void	exec_sequence(t_array *sequence);
 
 void	signals(void);
 void	ctrlc(int sig);

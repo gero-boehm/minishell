@@ -39,6 +39,7 @@ int		str_trim_start(char **str, char *set);
 int		str_trim_end(char **str, char *set);
 int		str_trim(char **str, char *set);
 
+int		str_arr_from_arr_range(t_array *arr, t_range *range, char ***strs);
 int		str_arr_from_arr(t_array *arr, char ***strs);
 int		str_from_arr_range(t_array *arr, t_range *range, char *sep, char **str);
 int		str_from_arr(t_array *arr, char *sep, char **str);
@@ -52,5 +53,7 @@ int		str_char_is_whitespace(char c);
 int		str_char_is_quote(char c);
 
 int		str_to_long_unsafe(const char *str, long *num);
+
+int		str_key_value(char *str, char **key, char **value);
 
 #endif

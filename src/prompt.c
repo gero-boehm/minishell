@@ -8,7 +8,8 @@
 int	prompt(char **input)
 {
 	using_history();
-	*input = readline("☁️ \e[0;96m miniheaven >>\033[0m");
+	// *input = readline("☁️ \e[0;96m miniheaven >>\033[0m");
+	*input = readline("miniheaven$ ");
 	if (*input == NULL)
 		return (1);
 	if (*input[0] != '\0')
