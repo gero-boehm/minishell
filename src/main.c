@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <limits.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include "globaldef.h"
@@ -24,6 +25,7 @@
 #include "number.h"
 #include "path.h"
 #include "minishell.h"
+#include "serializer.h"
 
 static int parse_input(char *str)
 {
@@ -113,8 +115,6 @@ void run(char *input)
 int	main(int argc, char **argv)
 {
 	char	*input;
-
-	(void) argc;
 
 	input = NULL;
 
