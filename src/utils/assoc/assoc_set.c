@@ -1,4 +1,4 @@
-#include "assocdef.h"
+#include "assoc.h"
 #include "array.h"
 
 static int	assoc_add(t_assoc *assoc, const char *key, char *value)
@@ -12,9 +12,9 @@ static int	assoc_add(t_assoc *assoc, const char *key, char *value)
 
 int	assoc_set(t_assoc *assoc, const char *key, char *value)
 {
-	unsigned int	index;
+	unsigned long	index;
 
-	if (arr_index(&assoc->keys, &key, &index))
+	if (assoc_index(assoc, key, &index))
 		return (assoc_add(assoc, key, value));
 	arr_set(&assoc->values, index, &value);
 	return (0);

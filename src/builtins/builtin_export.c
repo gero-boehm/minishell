@@ -42,6 +42,7 @@ int	builtin_export(t_builtin_export	*data_export)
 			return (1);
 		}
 		else if (env_set(keys[i], values[i]))
+			// TODO: check all builtins for this and replace with error_fatal()
 			return (134);
 		i++;
 	}

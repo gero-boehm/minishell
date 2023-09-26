@@ -5,7 +5,7 @@
 
 void	assoc_print(t_assoc *assoc)
 {
-	unsigned int	i;
+	unsigned long	i;
 	char			*key;
 	char			*value;
 

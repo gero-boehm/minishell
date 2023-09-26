@@ -40,6 +40,9 @@ static int parse_input(char *str)
 		return (3);
 	if (lexer_fragments_to_tokens(&fragments, &token_ranges, &tokens))
 		return (4);
+	if (arr_size(&tokens) == 0)
+		// TODO: free arrays
+		return (0);
 	lexer_tokens_classify(&tokens);
 	if (lexer_tokens_validate(&tokens))
 		return (5);
@@ -54,7 +57,8 @@ static int parse_input(char *str)
 
 int	main(int argc, char **argv)
 {
-	char *input;
+	char	*input;
+	t_array *sequence;
 
 	(void) argc;
 
@@ -67,8 +71,11 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// TODO: return early if tokens array is empty
+		// str_dup("exit", &input);
 		parse_input(input);
+
+		if (arr_size(&global()->sequences) == 0)
+			continue ;
 
 		for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
 		{
@@ -76,8 +83,13 @@ int	main(int argc, char **argv)
 			sequence_print_raw(sequence, i);
 		}
 
+		sequence = (t_array *) arr_get(&global()->sequences, arr_size(&global()->sequences) - 1);
+		exec_sequence(sequence);
+
+
 		// TODO: clear sequences array properly by getting pointer index in allocs array and freeing everything after that index
 		global()->sequences.size = 0;
+		// break;
 	}
 
 	cleanup();

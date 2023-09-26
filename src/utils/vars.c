@@ -4,7 +4,7 @@
 #include "str.h"
 #include "env.h"
 
-int	vars_expand_str(t_array *vars, char **str)
+int	vars_expand_str(t_array *vars, unsigned long index, char **str)
 {
 	unsigned long	i;
 	t_range			*var;
@@ -14,6 +14,8 @@ int	vars_expand_str(t_array *vars, char **str)
 	while (i--)
 	{
 		var = (t_range *) arr_get(vars, i);
+		if (var->meta.var_data.index != index)
+			continue ;
 		if (env_get(var->meta.var_data.key, &value))
 			continue ;
 		if (str_sub_range(str, var, value))

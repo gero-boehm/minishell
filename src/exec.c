@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -13,6 +12,7 @@
 #include "str.h"
 #include "memory.h"
 #include "error.h"
+#include "converter.h"
 
 static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 {
@@ -49,7 +49,7 @@ int	exec_builtin(t_command *command)
 		return (builtin_env());
 	else if (command->type == COMMAND_BUILTIN_EXIT)
 		return (builtin_exit(&command->data.builtin_exit));
-	printf("(⊃｡•́‿•̀｡)⊃");
+	printf("(⊃｡•́‿•̀｡)⊃\n");
 	return (127);
 }
 
@@ -163,28 +163,30 @@ int	run_builtin_in_main(t_command *cmd)
 	return (exec_builtin(cmd));
 }
 
-int	exec_chain(t_chain *chain)
+static int	exec_chain(t_chain *chain)
 {
 	int				exit_code;
 	int				ports[2];
 	pid_t			pid;
-	t_command		*cmd;
+	t_raw_command	*raw;
+	t_command		cmd;
 	unsigned long	i;
 	int				fd;
-	// t_raw_command	*raw;
 	int				stdin;
 	int				stdout;
 
 	i = 0;
 	fd = 0;
-	// TODO: protect this crap
+	// TODO: protect this crap, also rename vars cause they seem to be replaced by compiler (see debug vars)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
 	while (i < arr_size(&chain->commands))
 	{
-		cmd = (t_command *) arr_get(&chain->commands, i);
-		// raw = (t_raw_command *) arr_get(&chain->commands, i);
-		// cmd = 2nd_parse(raw);
+		// cmd = (t_command *) arr_get(&chain->commands, i);
+		raw = (t_raw_command *) arr_get(&chain->commands, i);
+		// TODO: figure out how to handle invalid fds. here to check for it? should it be before or after fork?
+		if (converter_convert(raw, &cmd))
+			error_fatal();
 		if (i < arr_size(&chain->commands) - 1)
 		{
 			printf("create pipe\n");
@@ -194,17 +196,18 @@ int	exec_chain(t_chain *chain)
 				error_fatal();
 			}
 		}
-		if (arr_size(&chain->commands) == 1 && cmd->type != COMMAND_EXTERNAL)
-			return (run_builtin_in_main(cmd));
+		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
+			return (run_builtin_in_main(&cmd));
 		else
 		{
 			pid = fork();
 			if (pid == -1)
+				// TODO: handle error correctly. throw fatal error?
 				perror("fork failed");
 			if (pid == 0)
-				run_child(cmd, fd, ports, i == arr_size(&chain->commands) - 1);
+				run_child(&cmd, fd, ports, i == arr_size(&chain->commands) - 1);
 			else
-				run_parent(cmd, &fd, ports);
+				run_parent(&cmd, &fd, ports);
 		}
 		i++;
 	}
@@ -215,4 +218,28 @@ int	exec_chain(t_chain *chain)
 	dup2(stdin, STDIN_FILENO);
 	dup2(stdout, STDOUT_FILENO);
 	return (exit_code);
+}
+
+void	exec_sequence(t_array *sequence)
+{
+	unsigned long	i;
+	int				last_return_chain;
+	t_chain			*chain;
+
+	i = 0;
+	while (i < arr_size(sequence))
+	{
+		chain = (t_chain *) arr_get(sequence, i);
+		printf("\nchain %lu ============================================\n\n", i);
+		last_return_chain = exec_chain(chain);
+		printf("\n");
+		// printf("chain %lu exit code %d\n", i, last_return_chain);
+		if (chain->op == OP_AND)
+			if (last_return_chain)
+				error(0);
+		if (chain->op == OP_OR)
+			if (!last_return_chain)
+				error(0);
+		i++;
+	}
 }

@@ -8,6 +8,7 @@ extern char	**environ;
 
 int	env_init(void)
 {
+	// TODO: variable export can have mutiple '=' in succession. meaning A==5 with have A as key and =5 as value. make sure splitting the env works correctly in this case
 	return (assoc_from_str_arr(&global()->env, environ));
 }
 

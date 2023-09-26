@@ -4,6 +4,8 @@
 
 static int lexer_token_invalid_op_or_redir(t_token *current, t_token *last)
 {
+	if (token_is(last, TOKEN_OPENING) && token_is(current, TOKEN_OPERATOR))
+		return (1);
 	if (!token_is_any(last, TOKEN_OPERATOR | TOKEN_REDIRECTION))
 		return (0);
 	return (token_is_any(current, TOKEN_OPERATOR | TOKEN_REDIRECTION));
