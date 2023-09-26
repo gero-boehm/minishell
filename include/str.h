@@ -56,4 +56,6 @@ int		str_to_long_unsafe(const char *str, long *num);
 
 int		str_key_value(char *str, char **key, char **value);
 
+int		str_starts_with(char *str, const char *match);
+
 #endif

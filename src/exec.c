@@ -59,6 +59,11 @@ int	cmd_is_external(t_command *cmd)
 	return (cmd->type == COMMAND_EXTERNAL);
 }
 
+int	is_local_script(char *cmd)
+{
+	return (str_starts_with(cmd, "/") || str_starts_with(cmd, "./") || str_starts_with(cmd, "../"));
+}
+
 void	exec_external(t_command *cmd)
 {
 	char		*paths_str;
@@ -66,12 +71,18 @@ void	exec_external(t_command *cmd)
 	char		**env;
 	char		*cmd_path;
 
-	if (env_get("PATH", &paths_str))
-		error_no_file_or_dir(cmd->data.external.args[0]);
-	if (str_split(paths_str, ':', &paths))
-		error_fatal();
-	if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-		error_command_not_found(cmd->data.external.args[0]);
+	if (is_local_script(cmd->data.external.args[0]))
+		cmd_path = cmd->data.external.args[0];
+	else
+	{
+		if (env_get("PATH", &paths_str))
+			error_no_file_or_dir(cmd->data.external.args[0]);
+		if (str_split(paths_str, ':', &paths))
+			error_fatal();
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+			error_command_not_found(cmd->data.external.args[0]);
+		arr_free_ptr(&paths);
+	}
 	if (env_get_all(&env))
 		error_fatal();
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)

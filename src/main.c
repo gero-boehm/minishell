@@ -3,6 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <limits.h>
+#include <unistd.h>
 #include <sys/stat.h>
 #include "globaldef.h"
 #include "global.h"
@@ -23,6 +24,7 @@
 #include "number.h"
 #include "path.h"
 #include "minishell.h"
+#include "serializer.h"
 
 static int parse_input(char *str)
 {
@@ -58,9 +60,21 @@ static int parse_input(char *str)
 int	main(int argc, char **argv)
 {
 	char	*input;
+	long	sequence_id;
 	t_array *sequence;
 
-	(void) argc;
+	if (argc == 2)
+	{
+		if (str_to_long_unsafe(argv[1], &sequence_id))
+			error_fatal();
+		printf("id %ld\n", sequence_id);
+		sequence = (t_array *) arr_get(&global()->sequences, (unsigned long) sequence_id);
+		sequence_print_raw(sequence, sequence_id);
+		exec_sequence(sequence);
+
+		cleanup();
+		return (0);
+	}
 
 	input = NULL;
 
@@ -77,13 +91,19 @@ int	main(int argc, char **argv)
 		if (arr_size(&global()->sequences) == 0)
 			continue ;
 
-		// for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
-		// {
-		// 	t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
-		// 	sequence_print_raw(sequence, i);
-		// }
+		for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
+		{
+			t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
+			sequence_print_raw(sequence, i);
+		}
 
 		sequence = (t_array *) arr_get(&global()->sequences, arr_size(&global()->sequences) - 1);
+
+		char *str;
+		serializer_serialize(sequence, &str);
+		printf("\n\n%s\n", str);
+		abort();
+
 		exec_sequence(sequence);
 
 
