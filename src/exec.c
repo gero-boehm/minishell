@@ -13,6 +13,7 @@
 #include "memory.h"
 #include "error.h"
 #include "converter.h"
+#include "global.h"
 
 static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 {
@@ -227,6 +228,7 @@ void	exec_sequence(t_array *sequence)
 		chain = (t_chain *) arr_get(sequence, i);
 		// printf("\nchain %lu ============================================\n\n", i);
 		last_return_chain = exec_chain(chain);
+		set_exit_code(last_return_chain);
 		// printf("\n");
 		// printf("chain %lu exit code %d\n", i, last_return_chain);
 		if (chain->op == OP_AND)
