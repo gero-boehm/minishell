@@ -77,11 +77,11 @@ int	main(int argc, char **argv)
 		if (arr_size(&global()->sequences) == 0)
 			continue ;
 
-		for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
-		{
-			t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
-			sequence_print_raw(sequence, i);
-		}
+		// for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
+		// {
+		// 	t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
+		// 	sequence_print_raw(sequence, i);
+		// }
 
 		sequence = (t_array *) arr_get(&global()->sequences, arr_size(&global()->sequences) - 1);
 		exec_sequence(sequence);
