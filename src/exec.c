@@ -87,7 +87,8 @@ void	exec_external(t_command *cmd)
 	if (env_get_all(&env))
 		error_fatal();
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)
-		error_fatal();
+		error(127);
+		// error_fatal();
 	// TESTER: check if total failure is ok
 }
 
