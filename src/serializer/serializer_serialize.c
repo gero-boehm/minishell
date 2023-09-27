@@ -6,7 +6,7 @@
 #include "range.h"
 #include "base64.h"
 
-static int insert_literal(const char *str, t_array *lines)
+static int append_str(const char *str, t_array *lines)
 {
 	char *dup;
 
@@ -21,7 +21,7 @@ static int serializer_serialize_unsigned_long(const char *key, unsigned long *va
 {
 	char	*str;
 
-	if (insert_literal(key, lines))
+	if (append_str(key, lines))
 		return (1);
 	if (lutoa(value, &str))
 		return (3);
@@ -30,9 +30,46 @@ static int serializer_serialize_unsigned_long(const char *key, unsigned long *va
 	return (0);
 }
 
+static int serializer_serialize_var(t_range *var, t_array *lines)
+{
+	if (append_str("var", lines))
+		return (1);
+	if (serializer_serialize_unsigned_long("start", range_start(var), lines))
+		return (2);
+	if (serializer_serialize_unsigned_long("length", range_length(var), lines))
+		return (3);
+	if (serializer_serialize_unsigned_long("index", var->meta.var_data.index, lines))
+		return (4);
+	if (append_str("key", lines))
+		return (1);
+	if (arr_add(lines, &var->meta.var_data.key))
+		return (6);
+	return (0);
+}
+
+static int serializer_serialize_vars(t_array *vars, const char *vars_name, t_array *lines)
+{
+	unsigned long	i;
+	t_range			*var;
+
+	if (arr_size(vars) == 0)
+		return (0);
+	if (append_str(vars_name, lines))
+		return (1);
+	i = 0;
+	while (i < arr_size(vars))
+	{
+		var = (t_range *) arr_get(vars, i);
+		if (serializer_serialize_var(var, lines))
+			return (2);
+		i++;
+	}
+	return (0);
+}
+
 static int serializer_serialize_arg(char *arg, t_array *lines)
 {
-	if (insert_literal("arg", lines))
+	if (append_str("arg", lines))
 		return (1);
 	if (arr_add(lines, &arg))
 		return (2);
@@ -44,7 +81,7 @@ static int serializer_serialize_args(t_array *args, t_array *lines)
 	unsigned long	i;
 	char			*arg;
 
-	if (insert_literal("args", lines))
+	if (append_str("args", lines))
 		return (1);
 	i = 0;
 	while (i < arr_size(args))
@@ -59,15 +96,32 @@ static int serializer_serialize_args(t_array *args, t_array *lines)
 
 static int serializer_serialize_file_type(t_file_type type, t_array *lines)
 {
-	if (insert_literal("type", lines))
+	if (append_str("type", lines))
 		return (1);
-	if (type == FILE_IN && insert_literal("FILE_IN", lines))
+	if (type == FILE_IN && append_str("FILE_IN", lines))
 		return (2);
-	if (type == FILE_OUT && insert_literal("FILE_OUT", lines))
+	if (type == FILE_OUT && append_str("FILE_OUT", lines))
 		return (3);
-	if (type == FILE_HEREDOC && insert_literal("FILE_HEREDOC", lines))
+	if (type == FILE_HEREDOC && append_str("FILE_HEREDOC", lines))
 		return (4);
-	if (type == FILE_APPEND && insert_literal("FILE_APPEND", lines))
+	if (type == FILE_APPEND && append_str("FILE_APPEND", lines))
+		return (5);
+	return (0);
+}
+
+static int serializer_serialize_file_data_heredoc(t_heredoc *heredoc, t_array *lines)
+{
+	char	*encoded;
+
+	if (append_str("heredoc", lines))
+		return (1);
+	if (append_str("str", lines))
+		return (2);
+	if (base64_encode(heredoc->str, &encoded))
+		return (3);
+	if (arr_add(lines, &encoded))
+		return (4);
+	if (serializer_serialize_vars(&heredoc->vars, "vars", lines))
 		return (5);
 	return (0);
 }
@@ -76,11 +130,11 @@ static int serializer_serialize_file_data(t_file *file, t_array *lines)
 {
 	char	*id;
 
-	if (insert_literal("data", lines))
+	if (append_str("data", lines))
 		return (1);
 	if (file->type == FILE_HEREDOC)
-		return (serializer_serialize_unsigned_long("id", file->data.id, lines) * 2);
-	if (insert_literal("path", lines))
+		return (serializer_serialize_file_data_heredoc(&file->data.heredoc, lines) * 2);
+	if (append_str("path", lines))
 		return (3);
 	if (arr_add(lines, &file->data.path))
 		return (4);
@@ -89,7 +143,7 @@ static int serializer_serialize_file_data(t_file *file, t_array *lines)
 
 static int serializer_serialize_file(t_file *file, t_array *lines)
 {
-	if (insert_literal("file", lines))
+	if (append_str("file", lines))
 		return (1);
 	if (serializer_serialize_file_type(file->type, lines))
 		return (2);
@@ -103,7 +157,7 @@ static int serializer_serialize_files(t_array *files, t_array *lines)
 	unsigned long	i;
 	t_file			*file;
 
-	if (insert_literal("files", lines))
+	if (append_str("files", lines))
 		return (1);
 	i = 0;
 	while (i < arr_size(files))
@@ -116,46 +170,9 @@ static int serializer_serialize_files(t_array *files, t_array *lines)
 	return (0);
 }
 
-static int serializer_serialize_var(t_range *var, t_array *lines)
-{
-	if (insert_literal("var", lines))
-		return (1);
-	if (serializer_serialize_unsigned_long("start", range_start(var), lines))
-		return (2);
-	if (serializer_serialize_unsigned_long("length", range_length(var), lines))
-		return (3);
-	if (serializer_serialize_unsigned_long("index", var->meta.var_data.index, lines))
-		return (4);
-	if (insert_literal("key", lines))
-		return (1);
-	if (arr_add(lines, &var->meta.var_data.key))
-		return (6);
-	return (0);
-}
-
-static int serializer_serialize_vars(t_array *vars, const char *vars_name, t_array *lines)
-{
-	unsigned long	i;
-	t_range			*var;
-
-	if (arr_size(vars) == 0)
-		return (0);
-	if (insert_literal(vars_name, lines))
-		return (1);
-	i = 0;
-	while (i < arr_size(vars))
-	{
-		var = (t_range *) arr_get(vars, i);
-		if (serializer_serialize_var(var, lines))
-			return (2);
-		i++;
-	}
-	return (0);
-}
-
 static int serializer_serialize_command(t_raw_command *command, t_array *lines)
 {
-	if (insert_literal("command", lines))
+	if (append_str("command", lines))
 		return (1);
 	if (serializer_serialize_args(&command->args, lines))
 		return (2);
@@ -173,7 +190,7 @@ static int serializer_serialize_commands(t_array *commands, t_array *lines)
 	unsigned long	i;
 	t_raw_command	*command;
 
-	if (insert_literal("commands", lines))
+	if (append_str("commands", lines))
 		return (1);
 	i = 0;
 	while (i < arr_size(commands))
@@ -188,20 +205,20 @@ static int serializer_serialize_commands(t_array *commands, t_array *lines)
 
 static int serializer_serialize_chain_op(t_op op, t_array *lines)
 {
-	if (insert_literal("op", lines))
+	if (append_str("op", lines))
 		return (1);
-	if (op == OP_AND && insert_literal("OP_AND", lines))
+	if (op == OP_AND && append_str("OP_AND", lines))
 		return (2);
-	if (op == OP_OR && insert_literal("OP_OR", lines))
+	if (op == OP_OR && append_str("OP_OR", lines))
 		return (3);
-	if (op == OP_END && insert_literal("OP_END", lines))
+	if (op == OP_END && append_str("OP_END", lines))
 		return (4);
 	return (0);
 }
 
 static int serializer_serialize_chain(t_chain *chain, t_array *lines)
 {
-	if (insert_literal("chain", lines))
+	if (append_str("chain", lines))
 		return (1);
 	if (serializer_serialize_commands(&chain->commands, lines))
 		return (2);
@@ -238,6 +255,7 @@ int	serializer_serialize(t_array *sequence, char **str)
 		return (2);
 	if (base64_encode(raw, str))
 		return (3);
+	// TODO: free lines array and make sure all instances where strings are added to lines are duped to avoid double frees
 	mem_free(raw);
 	return (0);
 }

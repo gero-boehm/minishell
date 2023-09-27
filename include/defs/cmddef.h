@@ -41,8 +41,6 @@ typedef enum e_file_type {
 }	t_file_type;
 
 typedef struct s_heredoc {
-	int		available;
-	int		expand;
 	char	*str;
 	t_array	vars;
 }	t_heredoc;
@@ -91,8 +89,8 @@ typedef struct s_command {
 }	t_command;
 
 typedef union u_file_data {
-	unsigned int	id;
-	char			*path;
+	t_heredoc	heredoc;
+	char		*path;
 }	t_file_data;
 
 typedef struct s_file {

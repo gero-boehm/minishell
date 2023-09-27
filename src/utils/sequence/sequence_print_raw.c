@@ -13,21 +13,21 @@
 #define GRAY			"\033[38;5;245m"
 #define RESET			"\033[0m"
 
-static void var_print(t_range *var, unsigned long index)
+static void var_print(t_range *var, char *indent, unsigned long index)
 {
-	printf(RESET WHITE "        var " GRAY "%lu {\n", index);
-	printf("          key:   %s'%s'%s\n", ORANGE, var->meta.var_data.key, GRAY);
-	printf("          index: %s%lu%s\n", PURPLE, var->meta.var_data.index, GRAY);
-	printf("          range: %s%lu..%lu%s\n", PURPLE, range_start(var), range_end(var), GRAY);
-	printf("        }\n");
+	printf(RESET WHITE "%svar " GRAY "%lu {\n", indent, index);
+	printf("  %skey:   %s'%s'%s\n", indent, ORANGE, var->meta.var_data.key, GRAY);
+	printf("  %sindex: %s%lu%s\n", indent, PURPLE, var->meta.var_data.index, GRAY);
+	printf("  %srange: %s%lu..%lu%s\n", indent, PURPLE, range_start(var), range_end(var), GRAY);
+	printf("%s}\n", indent);
 }
 
-static void vars_print(t_array *vars)
+static void vars_print(t_array *vars, char *indent)
 {
 	for (unsigned long i = 0; i < arr_size(vars); i++)
 	{
 		t_range *var = (t_range *) arr_get(vars, i);
-		var_print(var, i);
+		var_print(var, indent, i);
 	}
 }
 
@@ -50,7 +50,12 @@ static void file_print(t_file *file, unsigned long index)
 	printf(RESET WHITE "        file " GRAY "%lu {\n", index);
 	printf("          type: %s%s%s\n", PURPLE, types[file->type], GRAY);
 	if (file->type == FILE_HEREDOC)
-		printf("          id:   %s%u%s\n", PURPLE, file->data.id, GRAY);
+	{
+		printf("          str:  %s'%s'%s\n", ORANGE, file->data.heredoc.str, GRAY);
+		printf("          vars: [\n");
+		vars_print(&file->data.heredoc.vars, "            ");
+		printf("          ]\n");
+	}
 	else
 		printf("          path: %s'%s'%s\n", ORANGE, file->data.path, GRAY);
 	printf("        }\n");
@@ -71,13 +76,13 @@ static void	command_print(t_raw_command *command, unsigned long index)
 	printf("      args:       ");
 	args_print(&command->args);
 	printf("      vars_args:  [\n");
-	vars_print(&command->vars_args);
+	vars_print(&command->vars_args, "        ");
 	printf("      ]\n");
 	printf("      files:      [\n");
 	files_print(&command->files);
 	printf("      ]\n");
 	printf("      vars_files: [\n");
-	vars_print(&command->vars_files);
+	vars_print(&command->vars_files, "        ");
 	printf("      ]\n");
 	// printf("      fd_in:   %s%d%s\n", PURPLE, data_external->fd_in, GRAY);
 	// printf("      fd_out:  %s%d%s\n", PURPLE, data_external->fd_out, GRAY);
