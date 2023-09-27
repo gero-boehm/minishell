@@ -32,7 +32,7 @@ int	builtin_export(t_builtin_export	*data_export)
 	{
 		if (contains_invalid_sign(keys[i]))
 		{
-			printf("bash: export: `%s=%s`: not a valid identifier\n", keys[i], values[i]);
+			// printf("bash: export: `%s=%s`: not a valid identifier\n", keys[i], values[i]);
 			return (1);
 		}
 		else if (keys[i][0] == '-')
