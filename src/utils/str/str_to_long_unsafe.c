@@ -18,6 +18,8 @@ int	str_to_long_unsafe(const char *str, long *num)
 	else if (*str == '+')
 		str++;
 	*num = 0;
+	if (*str == '\0')
+		return (1);
 	while (*str != '\0')
 	{
 		if (!is_digit(*str))

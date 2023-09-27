@@ -121,11 +121,14 @@ test_from_file() {
 				echo -ne "\n===========================\n"
 				echo -e "\033[0;34mSTD_OUT (minishell):\033[m "
 				echo -ne "$minishell_output\n"
+				echo -ne "EXIT: $exit_minishell\n"
 
 
 				# Print bash output
 				echo -e "\033[0;34mSTD_OUT (bash):\033[m "
 				echo -ne "$bash_output\n"
+				echo -ne "EXIT: $exit_bash\n"
+
 
 				# Compare the contents of minishell and bash outputs
 				if ! diff -q <(echo "$minishell_output") <(echo "$bash_output") >/dev/null ; then

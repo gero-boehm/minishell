@@ -80,14 +80,16 @@ void	exec_external(t_command *cmd)
 		if (str_split(paths_str, ':', &paths))
 			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-			error_command_not_found(cmd->data.external.args[0]);
+			error(127);
+			// error_command_not_found(cmd->data.external.args[0]);
 		arr_free_ptr(&paths);
 	}
 	if (env_get_all(&env))
 		error_fatal();
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)
+		error(127);
+		// error_fatal();
 	// TESTER: check if total failure is ok
-		error_fatal();
 }
 
 void	exec_cmd(t_command *cmd)
