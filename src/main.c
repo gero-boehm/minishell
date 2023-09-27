@@ -97,7 +97,7 @@ void run(char *input)
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	parse_input(input, &sequence);
 
-	// sequence_print_raw(&sequence, 0);
+	sequence_print_raw(&sequence, 0);
 
 	// abort();
 
@@ -150,6 +150,15 @@ int	main(int argc, char **argv)
 	global_init(argv[0]);
 	signals();
 
+	// char	*key;
+	// char	*value;
+
+	// if (str_key_value("====", &key, &value))
+	// 	return (1);
+	// printf("key '%s'\n", key);
+	// printf("value '%s'\n", value);
+	// abort();
+
 	// TODO: free all memory related to sequences after each iteration of following while loops
 
 	if (argc == 2)
@@ -172,7 +181,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("cat < $HOME/test", &input);
+		// str_dup("cat <<eof", &input);
 		run(input);
 		// abort();
 	}
