@@ -26,6 +26,7 @@
 #include "path.h"
 #include "minishell.h"
 #include "serializer.h"
+#include "base64.h"
 
 static int parse_input(char *str)
 {
@@ -105,6 +106,19 @@ void run(char *input)
 	// }
 
 	sequence = (t_array *) arr_get(&global()->sequences, arr_size(&global()->sequences) - 1);
+
+	sequence_print_raw(sequence, 0);
+
+	char *str;
+	serializer_serialize(sequence, &str);
+	printf("\n\n%s\n\n", str);
+
+	char *decoded;
+	base64_decode(str, &decoded);
+	printf("\n\n%s\n\n", decoded);
+
+	abort();
+
 	exec_sequence(sequence);
 
 
