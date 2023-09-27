@@ -1,15 +1,18 @@
 #include "str.h"
 #include "memory.h"
 
+#include <stdio.h>
+
 static int	base64_get_output_str(const char *input, size_t len, char **output)
 {
 	size_t			out_len;
 
-	out_len = (len * 3) / 4;
+	out_len = (len / 4) * 3;
     if (input[len - 1] == '=')
 		out_len--;
     if (input[len - 2] == '=')
 		out_len--;
+	printf("outlen: %zu\n", out_len);
 	return (mem_alloc_str(out_len, output));
 }
 
@@ -32,8 +35,8 @@ int base64_decode(const char *input, char **output)
 {
 	int 			i;
 	int 			j;
-	int 			k;
-	int 			len;
+	size_t 			len;
+	int 			bits;
 	unsigned int	bytes;
 
 	len = str_len(input);
@@ -41,23 +44,21 @@ int base64_decode(const char *input, char **output)
 		return (1);
 	i = 0;
 	j = 0;
-	while (i < len) {
-		k = 0;
-		bytes = 0;
-		while (k < 4 && i < len) {
-			if (input[i] != '=') {
-				bytes = bytes << 6;
-				bytes += base64_value(input[i]);
-			} else {
-				bytes = bytes << (6 * (4 - k));
-				break;
-			}
-			k++;
-			i++;
-		}
-		(*output)[j++] = (bytes >> 16) & 0xFF;
-		if (input[i - 2] != '=') (*output)[j++] = (bytes >> 8) & 0xFF;
-		if (input[i - 1] != '=') (*output)[j++] = bytes & 0xFF;
-	}
+	bits = 0;
+	bytes = 0;
+	while (i < len)
+	{
+        if (input[i] != '=')
+		{
+            bytes = (bytes << 6) + base64_value(input[i]);
+            bits += 6;
+        }
+        while (bits >= 8)
+		{
+            (*output)[j++] = (bytes >> (bits - 8)) & 0xFF;
+            bits -= 8;
+        }
+        i++;
+    }
 	return (0);
 }

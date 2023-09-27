@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "cmddef.h"
 #include "array.h"
 #include "str.h"
@@ -8,12 +9,15 @@ int	line_matches(t_array *lines, unsigned long index, const char *match)
 {
 	char	*line;
 
+	if (index >= arr_size(lines))
+		return (0);
 	line = *(char **) arr_get(lines, index);
 	return (str_eq(line, match));
 }
 
-int	deserializer_deseriaize_args(t_array *lines, unsigned long *index, t_array *args)
+int	deserializer_deserialize_args(t_array *lines, unsigned long *index, t_array *args)
 {
+	char	*line;
 	char	*arg;
 
 	if (!line_matches(lines, *index, "args"))
@@ -24,10 +28,11 @@ int	deserializer_deseriaize_args(t_array *lines, unsigned long *index, t_array *
 		if (!line_matches(lines, *index, "arg"))
 			break ;
 		(*index)++;
-		arg = *(char **) arr_get(lines, *index);
-		// TODO: dup arg to prevent segfault when freeing lines array
-		if (arr_add(args, &arg))
+		line = *(char **) arr_get(lines, *index);
+		if (str_dup(line, &arg))
 			return (1);
+		if (arr_add(args, &arg))
+			return (2);
 		(*index)++;
 	}
 	return (0);
@@ -73,6 +78,7 @@ int	deserializer_deserialize_file_data(t_array *lines, unsigned long *index, t_f
 			return (2);
 		data->path = path;
 	}
+	(*index)++;
 	return (0);
 }
 
@@ -82,7 +88,7 @@ int	deserializer_deserialize_file(t_array *lines, unsigned long *index, t_file *
 	return (deserializer_deserialize_file_data(lines, index, &file->data));
 }
 
-int	deserializer_deseriaize_files(t_array *lines, unsigned long *index, t_array *files)
+int	deserializer_deserialize_files(t_array *lines, unsigned long *index, t_array *files)
 {
 	t_file	file;
 
@@ -94,9 +100,74 @@ int	deserializer_deseriaize_files(t_array *lines, unsigned long *index, t_array 
 		if (!line_matches(lines, *index, "file"))
 			break ;
 		(*index)++;
-		if (deserializer_deseriaize_file(lines, index, &file))
+		if (deserializer_deserialize_file(lines, index, &file))
 			return (1);
 		if (arr_add(files, &file))
+			return (2);
+	}
+	return (0);
+}
+
+int	deserializer_deserialize_var(t_array *lines, unsigned long *index, t_range *var)
+{
+	char	*line;
+	char	*key;
+
+	if (line_matches(lines, *index, "start"))
+	{
+		(*index)++;
+		line = *(char **) arr_get(lines, *index);
+		// TODO: replace with proper function for type
+		if (str_to_long_unsafe(line, &var->start))
+			return (1);
+		(*index)++;
+	}
+	if (line_matches(lines, *index, "length"))
+	{
+		(*index)++;
+		line = *(char **) arr_get(lines, *index);
+		// TODO: replace with proper function for type
+		if (str_to_long_unsafe(line, &var->length))
+			return (2);
+		(*index)++;
+	}
+	if (line_matches(lines, *index, "index"))
+	{
+		(*index)++;
+		line = *(char **) arr_get(lines, *index);
+		// TODO: replace with proper function for type
+		if (str_to_long_unsafe(line, &var->meta.var_data.index))
+			return (3);
+		(*index)++;
+	}
+	if (line_matches(lines, *index, "key"))
+	{
+		(*index)++;
+		line = *(char **) arr_get(lines, *index);
+		// TODO: replace with proper function for type
+		if (str_dup(line, &key))
+			return (4);
+		var->meta.var_data.key = key;
+		(*index)++;
+	}
+	return (0);
+}
+
+int	deserializer_deserialize_vars(t_array *lines, unsigned long *index, const char *vars_name, t_array *vars)
+{
+	t_range	var;
+
+	if (!line_matches(lines, *index, vars_name))
+		return (0);
+	(*index)++;
+	while (1)
+	{
+		if (!line_matches(lines, *index, "var"))
+			break ;
+		(*index)++;
+		if (deserializer_deserialize_var(lines, index, &var))
+			return (1);
+		if (arr_add(vars, &var))
 			return (2);
 	}
 	return (0);
@@ -112,6 +183,15 @@ int	deserializer_deserialize_command(t_array *lines, unsigned long *index, t_raw
 		return (3);
 	if (arr_create(&command->vars_files, sizeof(t_range)))
 		return (4);
+	if (deserializer_deserialize_args(lines, index, &command->args))
+		return (5);
+	if (deserializer_deserialize_files(lines, index, &command->files))
+		return (6);
+	if (deserializer_deserialize_vars(lines, index, "vars_args", &command->vars_args))
+		return (7);
+	if (deserializer_deserialize_vars(lines, index, "vars_files", &command->vars_files))
+		return (8);
+	return (0);
 }
 
 int	deserializer_deserialize_commands(t_array *lines, unsigned long *index, t_array *commands)
@@ -181,14 +261,16 @@ int	deserializer_deserialize(const char *str, t_array *sequence)
 {
 	char			*raw;
 	unsigned long	index;
-	t_array			*lines;
+	t_array			lines;
 
+	printf("\n\ndeserializer_deserialize\n");
 	if (base64_decode(str, &raw))
 		return (1);
 	if (arr_create(&lines, sizeof(char *)))
 		return (2);
 	if (str_split(raw, '\n', &lines))
 		return (3);
+	arr_print_str(&lines);
 	index = 0;
 	if (deserializer_deserialize_sequence(&lines, &index, sequence))
 		return (4);
