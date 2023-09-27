@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "cmddef.h"
 #include "array.h"
 #include "str.h"
@@ -263,14 +262,12 @@ int	deserializer_deserialize(const char *str, t_array *sequence)
 	unsigned long	index;
 	t_array			lines;
 
-	printf("\n\ndeserializer_deserialize\n");
 	if (base64_decode(str, &raw))
 		return (1);
 	if (arr_create(&lines, sizeof(char *)))
 		return (2);
 	if (str_split(raw, '\n', &lines))
 		return (3);
-	arr_print_str(&lines);
 	index = 0;
 	if (deserializer_deserialize_sequence(&lines, &index, sequence))
 		return (4);

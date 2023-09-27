@@ -1,8 +1,6 @@
 #include "str.h"
 #include "memory.h"
 
-#include <stdio.h>
-
 static int	base64_get_output_str(const char *input, size_t len, char **output)
 {
 	size_t			out_len;
@@ -12,7 +10,6 @@ static int	base64_get_output_str(const char *input, size_t len, char **output)
 		out_len--;
     if (input[len - 2] == '=')
 		out_len--;
-	printf("outlen: %zu\n", out_len);
 	return (mem_alloc_str(out_len, output));
 }
 

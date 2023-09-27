@@ -28,7 +28,7 @@
 #include "serializer.h"
 #include "base64.h"
 
-static int parse_input(char *str)
+static int parse_input(char *str, t_array *sequence)
 {
 	t_array fragments;
 	t_array mask;
@@ -50,7 +50,7 @@ static int parse_input(char *str)
 	lexer_tokens_classify(&tokens);
 	if (lexer_tokens_validate(&tokens))
 		return (5);
-	if (parser_parse(&tokens))
+	if (parser_parse(&tokens, sequence))
 		return (6);
 	arr_free(&fragments);
 	arr_free(&mask);
@@ -92,53 +92,53 @@ int	read_input(char **str)
 
 void run(char *input)
 {
-	t_array *sequence;
+	t_array sequence;
 
-	parse_input(input);
+	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
+	parse_input(input, &sequence);
 
-	if (arr_size(&global()->sequences) == 0)
-		return ;
+	// sequence_print_raw(&sequence, 0);
 
-	// for(unsigned long i = 0; i < arr_size(&global()->sequences); i++)
-	// {
-	// 	t_array	*sequence = (t_array *) arr_get(&global()->sequences, i);
-	// 	sequence_print_raw(sequence, i);
-	// }
-
-	sequence = (t_array *) arr_get(&global()->sequences, arr_size(&global()->sequences) - 1);
-
-	sequence_print_raw(sequence, 0);
-
-	char *str;
-	serializer_serialize(sequence, &str);
-	printf("\n\n%s\n\n", str);
-
-	// char *decoded;
-	// char *decoded2;
-	// printf("len %zu\n", str_len(str));
-	// base64_decode(str, &decoded);
-	// printf("\n\n%s\n\n", decoded);
-	// printf("len %zu\n", str_len(str));
 	// abort();
-	// base64_decode(str, &decoded2);
-	// printf("\n\n%s\n\n", decoded2);
 
-	t_array seq;
+	// char *str;
+	// serializer_serialize(&sequence, &str);
+	// printf("\n\n%s\n\n", str);
 
-	// printf("before\n");
-	// printf("str %s\n", str);
-	deserializer_deserialize(str, &seq);
-	// printf("after\n");
+	// // char *decoded;
+	// // char *decoded2;
+	// // printf("len %zu\n", str_len(str));
+	// // base64_decode(str, &decoded);
+	// // printf("\n\n%s\n\n", decoded);
+	// // printf("len %zu\n", str_len(str));
+	// // abort();
+	// // base64_decode(str, &decoded2);
+	// // printf("\n\n%s\n\n", decoded2);
 
-	sequence_print_raw(&seq, 0);
+	// t_array seq;
 
-	abort();
+	// // printf("before\n");
+	// // printf("str %s\n", str);
+	// deserializer_deserialize(str, &seq);
+	// // printf("after\n");
 
-	exec_sequence(sequence);
+	// sequence_print_raw(&seq, 0);
 
+	// abort();
 
-	// TODO: clear sequences array properly by getting pointer index in allocs array and freeing everything after that index
-	global()->sequences.size = 0;
+	exec_sequence(&sequence);
+}
+
+int	run_subshell(char *str)
+{
+	t_array sequence;
+
+	if (deserializer_deserialize(str, &sequence))
+		return (1);
+	exec_sequence(&sequence);
+	cleanup();
+	// TODO: return proper exit code (take from last chain)
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -149,6 +149,11 @@ int	main(int argc, char **argv)
 
 	global_init(argv[0]);
 	signals();
+
+	// TODO: free all memory related to sequences after each iteration of following while loops
+
+	if (argc == 2)
+		return (run_subshell(argv[1]));
 
 	if (!isatty(STDIN_FILENO))
 	{
