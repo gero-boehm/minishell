@@ -4,12 +4,13 @@
 #include "str.h"
 #include "number.h"
 #include "global.h"
+#include "serializer.h"
 
 int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_command *command)
 {
 	t_array			sequence;
 	char			*exec_path;
-	char			*sequence_id;
+	char			*encoded;
 
 	if (arr_create(&sequence, sizeof(t_chain)))
 		return (1);
@@ -21,11 +22,10 @@ int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_comman
 		return (3);
 	if (arr_add(&command->args, &exec_path))
 		return (4);
-	if (lutoa(arr_size(&global()->sequences), &sequence_id))
+	if (serializer_serialize(&sequence, &encoded))
 		return (5);
-	if (arr_add(&command->args, &sequence_id))
+	if (arr_add(&command->args, &encoded))
 		return (6);
-	if (arr_add(&global()->sequences, &sequence))
-		return (7);
+	arr_free(&sequence);
 	return (0);
 }

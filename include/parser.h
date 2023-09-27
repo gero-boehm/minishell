@@ -5,7 +5,7 @@
 # include "cmddef.h"
 # include "tokendef.h"
 
-int	parser_parse(t_array *tokens);
+int	parser_parse(t_array *tokens, t_array *sequence);
 
 int	parser_sequence_new(t_array **sequence, unsigned long *sequence_id);
 int	parser_sequence_parse(t_array *tokens, unsigned long *index, t_array *sequence);
