@@ -46,16 +46,12 @@ int	global_init(char *exec_name)
 		return (1);
 	if (arr_create(&global()->fds, sizeof(int)))
 		return (2);
-	if (arr_create(&global()->heredocs, sizeof(t_heredoc)))
-		return (3);
-	if (arr_create(&global()->sequences, sizeof(t_array)))
-		return (4);
 	if (env_init())
-		return (5);
+		return (3);
 	if (global_get_exec_path(exec_name, &global()->exec_path))
-		return (6);
+		return (4);
 	if (str_dup("0", &global()->exit_code))
-		return (7);
+		return (5);
 	return (0);
 }
 
