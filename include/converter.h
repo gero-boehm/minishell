@@ -4,6 +4,8 @@
 #include "cmddef.h"
 
 int converter_convert(t_raw_command *raw_command, t_command *command);
+int	converter_expand(t_raw_command *raw_command);
+int converter_redir(t_array *files, t_command *command);
 
 int	converter_convert_builtin_echo(t_raw_command *raw_command, t_builtin_echo *data);
 int	converter_convert_builtin_cd(t_raw_command *raw_command, t_builtin_cd *data);
