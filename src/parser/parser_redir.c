@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
 #include "cmddef.h"
@@ -24,6 +25,7 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 {
 	t_array	lines;
 	char	*line;
+	char	*str;
 
 	if (arr_create(&heredoc->vars, sizeof(t_range)))
 		return (1);
@@ -35,16 +37,19 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 		line = readline("> ");
 		if (line == NULL || str_eq(line, delimiter->str))
 			break ;
-		if (arr_add(&lines, &line))
-			return (3);
+		if (str_join(&str, "", line, "\n"))
+			return (free(line), 3);
+		if (arr_add(&lines, &str))
+			return (free(line), 4);
 	}
-	if (str_from_arr(&lines, "\n", &heredoc->str))
-		return (4);
+	free(line);
+	if (str_from_arr(&lines, "", &heredoc->str))
+		return (5);
 	arr_free_ptr(&lines);
 	if (delimiter->contained_quotes)
 		return (0);
 	if (vars_extract(heredoc->str, 0, 0, &heredoc->vars))
-		return (5);
+		return (6);
 	return (0);
 }
 

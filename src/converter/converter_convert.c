@@ -2,7 +2,7 @@
 #include "converter.h"
 #include "array.h"
 #include "str.h"
-#include "vars.h"
+#include "error.h"
 
 static void	converter_command_type_get(t_raw_command *raw_command, t_command *command)
 {
@@ -27,29 +27,8 @@ static void	converter_command_type_get(t_raw_command *raw_command, t_command *co
 		command->type = COMMAND_EXTERNAL;
 }
 
-static int	converter_exapand_vars(t_raw_command *raw_command)
+static int	converter_convert_commands(t_raw_command *raw_command, t_command *command)
 {
-	unsigned long	i;
-	char			**arg;
-
-	i = 0;
-	while (i < arr_size(&raw_command->args))
-	{
-		arg = (char **) arr_get(&raw_command->args, i);
-		if (vars_expand_str(&raw_command->vars_args, i, arg))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int converter_convert(t_raw_command *raw_command, t_command *command)
-{
-	converter_command_type_get(raw_command, command);
-	command->fd_in = 0;
-	command->fd_out = 1;
-	if (converter_exapand_vars(raw_command))
-		return (1);
 	if (command->type == COMMAND_BUILTIN_ECHO)
 		return (converter_convert_builtin_echo(raw_command, &command->data.builtin_echo));
 	if (command->type == COMMAND_BUILTIN_CD)
@@ -62,5 +41,19 @@ int converter_convert(t_raw_command *raw_command, t_command *command)
 		return (converter_convert_builtin_exit(raw_command, &command->data.builtin_exit));
 	if (command->type == COMMAND_EXTERNAL)
 		return (converter_convert_external(raw_command, &command->data.external));
+	return (0);
+}
+
+int converter_convert(t_raw_command *raw_command, t_command *command)
+{
+	converter_command_type_get(raw_command, command);
+	command->fd_in = 0;
+	command->fd_out = 1;
+	if (converter_expand(raw_command))
+		error_fatal();
+	if (converter_redir(&raw_command->files, command))
+		return (1);
+	if (converter_convert_commands(raw_command, command))
+		error_fatal();
 	return (0);
 }

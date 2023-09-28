@@ -195,7 +195,7 @@ static int	exec_chain(t_chain *chain)
 		raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// TODO: figure out how to handle invalid fds. here to check for it? should it be before or after fork?
 		if (converter_convert(raw, &cmd))
-			error_fatal();
+			return (1);
 		if (i < arr_size(&chain->commands) - 1)
 		{
 			// printf("create pipe\n");
@@ -244,6 +244,8 @@ void	exec_sequence(t_array *sequence)
 		set_exit_code(last_return_chain);
 		// printf("\n");
 		// printf("chain %lu exit code %d\n", i, last_return_chain);
+
+		// TODO: prevent shell from exiting when first command in && chain fails
 		if (chain->op == OP_AND)
 			if (last_return_chain)
 				error(0);

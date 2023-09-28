@@ -99,33 +99,6 @@ void run(char *input)
 
 	// sequence_print_raw(&sequence, 0);
 
-	// abort();
-
-	// char *str;
-	// serializer_serialize(&sequence, &str);
-	// printf("\n\n%s\n\n", str);
-
-	// // char *decoded;
-	// // char *decoded2;
-	// // printf("len %zu\n", str_len(str));
-	// // base64_decode(str, &decoded);
-	// // printf("\n\n%s\n\n", decoded);
-	// // printf("len %zu\n", str_len(str));
-	// // abort();
-	// // base64_decode(str, &decoded2);
-	// // printf("\n\n%s\n\n", decoded2);
-
-	// t_array seq;
-
-	// // printf("before\n");
-	// // printf("str %s\n", str);
-	// deserializer_deserialize(str, &seq);
-	// // printf("after\n");
-
-	// sequence_print_raw(&seq, 0);
-
-	// abort();
-
 	exec_sequence(&sequence);
 }
 
