@@ -4,7 +4,7 @@
 #include "str.h"
 #include "env.h"
 
-static const char *boundaries = " !\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
+static const char *boundaries = " \n\t\r\f\v!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
 
 static void	vars_var_get_range(const char *str, t_range *var)
 {

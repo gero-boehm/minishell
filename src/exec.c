@@ -80,6 +80,7 @@ void	exec_external(t_command *cmd)
 		if (str_split(paths_str, ':', &paths))
 			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+			// TODO: print command not found message again
 			error(127);
 			// error_command_not_found(cmd->data.external.args[0]);
 		arr_free_ptr(&paths);
@@ -89,7 +90,7 @@ void	exec_external(t_command *cmd)
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)
 		error(127);
 		// error_fatal();
-	// TESTER: check if total failure is ok
+	// TODO: TESTER: check if total failure is ok
 }
 
 void	exec_cmd(t_command *cmd)
