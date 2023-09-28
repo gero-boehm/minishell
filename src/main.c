@@ -97,7 +97,7 @@ void run(char *input)
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	parse_input(input, &sequence);
 
-	sequence_print_raw(&sequence, 0);
+	// sequence_print_raw(&sequence, 0);
 
 	// abort();
 
