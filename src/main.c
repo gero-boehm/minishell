@@ -142,7 +142,10 @@ int	main(int argc, char **argv)
 		while (1)
 		{
 			if (read_input(&input))
+			{
+				run(input);
 				break ;
+			}
 			run(input);
 		}
 		cleanup();
