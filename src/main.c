@@ -87,7 +87,7 @@ int	read_input(char **str)
 		i++;
 	}
 	arr_free(&letters);
-	return (bytes_read == 0);
+	return (str_len(*str) == 0 && bytes_read == 0);
 }
 
 void run(char *input)
@@ -142,10 +142,7 @@ int	main(int argc, char **argv)
 		while (1)
 		{
 			if (read_input(&input))
-			{
-				run(input);
 				break ;
-			}
 			run(input);
 		}
 		cleanup();
