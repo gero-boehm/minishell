@@ -87,8 +87,9 @@ void	exec_external(t_command *cmd)
 	}
 	if (env_get_all(&env))
 		error_fatal();
+	errno = 0;
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)
-		error(127);
+		error(errno);
 		// error_fatal();
 	// TODO: TESTER: check if total failure is ok
 }
@@ -227,7 +228,7 @@ static int	exec_chain(t_chain *chain)
 	// TODO: protect this crap aswell
 	dup2(stdin, STDIN_FILENO);
 	dup2(stdout, STDOUT_FILENO);
-	return (exit_code);
+	return (exit_code >> 8);
 }
 
 void	exec_sequence(t_array *sequence)
