@@ -119,7 +119,6 @@ int	main(int argc, char **argv)
 	char	*input;
 
 	input = NULL;
-
 	global_init(argv[0]);
 	signals();
 
