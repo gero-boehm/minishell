@@ -54,7 +54,7 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	mem_free(line);
 	if (str_from_arr(&lines, "", &heredoc->str))
 		return (5);
-	printf("HEREDOC\n%s\n", heredoc->str);
+	// printf("HEREDOC\n%s\n", heredoc->str);
 	arr_free_ptr(&lines);
 	if (delimiter->contained_quotes)
 		return (0);

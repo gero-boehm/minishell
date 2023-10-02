@@ -5,7 +5,8 @@
 #include "cmddef.h"
 #include "str.h"
 
-int	contains_invalid_sign(char *key)
+// TODO: put in own file
+static int	contains_invalid_sign(char *key)
 {
 	char	*set;
 
@@ -36,7 +37,7 @@ int	builtin_export(t_builtin_export	*data_export)
 	{
 		if (contains_invalid_sign(keys[i]))
 		{
-			printf("bash: export: `%s=%s`: not a valid identifier\n", keys[i], values[i]);
+			printf("miniheaven: export: `%s=%s': not a valid identifier\n", keys[i], values[i]);
 			has_error = 1;
 			i++;
 			continue ;

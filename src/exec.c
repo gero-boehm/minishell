@@ -20,6 +20,8 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 	unsigned long	i;
 	char			*path;
 
+	if (*cmd == '\0')
+		return (1);
 	i = 0;
 	while (i < arr_size(paths))
 	{
@@ -80,9 +82,7 @@ void	exec_external(t_command *cmd)
 		if (str_split(paths_str, ':', &paths))
 			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-			// TODO: print command not found message again
-			error(127);
-			// error_command_not_found(cmd->data.external.args[0]);
+			error_command_not_found(cmd->data.external.args[0]);
 		arr_free_ptr(&paths);
 	}
 	if (env_get_all(&env))
@@ -223,11 +223,15 @@ static int	exec_chain(t_chain *chain)
 		i++;
 	}
 	//----------Parent process--------//
+	// TODO: maybe do stuff like ole
+	waitpid(pid, &exit_code, 0);
+	i--;
 	while (i--)
-		wait(&exit_code);
+		wait(NULL);
 	// TODO: protect this crap aswell
 	dup2(stdin, STDIN_FILENO);
 	dup2(stdout, STDOUT_FILENO);
+	// printf("final exit (%d | %d)\n", exit_code, exit_code >> 8);
 	return (exit_code >> 8);
 }
 

@@ -110,7 +110,6 @@ int	run_subshell(char *str)
 		return (1);
 	exec_sequence(&sequence);
 	cleanup();
-	// TODO: return proper exit code (take from last chain)
 	return (global()->exit_code);
 }
 
@@ -142,11 +141,10 @@ int	main(int argc, char **argv)
 		{
 			if (read_input(&input))
 				break ;
-			printf("INPUT: '%s'\n", input);
+			// printf("INPUT: '%s'\n", input);
 			run(input);
 		}
 		cleanup();
-		// TODO: return exit code from minishell
 		return (global()->exit_code);
 	}
 
@@ -154,7 +152,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("cat <<eof", &input);
+		// str_dup("\"\"", &input);
 		run(input);
 		// abort();
 	}
