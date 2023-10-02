@@ -1,9 +1,59 @@
 #include <stdlib.h>
+#include <limits.h>
 #include "global.h"
 #include "assoc.h"
 #include "str.h"
+#include "memory.h"
+#include "error.h"
 
 extern char	**environ;
+
+static int	get_count(int n)
+{
+	int	count;
+
+	count = 1;
+	if (n < 0)
+	{
+		if (n == INT_MIN)
+			n = INT_MAX;
+		else
+			n *= -1;
+		count++;
+	}
+	while (n)
+	{
+		n /= 10;
+		count++;
+	}
+	return (count);
+}
+
+static char	*ft_itoa(int n)
+{
+	int		count;
+	char	*str;
+
+	if (n == INT_MIN)
+		return (str_dup("-2147483648", &str), str);
+	if (n == 0)
+		return (str_dup("0", &str), str);
+	count = get_count(n);
+	if (mem_alloc_str(count, &str))
+		return (NULL);
+	str[--count] = 0;
+	if (n < 0)
+	{
+		str[0] = '-';
+		n *= -1;
+	}
+	while (n)
+	{
+		str[--count] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (str);
+}
 
 int	env_init(void)
 {
@@ -14,7 +64,13 @@ int	env_init(void)
 int	env_get(const char *key, char **value)
 {
 	if (str_eq(key, "?"))
-		return (*value = global()->exit_code, 0);
+	{
+		// TODO: write proper conversion function
+		*value = ft_itoa(global()->exit_code);
+		if (*value == NULL)
+			error_fatal();
+		return (0);
+	}
 	return (assoc_get(&global()->env, key, value));
 }
 

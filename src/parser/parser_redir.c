@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <readline/readline.h>
@@ -8,6 +9,8 @@
 #include "token.h"
 #include "str.h"
 #include "vars.h"
+#include "minishell.h"
+#include "memory.h"
 
 static void	parser_redir_type_get(t_token *token, t_file *file)
 {
@@ -34,17 +37,24 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	while (1)
 	{
 		// TODO: this allocation is not caught by custom memory handler. write function that adds pointers to allocs array
-		line = readline("> ");
+
+		// printf("before\n");
+		if(isatty(STDIN_FILENO))
+			line = readline("> ");
+		else if(read_input(&line))
+			break ;
 		if (line == NULL || str_eq(line, delimiter->str))
 			break ;
 		if (str_join(&str, "", line, "\n"))
-			return (free(line), 3);
+			return (mem_free(line), 3);
 		if (arr_add(&lines, &str))
-			return (free(line), 4);
+			return (mem_free(line), 4);
+		mem_free(line);
 	}
-	free(line);
+	mem_free(line);
 	if (str_from_arr(&lines, "", &heredoc->str))
 		return (5);
+	printf("HEREDOC\n%s\n", heredoc->str);
 	arr_free_ptr(&lines);
 	if (delimiter->contained_quotes)
 		return (0);

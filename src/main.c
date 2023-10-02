@@ -111,7 +111,7 @@ int	run_subshell(char *str)
 	exec_sequence(&sequence);
 	cleanup();
 	// TODO: return proper exit code (take from last chain)
-	return (0);
+	return (global()->exit_code);
 }
 
 int	main(int argc, char **argv)
@@ -142,11 +142,12 @@ int	main(int argc, char **argv)
 		{
 			if (read_input(&input))
 				break ;
+			printf("INPUT: '%s'\n", input);
 			run(input);
 		}
 		cleanup();
 		// TODO: return exit code from minishell
-		return (0);
+		return (global()->exit_code);
 	}
 
 	while (1)

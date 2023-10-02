@@ -8,6 +8,8 @@
 int		prompt(char **input);
 void	exec_sequence(t_array *sequence);
 
+int		read_input(char **str);
+
 void	signals(void);
 void	ctrlc(int sig);
 
