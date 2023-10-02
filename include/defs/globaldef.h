@@ -6,7 +6,7 @@
 
 typedef struct s_global {
 	char	*exec_path;
-	char	*exit_code;
+	int		exit_code;
 	t_array	fds;
 	t_assoc	env;
 	t_array	allocs;

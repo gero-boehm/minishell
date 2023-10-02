@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <limits.h>
 #include "globaldef.h"
 #include "cmddef.h"
 #include "array.h"
@@ -50,8 +49,7 @@ int	global_init(char *exec_name)
 		return (3);
 	if (global_get_exec_path(exec_name, &global()->exec_path))
 		return (4);
-	if (str_dup("0", &global()->exit_code))
-		return (5);
+	global()->exit_code = 0;
 	return (0);
 }
 
@@ -75,61 +73,9 @@ void	cleanup(void)
 	}
 }
 
-static int	get_count(int n)
-{
-	int	count;
-
-	count = 1;
-	if (n < 0)
-	{
-		if (n == INT_MIN)
-			n = INT_MAX;
-		else
-			n *= -1;
-		count++;
-	}
-	while (n)
-	{
-		n /= 10;
-		count++;
-	}
-	return (count);
-}
-
-char	*ft_itoa(int n)
-{
-	int		count;
-	char	*str;
-
-	if (n == INT_MIN)
-		return (str_dup("-2147483648", &str), str);
-	if (n == 0)
-		return (str_dup("0", &str), str);
-	count = get_count(n);
-	if (mem_alloc_str(count, &str))
-		return (NULL);
-	str[--count] = 0;
-	if (n < 0)
-	{
-		str[0] = '-';
-		n *= -1;
-	}
-	while (n)
-	{
-		str[--count] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (str);
-}
-
 void	set_exit_code(int code)
 {
-	// TODO: make this better;
-	// printf("code: %d\n", code);
-	mem_free(global()->exit_code);
-	global()->exit_code = ft_itoa(code);
-	if (global()->exit_code == NULL)
-		error_fatal();
+	global()->exit_code = code;
 }
 
 void	success(void)
