@@ -1,7 +1,8 @@
+#include <stdio.h>
 #include "array.h"
 #include "memory.h"
 
-int	arr_remove_at(t_array *arr, unsigned int index)
+int	arr_remove_at(t_array *arr, unsigned long index)
 {
 	void	*dst;
 	void	*src;
@@ -17,7 +18,7 @@ int	arr_remove_at(t_array *arr, unsigned int index)
 
 int	arr_remove(t_array *arr, void *element)
 {
-	unsigned int	index;
+	unsigned long	index;
 
 	if (arr_index(arr, element, &index))
 		return (0);

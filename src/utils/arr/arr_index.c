@@ -1,13 +1,13 @@
 #include "array.h"
 #include "memory.h"
 
-int	arr_index(t_array *arr, void *element, unsigned int *index)
+int	arr_index(t_array *arr, void *element, unsigned long *index)
 {
-	unsigned int	i;
+	unsigned long	i;
 	void			*tmp;
 
 	i = 0;
-	while (i < arr->size)
+	while (i < arr_size(arr))
 	{
 		tmp = arr_get(arr, i);
 		if (mem_ncmp(tmp, element, arr->bytes) == 0)

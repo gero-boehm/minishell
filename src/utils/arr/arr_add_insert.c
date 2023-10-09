@@ -6,7 +6,7 @@
 static int	arr_grow(t_array *arr)
 {
 	void			*new;
-	unsigned int	index;
+	unsigned long	index;
 
 	arr->max_size *= 2;
 	if (arr_index(&global()->allocs, &arr->elements, &index))
@@ -32,7 +32,7 @@ int	arr_add(t_array *arr, void *element)
 	return (0);
 }
 
-int	arr_insert_at(t_array *arr, unsigned int index, void *element)
+int	arr_insert_at(t_array *arr, unsigned long index, void *element)
 {
 	void	*dst;
 	void	*src;

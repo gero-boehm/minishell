@@ -37,15 +37,13 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	while (1)
 	{
 		// TODO: this allocation is not caught by custom memory handler. write function that adds pointers to allocs array
-
-		// printf("before\n");
 		if(isatty(STDIN_FILENO))
 			line = readline("> ");
 		else if(read_input(&line))
 			break ;
 		if (line == NULL || str_eq(line, delimiter->str))
 			break ;
-		if (str_join(&str, "", line, "\n"))
+		if (str_join(&str, "", line, "\n", NULL))
 			return (mem_free(line), 3);
 		if (arr_add(&lines, &str))
 			return (mem_free(line), 4);
@@ -54,7 +52,6 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	mem_free(line);
 	if (str_from_arr(&lines, "", &heredoc->str))
 		return (5);
-	// printf("HEREDOC\n%s\n", heredoc->str);
 	arr_free_ptr(&lines);
 	if (delimiter->contained_quotes)
 		return (0);
