@@ -7,11 +7,11 @@ void	arr_print_str(t_array *arr)
 	char			*tmp;
 
 	i = 0;
-	while (i < arr->size)
+	while (i < arr_size(arr))
 	{
 		tmp = *(char **) arr_get(arr, i);
 		printf("\"%s\"", tmp);
-		if (i < arr->size - 1)
+		if (i < arr_size(arr) - 1)
 			printf(", ");
 		i++;
 	}

@@ -7,12 +7,12 @@
 
 int		arr_create(t_array *arr, unsigned int bytes);
 int		arr_add(t_array *arr, void *element);
-int		arr_insert_at(t_array *arr, unsigned int index, void *element);
+int		arr_insert_at(t_array *arr, unsigned long index, void *element);
 void	*arr_get(t_array *arr, unsigned long index);
 void	arr_set(t_array *arr, unsigned long index, void *element);
-int		arr_index(t_array *arr, void *element, unsigned int *index);
+int		arr_index(t_array *arr, void *element, unsigned long *index);
 int		arr_remove(t_array *arr, void *element);
-int		arr_remove_at(t_array *arr, unsigned int index);
+int		arr_remove_at(t_array *arr, unsigned long index);
 void	arr_free(t_array *arr);
 void	arr_free_ptr(t_array *arr);
 

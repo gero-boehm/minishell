@@ -143,7 +143,6 @@ int	main(int argc, char **argv)
 		{
 			if (read_input(&input))
 				break ;
-			printf("INPUT: '%s'\n", input);
 			run(input);
 		}
 		cleanup();
