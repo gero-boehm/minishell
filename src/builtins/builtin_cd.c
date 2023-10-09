@@ -11,22 +11,22 @@
 
 static void	ret_env_not_set(char *var)
 {
-	// printf("%s: cd: %s not set\n", shell_name(), var);
+	printf("%s: cd: %s not set\n", shell_name(), var);
 }
 
 static void	ret_dir_not_exist(char *dir)
 {
-	// printf("%s: cd: %s: No such file or directory\n", shell_name(), dir);
+	printf("%s: cd: %s: No such file or directory\n", shell_name(), dir);
 }
 
 static void	ret_permission_denied(char *dir)
 {
-	// printf("%s: cd: %s: Permission denied\n", shell_name(), dir);
+	printf("%s: cd: %s: Permission denied\n", shell_name(), dir);
 }
 
 static void	ret_not_dir(char *path)
 {
-	// printf("%s: cd: %s: Not a directory\n", shell_name(), path);
+	printf("%s: cd: %s: Not a directory\n", shell_name(), path);
 }
 
 static int	dir_check(char *path)
