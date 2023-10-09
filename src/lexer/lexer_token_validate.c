@@ -2,7 +2,7 @@
 #include "array.h"
 #include "error.h"
 
-static int lexer_token_invalid_op_or_redir(t_token *current, t_token *last)
+static int	lexer_token_invalid_op_or_redir(t_token *current, t_token *last)
 {
 	if (token_is(last, TOKEN_OPENING) && token_is(current, TOKEN_OPERATOR))
 		return (1);
@@ -11,7 +11,7 @@ static int lexer_token_invalid_op_or_redir(t_token *current, t_token *last)
 	return (token_is_any(current, TOKEN_OPERATOR | TOKEN_REDIRECTION));
 }
 
-static int lexer_token_invalid_opening_parenthesis(t_token *current, t_token *last)
+static int	lexer_token_invalid_opening_parenthesis(t_token *current, t_token *last)
 {
 	if (last == NULL)
 		return (0);
@@ -20,7 +20,7 @@ static int lexer_token_invalid_opening_parenthesis(t_token *current, t_token *la
 	return (token_is(current, TOKEN_OPENING));
 }
 
-static int lexer_token_invalid_closing_parenthesis(t_token *current, t_token *last)
+static int	lexer_token_invalid_closing_parenthesis(t_token *current, t_token *last)
 {
 	if (token_is(last, TOKEN_CLOSING) && !token_is_any(current, TOKEN_OPERATOR | TOKEN_CLOSING))
 		return (1);

@@ -5,6 +5,7 @@
 # include "rangedef.h"
 
 typedef enum e_factory {
+	// TODO: remove this and everything related to sequence factories
 	F_SINGLE_CHAIN_SINGLE_BUILTIN,
 	F_SINGLE_CHAIN_SINGLE_EXTERNAL,
 	F_SINGLE_CHAIN_MULTIPLE_EXTERNAL,
