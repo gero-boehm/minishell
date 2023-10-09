@@ -159,8 +159,8 @@ int	deserializer_deserialize_file_data(t_array *lines, unsigned long *index, t_f
 		if (str_dup(line, &path))
 			return (2);
 		data->path = path;
+		(*index)++;
 	}
-	(*index)++;
 	return (0);
 }
 
@@ -284,7 +284,7 @@ int	deserializer_deserialize(const char *str, t_array *sequence)
 		return (1);
 	if (arr_create(&lines, sizeof(char *)))
 		return (2);
-	if (str_split(raw, '\n', &lines))
+	if (str_split_all(raw, '\n', &lines))
 		return (3);
 	index = 0;
 	if (deserializer_deserialize_sequence(&lines, &index, sequence))

@@ -37,6 +37,8 @@ int base64_decode(const char *input, char **output)
 	unsigned int	bytes;
 
 	len = str_len(input);
+	if (len == 0)
+		return (str_dup("", output));
 	if (base64_get_output_str(input, len, output))
 		return (1);
 	i = 0;

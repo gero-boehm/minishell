@@ -36,22 +36,23 @@ static int parse_input(char *str, t_array *sequence)
 	t_array	token_ranges;
 
 	if (lexer_fragments_get(str, &fragments))
+		error_fatal();
+	if (lexer_quotes_mark(&fragments))
 		return (1);
-	lexer_quotes_mark(&fragments);
 	if (lexer_token_mask_get(&fragments, &mask))
-		return (2);
+		error_fatal();
 	if (lexer_token_ranges_get(&mask, &token_ranges))
-		return (3);
+		error_fatal();
 	if (lexer_fragments_to_tokens(&fragments, &token_ranges, &tokens))
-		return (4);
+		error_fatal();
 	if (arr_size(&tokens) == 0)
 		// TODO: free arrays
 		return (0);
 	lexer_tokens_classify(&tokens);
 	if (lexer_tokens_validate(&tokens))
-		return (5);
+		return (2);
 	if (parser_parse(&tokens, sequence))
-		return (6);
+		error_fatal();
 	arr_free(&fragments);
 	arr_free(&mask);
 	arr_free(&tokens);
@@ -95,7 +96,8 @@ void run(char *input)
 	t_array sequence;
 
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
-	parse_input(input, &sequence);
+	if (parse_input(input, &sequence))
+		return ;
 
 	// sequence_print_raw(&sequence, 0);
 
@@ -108,6 +110,7 @@ int	run_subshell(char *str)
 
 	if (deserializer_deserialize(str, &sequence))
 		return (1);
+	// sequence_print_raw(&sequence, 1);
 	exec_sequence(&sequence);
 	cleanup();
 	// TODO: return proper exit code (take from last chain)
@@ -122,6 +125,13 @@ int	main(int argc, char **argv)
 
 	global_init(argv[0]);
 	signals();
+
+	// char *str = "aa";
+	// t_array split;
+
+	// str_split_all(str, 'a', &split);
+	// arr_print_str(&split);
+	// return (0);
 
 	// char	*key;
 	// char	*value;
@@ -143,6 +153,7 @@ int	main(int argc, char **argv)
 		{
 			if (read_input(&input))
 				break ;
+			// printf("INPUT: '%s'\n", input);
 			run(input);
 		}
 		cleanup();
@@ -154,7 +165,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("cat <<eof", &input);
+		// str_dup("(cat<<eof)test", &input);
 		run(input);
 		// abort();
 	}

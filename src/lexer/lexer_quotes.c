@@ -48,7 +48,7 @@ static int	lexer_quote_start(t_fragment *fragment)
 	return (fragment->length % 2 == 0);
 }
 
-void	lexer_quotes_mark(t_array *fragments)
+int	lexer_quotes_mark(t_array *fragments)
 {
 	unsigned long	i;
 	t_fragment 		*fragment;
@@ -63,7 +63,8 @@ void	lexer_quotes_mark(t_array *fragments)
 		if (lexer_quote_start(fragment))
 			continue ;
 		if (lexer_quote_mark(fragments, quote, &i))
-			error_syntax(lexer_quote_str(quote));
+			return (return_syntax(lexer_quote_str(quote)), 1);
 		i++;
 	}
+	return (0);
 }

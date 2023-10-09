@@ -38,3 +38,23 @@ int	str_split(char *str, char c, t_array *arr)
 	}
 	return (0);
 }
+
+int	str_split_all(char *str, char c, t_array *arr)
+{
+	if (arr_create(arr, sizeof(char *)))
+		return (1);
+	while (*str)
+	{
+		if (*str == 0)
+			return (0);
+		if (grab_word(&str, c, arr))
+			return (2);
+		if (*str == c)
+		{
+			str++;
+			if (*str == 0)
+				return (grab_word(&str, c, arr));
+		}
+	}
+	return (0);
+}

@@ -7,6 +7,7 @@
 
 size_t	str_len(const char *s);
 int		str_split(char *str, char c, t_array *arr);
+int		str_split_all(char *str, char c, t_array *arr);
 
 int		str_range_to_exclusive(char *str, char *pattern, unsigned long start, t_range *range);
 int		str_range_to_inclusive(char *str, char *pattern, unsigned long start, t_range *range);
