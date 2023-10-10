@@ -86,7 +86,11 @@ void	exec_external(t_command *cmd)
 			error_command_not_found(cmd->data.external.args[0]);
 		arr_free_ptr(&paths);
 	}
+	if (env_set("--mhss", "1"))
+		error_fatal();
 	if (env_get_all(&env))
+		error_fatal();
+	if (env_remove("--mhss"))
 		error_fatal();
 	errno = 0;
 	if (execve(cmd_path, cmd->data.external.args, env) == -1)
