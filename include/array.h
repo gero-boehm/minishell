@@ -24,5 +24,6 @@ int		arr_sub(t_array *arr, t_range *range, t_array *sub);
 int		arr_sub_mask(t_array *arr, t_array *mask, t_array *sub);
 
 void	arr_print_str(t_array *arr);
+void	arr_print_ptr(t_array *arr);
 
 #endif

@@ -91,17 +91,23 @@ int	read_input(char **str)
 	return (str_len(*str) == 0 && bytes_read == 0);
 }
 
-void run(char *input)
+void	run(char *input)
 {
-	t_array sequence;
+	t_array 		sequence;
+	unsigned long	index;
 
+	index = arr_size(&global()->allocs);
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	if (parse_input(input, &sequence))
+	{
+		mem_free_from(index);
 		return ;
+	}
 
 	// sequence_print_raw(&sequence, 0);
 
 	exec_sequence(&sequence);
+	mem_free_from(index);
 }
 
 int	run_subshell(char *str)
@@ -123,6 +129,22 @@ int	main(int argc, char **argv)
 	input = NULL;
 	global_init(argv[0]);
 	signals();
+
+	// unsigned long	index;
+
+	// index = arr_size(&global()->allocs);
+
+	// printf("before\n");
+	// arr_print_ptr(&global()->allocs);
+
+	// mem_alloc_str(3, &input);
+
+	// printf("after\n");
+	// arr_print_ptr(&global()->allocs);
+
+
+	// mem_free_from(index);
+	// return (0);
 
 	// char *str = "aa";
 	// t_array split;

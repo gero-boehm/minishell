@@ -21,11 +21,3 @@ int	mem_alloc(size_t count, void **ptr)
 		return (2);
 	return (0);
 }
-
-int	mem_free(void *ptr)
-{
-	if (arr_remove(&global()->allocs, &ptr))
-		return (1);
-	free(ptr);
-	return (0);
-}
