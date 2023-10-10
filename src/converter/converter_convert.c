@@ -8,6 +8,12 @@ static void	converter_command_type_get(t_raw_command *raw_command, t_command *co
 {
 	char	*arg;
 
+	// TODO: do we have to handle commands written with uppercase letters?
+	if (arr_size(&raw_command->args) == 0)
+	{
+		command->type = COMMAND_NONE;
+		return ;
+	}
 	arg = *(char **) arr_get(&raw_command->args, 0);
 	if (str_eq(arg, "echo"))
 		command->type = COMMAND_BUILTIN_ECHO;

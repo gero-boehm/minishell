@@ -4,11 +4,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include "cmddef.h"
+#include "skipdef.h"
 #include "minishell.h"
 #include "env.h"
 #include "builtins.h"
 #include "array.h"
-#include "cmddef.h"
 #include "str.h"
 #include "memory.h"
 #include "error.h"
@@ -188,6 +189,7 @@ static int	exec_chain(t_chain *chain)
 
 	i = 0;
 	fd = 0;
+	pid = 0;
 	// TODO: protect this crap, also rename vars cause they seem to be replaced by compiler (see debug vars)
 	stdin = dup(STDIN_FILENO);
 	stdout = dup(STDOUT_FILENO);
@@ -195,9 +197,9 @@ static int	exec_chain(t_chain *chain)
 	{
 		// cmd = (t_command *) arr_get(&chain->commands, i);
 		raw = (t_raw_command *) arr_get(&chain->commands, i);
-		// TODO: figure out how to handle invalid fds. here to check for it? should it be before or after fork?
+		// TODO: make sure skipping here doesn't have negative effects. like what happens if command in the middle fails, do the fds get propagated properly?
 		if (converter_convert(raw, &cmd))
-			return (1);
+			SKIP(i);
 		if (i < arr_size(&chain->commands) - 1)
 		{
 			// printf("create pipe\n");
@@ -208,6 +210,7 @@ static int	exec_chain(t_chain *chain)
 			}
 		}
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
+			// TODO: do we have to reset stdin and stdout here aswell?
 			return (run_builtin_in_main(&cmd));
 		else
 		{

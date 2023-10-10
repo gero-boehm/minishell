@@ -31,7 +31,8 @@ typedef enum e_command_type {
 	COMMAND_BUILTIN_UNSET,
 	COMMAND_BUILTIN_ENV,
 	COMMAND_BUILTIN_EXIT,
-	COMMAND_EXTERNAL
+	COMMAND_EXTERNAL,
+	COMMAND_NONE
 }	t_command_type;
 
 typedef enum e_file_type {
