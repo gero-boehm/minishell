@@ -44,11 +44,7 @@ static int	redir_file_open(t_file *file, int *fd)
 	if (file->type == FILE_HEREDOC)
 		return (redir_file_open_heredoc(file, fd));
 	if (fd_open(file->data.path, flags, 0644, fd))
-	{
-		// TODO: put this in proper function
-		printf("%s: %s: No such file or directory\n", shell_name(), file->data.path);
-		return (2);
-	}
+		return (return_no_file_or_dir(file->data.path), 2);
 	return (0);
 }
 
