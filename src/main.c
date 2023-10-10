@@ -25,7 +25,7 @@
 #include "number.h"
 #include "path.h"
 #include "minishell.h"
-#include "serializer.h"
+#include "deserializer.h"
 #include "base64.h"
 
 static int parse_input(char *str, t_array *sequence)
@@ -109,7 +109,7 @@ int	run_subshell(char *str)
 	t_array sequence;
 
 	if (deserializer_deserialize(str, &sequence))
-		return (1);
+		error_fatal();
 	// sequence_print_raw(&sequence, 1);
 	exec_sequence(&sequence);
 	cleanup();

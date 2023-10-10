@@ -10,8 +10,6 @@ void	error_syntax(char *token)
 
 void	return_syntax(char *token)
 {
-	// printf("%s: syntax error near unexpected token `%.1s'\n", shell_name(), token);
 	printf("%s: syntax error near unexpected token `%s'\n", shell_name(), token);
-	// TODO: add 258 as exit code to global
 	set_exit_code(258);
 }
