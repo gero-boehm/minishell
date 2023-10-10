@@ -164,8 +164,11 @@ int	main(int argc, char **argv)
 
 	// TODO: free all memory related to sequences after each iteration of following while loops
 
-	if (argc == 2)
+	if (argc == 2 && !env_get("--mhss", NULL))
 		return (run_subshell(argv[1]));
+	if (argc > 1)
+		// TODO: put in error utils
+		return (printf("%s: arguments are not accepted\n", shell_name()), 1);
 
 	if (!isatty(STDIN_FILENO))
 	{

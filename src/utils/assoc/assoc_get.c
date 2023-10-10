@@ -23,7 +23,8 @@ int	assoc_get(t_assoc *assoc, const char *key, char **value)
 		tmp = assoc_get_key_at(assoc, i);
 		if (str_eq(tmp, key))
 		{
-			*value = assoc_get_value_at(assoc, i);
+			if (value != NULL)
+				*value = assoc_get_value_at(assoc, i);
 			return (0);
 		}
 		i++;
