@@ -3,6 +3,16 @@
 #include "array.h"
 #include "vars.h"
 
+// static int	converter_is_ambiguous_redir(t_array *values, unsigned long index, t_array *vars)
+// {
+// 	char	*prev;
+
+// 	if (index < 1)
+// 		return (0);
+// 	prev = *(char **) arr_get(values, index - 1);
+// 	if ()
+// }
+
 static int	converter_expand_vars(t_array *values, t_array *vars)
 {
 	unsigned long	i;
