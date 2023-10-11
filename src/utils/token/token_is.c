@@ -1,19 +1,19 @@
 #include "tokendef.h"
 #include "str.h"
 
-int	token_str_is_operand(t_token *token)
+int	token_str_is_operand(char *str)
 {
-	return (str_char_in_set("&|", *token->str));
+	return (str_char_in_set("&|", *str));
 }
 
-int	token_str_is_redirection(t_token *token)
+int	token_str_is_redirection(char *str)
 {
-	return (str_char_in_set("<>", *token->str));
+	return (str_char_in_set("<>", *str));
 }
 
-int	token_str_is_parenthesis(t_token *token)
+int	token_str_is_parenthesis(char *str)
 {
-	return (str_char_in_set("()", *token->str));
+	return (str_char_in_set("()", *str));
 }
 
 int	token_is(t_token *token, t_token_type type)

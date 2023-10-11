@@ -59,4 +59,6 @@ int		str_key_value(char *str, char **key, char **value);
 
 int		str_starts_with(char *str, const char *match);
 
+int		str_contains(const char *str, const char *match);
+
 #endif

@@ -56,9 +56,9 @@ int converter_convert(t_raw_command *raw_command, t_command *command)
 	command->fd_in = 0;
 	command->fd_out = 1;
 	if (converter_expand(raw_command))
-		error_fatal();
-	if (converter_redir(&raw_command->files, command))
 		return (1);
+	if (converter_redir(&raw_command->files, command))
+		return (2);
 	if (converter_convert_commands(raw_command, command))
 		error_fatal();
 	return (0);

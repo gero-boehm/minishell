@@ -75,9 +75,13 @@ int	vars_expand_str(t_array *vars, unsigned long index, char **str)
 		if (var->meta.var_data.index != index)
 			continue ;
 		if (env_get(var->meta.var_data.key, &value))
+		{
+			if (str_sub_range(str, var, ""))
+				return (1);
 			continue ;
+		}
 		if (str_sub_range(str, var, value))
-			return (1);
+			return (2);
 	}
 	return (0);
 }

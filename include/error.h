@@ -14,4 +14,6 @@ void	return_no_file_or_dir(char *path);
 void	return_syntax(char *token);
 void	error_syntax(char *token);
 
+void	return_ambiguous_redir(char *value);
+
 #endif
