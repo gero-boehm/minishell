@@ -47,10 +47,10 @@ static int parse_input(char *str, t_array *sequence)
 		error_fatal();
 	if (arr_size(&tokens) == 0)
 		// TODO: free arrays
-		return (0);
+		return (2);
 	lexer_tokens_classify(&tokens);
 	if (lexer_tokens_validate(&tokens))
-		return (2);
+		return (3);
 	if (parser_parse(&tokens, sequence))
 		error_fatal();
 	arr_free(&fragments);
@@ -100,14 +100,15 @@ void	run(char *input)
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	if (parse_input(input, &sequence))
 	{
-		mem_free_from(index);
+		// mem_free_from(index);
 		return ;
 	}
 
 	// sequence_print_raw(&sequence, 0);
 
 	exec_sequence(&sequence);
-	mem_free_from(index);
+	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
+	// mem_free_from(index);
 }
 
 int	run_subshell(char *str)
@@ -187,7 +188,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("(cat<<eof)test", &input);
+		// str_dup("", &input);
 		run(input);
 		// abort();
 	}

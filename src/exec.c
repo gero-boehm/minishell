@@ -203,7 +203,11 @@ static int	exec_chain(t_chain *chain)
 		raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// TODO: make sure skipping here doesn't have negative effects. like what happens if command in the middle fails, do the fds get propagated properly?
 		if (converter_convert(raw, &cmd))
+		{
+			if (arr_size(&chain->commands) == 1)
+				return (global()->exit_code);
 			SKIP(i);
+		}
 		if (i < arr_size(&chain->commands) - 1)
 		{
 			// printf("create pipe\n");
@@ -214,8 +218,12 @@ static int	exec_chain(t_chain *chain)
 			}
 		}
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
-			// TODO: do we have to reset stdin and stdout here aswell?
-			return (run_builtin_in_main(&cmd));
+		{
+			exit_code = run_builtin_in_main(&cmd);
+			dup2(stdin, STDIN_FILENO);
+			dup2(stdout, STDOUT_FILENO);
+			return (exit_code);
+		}
 		else
 		{
 			pid = fork();

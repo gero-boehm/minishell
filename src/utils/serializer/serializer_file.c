@@ -66,6 +66,8 @@ int	serializer_serialize_files(t_array *files, t_array *lines)
 	unsigned long	i;
 	t_file			*file;
 
+	if (arr_size(files) == 0)
+		return (0);
 	if (append_str("files", lines))
 		return (1);
 	i = 0;
