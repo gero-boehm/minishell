@@ -52,11 +52,11 @@ static int	converter_convert_commands(t_raw_command *raw_command, t_command *com
 
 int converter_convert(t_raw_command *raw_command, t_command *command)
 {
-	converter_command_type_get(raw_command, command);
 	command->fd_in = 0;
 	command->fd_out = 1;
 	if (converter_expand(raw_command))
 		return (1);
+	converter_command_type_get(raw_command, command);
 	if (converter_redir(&raw_command->files, command))
 		return (2);
 	if (converter_convert_commands(raw_command, command))

@@ -11,11 +11,11 @@ void	lexer_tokens_classify(t_array *tokens)
 	{
 		token = (t_token *) arr_get(tokens, i);
 		token->type = TOKEN_INVALID;
-		if (token_str_is_operand(token->str))
+		if (token_is_operand(token))
 			token_classify_operator(token);
-		else if (token_str_is_redirection(token->str))
+		else if (token_is_redirection(token))
 			token_classify_redirection(token);
-		else if (token_str_is_parenthesis(token->str))
+		else if (token_is_parenthesis(token))
 			token_classify_parentheses(token);
 		else
 			token_classify_string(token);
