@@ -19,11 +19,13 @@ static int	global_get_exec_path(char *exec_name, char **exec_path)
 	cwd = getcwd(NULL, 0);
 	if (cwd == NULL)
 		error_fatal();
-	// TODO: replace str_join with path normalizer
 	if (str_join(exec_path, "", cwd, "/", exec_name, NULL))
-		return (2);
+		return (free(cwd), 2);
+	free(cwd);
+	// printf("before %s\n", *exec_path);
 	if (path_normalize(exec_path))
 		return (3);
+	// printf("after %s\n", *exec_path);
 	return (0);
 }
 

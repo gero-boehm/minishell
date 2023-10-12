@@ -1,14 +1,11 @@
-#include "cmddef.h"
 #include "array.h"
 #include "range.h"
 #include "str.h"
-#include "env.h"
-
-static const char *boundaries = " \n\t\r\f\v!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
 
 static void	vars_var_get_range(const char *str, t_range *var)
 {
-	char	c;
+	const char	*boundaries = " \n\t\r\f\v!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
+	char		c;
 
 	var->start += var->length - 1;
 	var->length = 1;
@@ -58,30 +55,6 @@ int	vars_extract(const char *str, unsigned long index, unsigned long offset, t_a
 		if (arr_add(vars, &var))
 			return (2);
 		start = range_end(&var);
-	}
-	return (0);
-}
-
-int	vars_expand_str(t_array *vars, unsigned long index, char **str)
-{
-	unsigned long	i;
-	t_range			*var;
-	char			*value;
-
-	i = arr_size(vars);
-	while (i--)
-	{
-		var = (t_range *) arr_get(vars, i);
-		if (var->meta.var_data.index != index)
-			continue ;
-		if (env_get(var->meta.var_data.key, &value))
-		{
-			if (str_sub_range(str, var, ""))
-				return (1);
-			continue ;
-		}
-		if (str_sub_range(str, var, value))
-			return (2);
 	}
 	return (0);
 }

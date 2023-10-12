@@ -10,8 +10,7 @@ int	builtin_pwd(void)
 {
 	char	*pwd;
 
-	pwd = NULL;
-	pwd = getcwd(pwd, 0);
+	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
 		error_fatal();
 	printf("%s\n", pwd);

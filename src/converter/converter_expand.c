@@ -28,19 +28,45 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 	return (0);
 }
 
+// static int	converter_expand_arg(char *arg, t_array *vars, unsigned long index, t_array *expanded)
+// {
+// 	unsigned long	i;
+// 	t_array			parts;
+// 	char			**tmp;
+
+// 	if (vars_expand_str_split(arg, vars, index, &parts))
+// 		return (1);
+// 	i = 0;
+// 	while (i < arr_size(&parts))
+// 	{
+// 		tmp = (char **) arr_get(&parts, i);
+// 		if (arr_add(expanded, tmp))
+// 			return (2);
+// 		i++;
+// 	}
+// 	arr_free(&parts);
+// 	return (0);
+// }
+
 static void	converter_expand_args(t_array *args, t_array *vars)
 {
 	unsigned long	i;
 	char			**arg;
+	// t_array			expanded;
 
+	// if (arr_create(&expanded, sizeof(char *)))
+	// 	error_fatal();
 	i = 0;
 	while (i < arr_size(args))
 	{
 		arg = (char **) arr_get(args, i);
+		// if (converter_expand_arg(arg, vars, i, &expanded))
+		// 	error_fatal();
 		if (vars_expand_str(vars, i, arg))
 			error_fatal();
 		i++;
 	}
+	// *args = expanded;
 }
 
 static int	converter_expand_files(t_array *files, t_array *vars)
