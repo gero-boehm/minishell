@@ -48,6 +48,15 @@ static void path_normalize_finish(char **path, t_array *parts, t_array *normaliz
 	arr_free(normalized);
 }
 
+// int	path_is_absolute(const char *path)
+// {
+// 	if (*path == '/')
+// 		return (1);
+// 	if (str_len(path) == 1 && *path == '~')
+// 		return (1);
+// 	return (str_eq(path, "~/"));
+// }
+
 int	path_normalize(char **path)
 {
 	unsigned long	i;

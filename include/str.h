@@ -53,6 +53,8 @@ int		str_char_repeat(char c, size_t count, char **str);
 int		str_char_is_whitespace(char c);
 int		str_char_is_quote(char c);
 
+int		str_char_replace(char *str, char find, char replace);
+
 int		str_to_long_unsafe(const char *str, long *num);
 
 int		str_key_value(char *str, char **key, char **value);
