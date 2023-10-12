@@ -188,9 +188,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("export A='spa ces'", &input);
-		// run(input);
-		// str_dup("./script.sh $A", &input);
+		// str_dup("./ls", &input);
 		run(input);
 		// abort();
 	}
