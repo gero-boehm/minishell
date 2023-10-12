@@ -208,6 +208,8 @@ static int	exec_chain(t_chain *chain)
 				return (global()->exit_code);
 			SKIP(i);
 		}
+		if (cmd.type == COMMAND_NONE)
+			SKIP(i);
 		if (i < arr_size(&chain->commands) - 1)
 		{
 			// printf("create pipe\n");
