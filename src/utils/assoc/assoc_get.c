@@ -29,5 +29,6 @@ int	assoc_get(t_assoc *assoc, const char *key, char **value)
 		}
 		i++;
 	}
+	*value = NULL;
 	return (1);
 }

@@ -75,9 +75,10 @@ void	cleanup(void)
 	}
 }
 
-void	set_exit_code(int code)
+int	set_exit_code(int code)
 {
 	global()->exit_code = code;
+	return (code);
 }
 
 void	success(void)
