@@ -75,7 +75,13 @@ void	exec_external(t_command *cmd)
 	char		*cmd_path;
 
 	if (is_local_script(cmd->data.external.args[0]))
+	{
 		cmd_path = cmd->data.external.args[0];
+		if (access(cmd_path, F_OK))
+			error_no_file_or_dir(cmd_path);
+		if (access(cmd_path, X_OK))
+			error_permission_denied(cmd_path);
+	}
 	else
 	{
 		if (env_get("PATH", &paths_str))
@@ -188,15 +194,15 @@ static int	exec_chain(t_chain *chain)
 	t_command		cmd;
 	unsigned long	i;
 	int				fd;
-	int				stdin;
-	int				stdout;
+	int				fd_stdin;
+	int				fd_stdout;
 
 	i = 0;
 	fd = 0;
 	pid = 0;
 	// TODO: protect this crap, also rename vars cause they seem to be replaced by compiler (see debug vars)
-	stdin = dup(STDIN_FILENO);
-	stdout = dup(STDOUT_FILENO);
+	fd_stdin = dup(STDIN_FILENO);
+	fd_stdout = dup(STDOUT_FILENO);
 	while (i < arr_size(&chain->commands))
 	{
 		// cmd = (t_command *) arr_get(&chain->commands, i);
@@ -222,8 +228,8 @@ static int	exec_chain(t_chain *chain)
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
 		{
 			exit_code = run_builtin_in_main(&cmd);
-			dup2(stdin, STDIN_FILENO);
-			dup2(stdout, STDOUT_FILENO);
+			dup2(fd_stdin, STDIN_FILENO);
+			dup2(fd_stdout, STDOUT_FILENO);
 			return (exit_code);
 		}
 		else
@@ -246,8 +252,8 @@ static int	exec_chain(t_chain *chain)
 	while (i--)
 		wait(NULL);
 	// TODO: protect this crap aswell
-	dup2(stdin, STDIN_FILENO);
-	dup2(stdout, STDOUT_FILENO);
+	dup2(fd_stdin, STDIN_FILENO);
+	dup2(fd_stdout, STDOUT_FILENO);
 	// printf("final exit (%d | %d)\n", exit_code, exit_code >> 8);
 	return (exit_code >> 8);
 }
