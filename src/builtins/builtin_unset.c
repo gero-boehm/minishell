@@ -35,7 +35,7 @@ int	builtin_unset(t_builtin_unset *data_unset)
 	{
 		if (contains_invalid_sign(keys[i]))
 		{
-			printf("miniheaven: unset: `%s': not a valid identifier\n", keys[i]);
+			return_invalid_identifier("unset", keys[i], NULL);
 			has_error = 1;
 			i++;
 			continue ;

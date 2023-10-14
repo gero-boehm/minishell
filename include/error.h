@@ -27,4 +27,8 @@ int		return_not_dir(char *path);
 
 void	return_ambiguous_redir(char *value);
 
+int		return_too_many_args(void);
+
+int		return_invalid_identifier(const char *cmd, char *key, char *value);
+
 #endif

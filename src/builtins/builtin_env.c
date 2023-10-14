@@ -15,7 +15,7 @@ int	builtin_env(void)
 	char	**env;
 
 	if (env_get_all(&env))
-		return(134);
+		error_fatal();
 	env_print(env);
 	mem_free_str_arr(env);
 	return(0);
