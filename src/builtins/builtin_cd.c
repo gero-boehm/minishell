@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "cmddef.h"
+#include "rangedef.h"
 #include "global.h"
 #include "builtins.h"
 #include "error.h"
@@ -62,11 +63,22 @@ static int	go_back(void)
 int	builtin_cd(t_builtin_cd *cd)
 {
 	char	*path;
+	char	*home;
+	t_range	range;
 
 	path = cd->path;
 	if (str_eq(path, "~"))
 		return (go_home());
 	if (str_eq(path, "-"))
 		return (go_back());
+	if (str_starts_with(path, "~"))
+	{
+		if (env_get("HOME", &home))
+			home = getenv("HOME");
+		range.start = 0;
+		range.length = 1;
+		if (str_sub_range(&path, &range, home))
+			error_fatal();
+	}
 	return (dir_change(path, 0));
 }
