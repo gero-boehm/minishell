@@ -20,7 +20,7 @@ typedef enum e_factory {
 typedef enum e_op {
 	OP_AND,
 	OP_OR,
-	OP_END
+	OP_END,
 }	t_op;
 
 typedef enum e_command_type {
