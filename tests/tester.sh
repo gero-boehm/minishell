@@ -111,6 +111,7 @@ test_from_file() {
 				((line_count++))
 			done
 			# INPUT=${INPUT%?}
+			# echo "$INPUT"
 			echo -n "$INPUT" | $MINISHELL_PATH/$EXECUTABLE 2>tmp_err_minishell >tmp_out_minishell
 			exit_minishell=$?
 			echo -n "enable -n .$NL$INPUT" | bash 2>tmp_err_bash >tmp_out_bash
