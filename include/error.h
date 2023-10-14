@@ -1,6 +1,9 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+# define __P(_s) write(2, _s, str_len(_s))
+# define PRINT_ERROR(...) {char *_s; str_join(&_s, "", __VA_ARGS__); __P(_s);}
+
 void	error(int code);
 void	error_fatal(void);
 
@@ -15,7 +18,6 @@ void	error_no_file_or_dir(char *path);
 int		return_no_file_or_dir(char *path);
 
 void	return_syntax(char *token);
-void	error_syntax(char *token);
 
 void	error_permission_denied(char *path);
 int		return_permission_denied(char *path);
