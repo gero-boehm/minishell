@@ -40,7 +40,7 @@ static int	redir_file_open(t_file *file, int *fd)
 	if (file->type == FILE_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
 	if (file->type == FILE_APPEND)
-		flags = O_WRONLY | O_CREAT;
+		flags = O_WRONLY | O_CREAT | O_APPEND;
 	if (file->type == FILE_HEREDOC)
 		return (redir_file_open_heredoc(file, fd));
 	if (fd_open(file->data.path, flags, 0644, fd))
