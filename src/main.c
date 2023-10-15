@@ -171,8 +171,10 @@ int	main(int argc, char **argv)
 	if (argc == 2 && !env_get("--mhss", NULL))
 		return (run_subshell(argv[1]));
 	if (argc > 1)
-		// TODO: put in error utils
-		return (printf("%s: arguments are not accepted\n", shell_name()), 1);
+	{
+		cleanup();
+		return(return_too_many_args(0));
+	}
 
 	if (!isatty(STDIN_FILENO))
 	{
