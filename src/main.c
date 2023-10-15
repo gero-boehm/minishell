@@ -27,6 +27,7 @@
 #include "minishell.h"
 #include "deserializer.h"
 #include "base64.h"
+#include "fd.h"
 
 static int parse_input(char *str, t_array *sequence)
 {
@@ -101,6 +102,7 @@ void	run(char *input)
 	if (parse_input(input, &sequence))
 	{
 		// mem_free_from(index);
+		fd_close_all();
 		return ;
 	}
 
@@ -109,6 +111,7 @@ void	run(char *input)
 	exec_sequence(&sequence);
 	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
 	// mem_free_from(index);
+	fd_close_all();
 }
 
 int	run_subshell(char *str)

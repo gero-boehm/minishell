@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <fcntl.h>
 #include "cmddef.h"
 #include "skipdef.h"
 #include "minishell.h"
@@ -15,6 +16,7 @@
 #include "error.h"
 #include "converter.h"
 #include "global.h"
+#include "fd.h"
 
 static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 {
@@ -68,6 +70,24 @@ int	is_local_script(char *cmd)
 	return (str_starts_with(cmd, "/") || str_starts_with(cmd, "./") || str_starts_with(cmd, "../"));
 }
 
+int	is_binary(char *path)
+{
+	int			fd;
+	uint32_t	magic;
+	int			bytes_read;
+
+	if (access(path, X_OK))
+		return (0);
+	if (fd_open(path, O_RDONLY, 0, &fd))
+		error_fatal();
+	bytes_read = read(fd, &magic, 4);
+	fd_close(fd);
+	if (bytes_read < 4)
+		return (0);
+	printf("magic %#x\n", magic);
+	return (magic == 0x464c457f);
+}
+
 void	exec_external(t_command *cmd)
 {
 	char		*paths_str;
@@ -85,6 +105,7 @@ void	exec_external(t_command *cmd)
 	}
 	else
 	{
+		// printf("is binary %d\n", is_binary(cmd->data.external.args[0]));
 		if (access(cmd->data.external.args[0], X_OK))
 		{
 			if (env_get("PATH", &paths_str))
@@ -125,10 +146,10 @@ int	super_duper(int fd_src, int fd_dst)
 	if (dup2(fd_src, fd_dst) == -1)
 	{
 		// printf("fail %d %s\n", errno, strerror(errno));
-		close(fd_src);
+		fd_close(fd_src);
 		return (1);
 	}
-	close(fd_src);
+	fd_close(fd_src);
 	return (0);
 }
 
@@ -163,7 +184,7 @@ void	run_child(t_command *cmd, int input, int ports[2], int last)
 {
 	// printf("=============\n");
 	if (!last)
-		close(ports[0]);
+		fd_close(ports[0]);
 	if (redirect(cmd, input, ports, last))
 		error_fatal();
 	exec_cmd(cmd);
@@ -173,8 +194,9 @@ void	run_parent(t_command *cmd, int *fd, int ports[2])
 {
 	(void) cmd;
 
-	close(ports[1]);
-	close(*fd);
+	fd_close(ports[1]);
+	if (*fd != 0)
+		fd_close(*fd);
 	*fd = ports[0];
 	// close(cmd->fd_out);
 	// cmd->fd_out = ports[0];
@@ -207,8 +229,11 @@ static int	exec_chain(t_chain *chain)
 	fd = 0;
 	pid = 0;
 	// TODO: protect this crap, also rename vars cause they seem to be replaced by compiler (see debug vars)
-	fd_stdin = dup(STDIN_FILENO);
-	fd_stdout = dup(STDOUT_FILENO);
+
+	if (fd_dup(STDIN_FILENO, &fd_stdin))
+		error_fatal();
+	if (fd_dup(STDOUT_FILENO, &fd_stdout))
+		error_fatal();
 	while (i < arr_size(&chain->commands))
 	{
 		// cmd = (t_command *) arr_get(&chain->commands, i);
@@ -224,12 +249,8 @@ static int	exec_chain(t_chain *chain)
 			SKIP(i);
 		if (i < arr_size(&chain->commands) - 1)
 		{
-			// printf("create pipe\n");
-			if (pipe(ports) == -1)
-			{
-				// printf("pipe failed\n");
+			if (fd_pipe(ports))
 				error_fatal();
-			}
 		}
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
 		{
