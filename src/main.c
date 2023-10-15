@@ -191,7 +191,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("./ls", &input);
+		// str_dup("exit 4", &input);
 		run(input);
 		// abort();
 	}

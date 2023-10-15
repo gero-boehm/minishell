@@ -7,12 +7,14 @@
 #include "builtins.h"
 #include "error.h"
 #include "str.h"
+#include "env.h"
 
 int	builtin_exit(t_builtin_exit *data)
 {
 	long	code;
 
-	write(2, "exit\n", 5);
+	if (env_get("--mhss", NULL))
+		write(2, "exit\n", 5);
 	if (data->arg == NULL)
 	{
 		clear_history();
