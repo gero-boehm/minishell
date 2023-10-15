@@ -23,7 +23,7 @@ int	builtin_exit(t_builtin_exit *data)
 	if (str_to_long_unsafe(data->arg, &code))
 		error_numeric_arg_required(data->arg);
 	if (data->too_many_args)
-		return (return_too_many_args());
+		return (return_too_many_args(1));
 	clear_history();
 	error((unsigned char) code);
 	return (255);
