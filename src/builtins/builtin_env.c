@@ -18,5 +18,5 @@ int	builtin_env(void)
 		error_fatal();
 	env_print(env);
 	mem_free_str_arr(env);
-	return(0);
+	return (0);
 }
