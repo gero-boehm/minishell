@@ -5,8 +5,6 @@
 
 int	get_paths(char *pattern, t_array *paths);
 
-
 int	is_pattern_matching(char *name, char *pattern);
-
 
 #endif

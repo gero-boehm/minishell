@@ -19,5 +19,4 @@ void	*mem_ncpy(void *dst, const void *src, size_t n);
 
 void	*mem_nmov(void *dst, const void *src, size_t len);
 
-
 #endif
