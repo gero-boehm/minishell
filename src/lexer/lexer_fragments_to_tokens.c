@@ -15,7 +15,8 @@ static int	lexer_fragment_keep(t_fragment *fragment)
 	return (fragment->quote != quote);
 }
 
-static int	lexer_quote_mask_get(t_array *token_fragments, t_range *token_range, t_array *mask)
+static int	lexer_quote_mask_get(
+		t_array *token_fragments, t_range *token_range, t_array *mask)
 {
 	unsigned long	i;
 	t_fragment		*fragment;
@@ -35,12 +36,14 @@ static int	lexer_quote_mask_get(t_array *token_fragments, t_range *token_range, 
 	return (0);
 }
 
-static void	lexer_token_contained_quotes(t_array *token_fragments, t_array *masked_fragments, t_token *token)
+static void	lexer_token_contained_quotes(
+		t_array *token_fragments, t_array *masked_fragments, t_token *token)
 {
 	token->contained_quotes = arr_size(token_fragments) != arr_size(masked_fragments);
 }
 
-static int	lexer_token_get(t_array *fragments, t_range *token_range, t_array *tokens)
+static int	lexer_token_get(
+		t_array *fragments, t_range *token_range, t_array *tokens)
 {
 	t_array	token_fragments;
 	t_array	quote_mask;
@@ -94,7 +97,8 @@ static int	lexer_token_get(t_array *fragments, t_range *token_range, t_array *to
 	return (0);
 }
 
-int	lexer_fragments_to_tokens(t_array *fragments, t_array *token_ranges, t_array *tokens)
+int	lexer_fragments_to_tokens(
+		t_array *fragments, t_array *token_ranges, t_array *tokens)
 {
 	unsigned long	i;
 	t_range			*token_range;

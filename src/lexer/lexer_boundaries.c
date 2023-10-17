@@ -3,9 +3,10 @@
 #include "array.h"
 #include "str.h"
 
-static char *symbols[] = {" \n\t\r\f\v", "'", "\"", "&", "|", "<", ">", "(", ")", NULL};
+static char	*symbols[] = {" \n\t\r\f\v", "'", "\"", "&", "|", "<", ">", "(", ")", NULL};
 
-static int	lexer_split_range(t_range *range, size_t length, t_array *boundaries)
+static int	lexer_split_range(
+		t_range *range, size_t length, t_array *boundaries)
 {
 	unsigned long	i;
 
@@ -49,7 +50,8 @@ static int	lexer_get_ranges_of_set(char *str, char *set, t_array *boundaries)
 	return (0);
 }
 
-static int	lexer_get_ranges_of_sets(char *str, char **sets, t_array *boundaries)
+static int	lexer_get_ranges_of_sets(
+		char *str, char **sets, t_array *boundaries)
 {
 	while (*sets != NULL)
 	{
@@ -60,16 +62,17 @@ static int	lexer_get_ranges_of_sets(char *str, char **sets, t_array *boundaries)
 	return (0);
 }
 
-
 static int	lexer_sort_boundaries(void *element1, void *element2)
 {
-	int a = *(int *) element1;
-	int b = *(int *) element2;
+	int	a;
+	int	b;
 
+	a = *(int *) element1;
+	b = *(int *) element2;
 	return (b - a);
 }
 
-static int lexer_remove_duplicate_boundaries(t_array *boundaries)
+static int	lexer_remove_duplicate_boundaries(t_array *boundaries)
 {
 	unsigned long	i;
 	unsigned long	a;
@@ -78,8 +81,8 @@ static int lexer_remove_duplicate_boundaries(t_array *boundaries)
 	i = 1;
 	while (i < arr_size(boundaries))
 	{
-		a = *(unsigned long*) arr_get(boundaries, i - 1);
-		b = *(unsigned long*) arr_get(boundaries, i);
+		a = *(unsigned long *) arr_get(boundaries, i - 1);
+		b = *(unsigned long *) arr_get(boundaries, i);
 		if (b == a && arr_remove_at(boundaries, i))
 			return (1);
 		i++;
