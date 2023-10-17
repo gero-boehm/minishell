@@ -5,7 +5,7 @@
 
 static int	is_newline_flag(char *str)
 {
-	if(*str != '-')
+	if (*str != '-')
 		return (0);
 	str++;
 	while (*str != '\0')
@@ -17,7 +17,8 @@ static int	is_newline_flag(char *str)
 	return (1);
 }
 
-static void get_newline_flag(t_array *args, t_builtin_echo *data, unsigned long *index)
+static void	get_newline_flag(
+		t_array *args, t_builtin_echo *data, unsigned long *index)
 {
 	char	*arg;
 
@@ -32,7 +33,8 @@ static void get_newline_flag(t_array *args, t_builtin_echo *data, unsigned long 
 	}
 }
 
-int	converter_convert_builtin_echo(t_raw_command *raw_command, t_builtin_echo *data)
+int	converter_convert_builtin_echo(
+		t_raw_command *raw_command, t_builtin_echo *data)
 {
 	t_range	range;
 

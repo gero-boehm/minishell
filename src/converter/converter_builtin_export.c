@@ -16,7 +16,8 @@ static int	extract_key_value_pair(char *arg, t_array *keys, t_array *values)
 	return (0);
 }
 
-int converter_convert_builtin_export(t_raw_command *raw_command, t_builtin_export *data)
+int	converter_convert_builtin_export(
+		t_raw_command *raw_command, t_builtin_export *data)
 {
 	unsigned long	i;
 	t_array			keys;

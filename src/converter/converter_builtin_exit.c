@@ -3,7 +3,8 @@
 #include "array.h"
 #include "str.h"
 
-int converter_convert_builtin_exit(t_raw_command *raw_command, t_builtin_exit *data)
+int	converter_convert_builtin_exit(
+		t_raw_command *raw_command, t_builtin_exit *data)
 {
 	t_range	range;
 

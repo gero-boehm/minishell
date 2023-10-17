@@ -3,7 +3,8 @@
 #include "array.h"
 #include "str.h"
 
-int converter_convert_builtin_unset(t_raw_command *raw_command, t_builtin_unset *data)
+int	converter_convert_builtin_unset(
+		t_raw_command *raw_command, t_builtin_unset *data)
 {
 	t_range	range;
 
