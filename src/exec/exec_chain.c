@@ -25,14 +25,11 @@ int	exec_chain(t_chain *chain)
 	pid = 0;
 	// TODO: protect this crap, also rename vars cause they seem to be replaced by compiler (see debug vars)
 
-	if (fd_dup(STDIN_FILENO, &fd_stdin))
-		error_fatal();
-	if (fd_dup(STDOUT_FILENO, &fd_stdout))
+	if (fd_dup(STDIN_FILENO, &fd_stdin) || fd_dup(STDOUT_FILENO, &fd_stdout))
 		error_fatal();
 	while (i < arr_size(&chain->commands))
 	{
 		raw = (t_raw_command *) arr_get(&chain->commands, i);
-		// SKIP PIPES closed properly? TODO: make sure skipping here doesn't have negative effects. like what happens if command in the middle fails, do the fds get propagated properly?
 		if (converter_convert(raw, &cmd))
 		{
 			if (arr_size(&chain->commands) == 1)
@@ -41,17 +38,12 @@ int	exec_chain(t_chain *chain)
 		}
 		if (cmd.type == COMMAND_NONE)
 			SKIP(i);
-		if (i < arr_size(&chain->commands) - 1)
-		{
-			if (fd_pipe(ports))
-				error_fatal();
-		}
+		if ((i < arr_size(&chain->commands) - 1) && (fd_pipe(ports)))
+			error_fatal();
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
 		{
 			exit_code = run_builtin_in_main(&cmd);
-			if (dup2(fd_stdin, STDIN_FILENO) == -1)
-				error_fatal();
-			if (dup2(fd_stdout, STDOUT_FILENO) == -1)
+			if (dup2(fd_stdin, STDIN_FILENO) < 0 || dup2(fd_stdout, STDOUT_FILENO) < 0)
 				error_fatal();
 			return (exit_code);
 		}
@@ -71,9 +63,7 @@ int	exec_chain(t_chain *chain)
 	i--;
 	while (i--)
 		wait(NULL);
-	if (dup2(fd_stdin, STDIN_FILENO) == -1)
-		error_fatal();
-	if (dup2(fd_stdout, STDOUT_FILENO) == -1)
+	if (dup2(fd_stdin, STDIN_FILENO) < 0 || dup2(fd_stdout, STDOUT_FILENO) < 0)
 		error_fatal();
 	return (exit_code >> 8);
 }
