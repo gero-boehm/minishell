@@ -5,7 +5,6 @@
 #include "cmddef.h"
 #include "str.h"
 
-// TODO: put in own file
 static int	contains_invalid_sign(char *key)
 {
 	char	*set;
@@ -42,17 +41,7 @@ int	builtin_export(t_builtin_export	*data_export)
 			i++;
 			continue ;
 		}
-		// TODO: remove this?
-		// else if (keys[i][0] == '-')
-		// {
-		// 	printf("bash: export: %c%c: invalid option\n", keys[i][0], keys[i][1]);
-		// 	printf("export: usage: export [-nf] [name[=value] ...] or export -p\n");
-		// 	has_error = 1;
-		// 	i++;
-		// 	continue ;
-		// }
 		else if (env_set(keys[i], values[i]))
-			// TODO: check all builtins for this and replace with error_fatal()
 			error_fatal();
 		i++;
 	}
