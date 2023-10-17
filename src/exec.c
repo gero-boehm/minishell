@@ -68,7 +68,8 @@ int	cmd_is_external(t_command *cmd)
 
 int	is_local_script(char *cmd)
 {
-	return (str_starts_with(cmd, "/") || str_starts_with(cmd, "./") || str_starts_with(cmd, "../"));
+	return (str_starts_with(cmd, "/")
+		|| str_starts_with(cmd, "./") || str_starts_with(cmd, "../"));
 }
 
 int	is_binary(char *path)
@@ -110,13 +111,13 @@ void	exec_external(t_command *cmd)
 		// printf("is binary %d\n", is_binary(cmd->data.external.args[0]));
 		// if (access(cmd->data.external.args[0], X_OK))
 		// {
-			if (env_get("PATH", &paths_str))
-				error_no_file_or_dir(cmd->data.external.args[0]);
-			if (str_split(paths_str, ':', &paths))
-				error_fatal();
-			if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-				error_command_not_found(cmd->data.external.args[0]);
-			arr_free_ptr(&paths);
+		if (env_get("PATH", &paths_str))
+			error_no_file_or_dir(cmd->data.external.args[0]);
+		if (str_split(paths_str, ':', &paths))
+			error_fatal();
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+			error_command_not_found(cmd->data.external.args[0]);
+		arr_free_ptr(&paths);
 		// }
 		// else
 		// 	cmd_path = cmd->data.external.args[0];
@@ -144,10 +145,8 @@ void	exec_cmd(t_command *cmd)
 
 int	super_duper(int fd_src, int fd_dst)
 {
-	// printf("%d -> %d\n", fd_src, fd_dst);
 	if (dup2(fd_src, fd_dst) == -1)
 	{
-		// printf("fail %d %s\n", errno, strerror(errno));
 		fd_close(fd_src);
 		return (1);
 	}
@@ -184,7 +183,6 @@ int	redirect(t_command *cmd, int input, int ports[2], int last)
 
 void	run_child(t_command *cmd, int input, int ports[2], int last)
 {
-	// printf("=============\n");
 	if (!last)
 		fd_close(ports[0]);
 	if (redirect(cmd, input, ports, last))
@@ -195,13 +193,10 @@ void	run_child(t_command *cmd, int input, int ports[2], int last)
 void	run_parent(t_command *cmd, int *fd, int ports[2])
 {
 	(void) cmd;
-
 	fd_close(ports[1]);
 	if (*fd != 0)
 		fd_close(*fd);
 	*fd = ports[0];
-	// close(cmd->fd_out);
-	// cmd->fd_out = ports[0];
 }
 
 int	run_builtin_in_main(t_command *cmd)
@@ -211,7 +206,6 @@ int	run_builtin_in_main(t_command *cmd)
 		if (super_duper(cmd->fd_out, STDOUT_FILENO))
 			error_fatal();
 	}
-	// printf("pre exec_builtin\n");
 	return (exec_builtin(cmd));
 }
 
@@ -238,7 +232,6 @@ static int	exec_chain(t_chain *chain)
 		error_fatal();
 	while (i < arr_size(&chain->commands))
 	{
-		// cmd = (t_command *) arr_get(&chain->commands, i);
 		raw = (t_raw_command *) arr_get(&chain->commands, i);
 		// TODO: make sure skipping here doesn't have negative effects. like what happens if command in the middle fails, do the fds get propagated properly?
 		if (converter_convert(raw, &cmd))
@@ -257,8 +250,10 @@ static int	exec_chain(t_chain *chain)
 		if (arr_size(&chain->commands) == 1 && cmd.type != COMMAND_EXTERNAL)
 		{
 			exit_code = run_builtin_in_main(&cmd);
-			dup2(fd_stdin, STDIN_FILENO);
-			dup2(fd_stdout, STDOUT_FILENO);
+			if (dup2(fd_stdin, STDIN_FILENO) == -1)
+				error_fatal();
+			if (dup2(fd_stdout, STDOUT_FILENO) == -1)
+				error_fatal();
 			return (exit_code);
 		}
 		else
@@ -274,25 +269,25 @@ static int	exec_chain(t_chain *chain)
 		}
 		i++;
 	}
-	//----------Parent process--------//
-	// TODO: maybe do stuff like ole
 	waitpid(pid, &exit_code, 0);
 	i--;
 	while (i--)
 		wait(NULL);
-	// TODO: protect this crap aswell
-	dup2(fd_stdin, STDIN_FILENO);
-	dup2(fd_stdout, STDOUT_FILENO);
-	// printf("final exit (%d | %d)\n", exit_code, exit_code >> 8);
+	if (dup2(fd_stdin, STDIN_FILENO) == -1)
+		error_fatal();
+	if (dup2(fd_stdout, STDOUT_FILENO) == -1)
+		error_fatal();
 	return (exit_code >> 8);
 }
 
-int	exec_get_next_chain(t_array *sequence, unsigned long index, int exit_code, t_chain **chain)
+int	exec_get_next_chain(
+		t_array *sequence, unsigned long index, int exit_code, t_chain **chain)
 {
 	static t_op	last_op = OP_END;
 
 	*chain = (t_chain *) arr_get(sequence, index);
-	if ((last_op == OP_AND && exit_code != 0) || (last_op == OP_OR && exit_code == 0))
+	if ((last_op == OP_AND && exit_code != 0)
+		|| (last_op == OP_OR && exit_code == 0))
 	{
 		last_op = (*chain)->op;
 		return (1);

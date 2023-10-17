@@ -28,11 +28,11 @@
 #include "base64.h"
 #include "fd.h"
 
-static int parse_input(char *str, t_array *sequence)
+static int	parse_input(char *str, t_array *sequence)
 {
-	t_array fragments;
-	t_array mask;
-	t_array tokens;
+	t_array	fragments;
+	t_array	mask;
+	t_array	tokens;
 	t_array	token_ranges;
 
 	if (lexer_fragments_get(str, &fragments))
@@ -69,7 +69,7 @@ int	read_input(char **str)
 
 	if (arr_create(&letters, sizeof(char)))
 		error_fatal();
-	while(1)
+	while (1)
 	{
 		bytes_read = read(STDIN_FILENO, &letter, 1);
 		if (bytes_read < 0)
@@ -93,7 +93,7 @@ int	read_input(char **str)
 
 void	run(char *input)
 {
-	t_array 		sequence;
+	t_array			sequence;
 	unsigned long	index;
 
 	index = arr_size(&global()->allocs);
@@ -104,9 +104,6 @@ void	run(char *input)
 		fd_close_all();
 		return ;
 	}
-
-	// sequence_print_raw(&sequence, 0);
-
 	exec_sequence(&sequence);
 	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
 	// mem_free_from(index);
@@ -115,11 +112,10 @@ void	run(char *input)
 
 int	run_subshell(char *str)
 {
-	t_array sequence;
+	t_array	sequence;
 
 	if (deserializer_deserialize(str, &sequence))
 		error_fatal();
-	// sequence_print_raw(&sequence, 1);
 	exec_sequence(&sequence);
 	cleanup();
 	return (global()->exit_code);
@@ -133,38 +129,6 @@ int	main(int argc, char **argv)
 	global_init(argv[0]);
 	signals();
 
-	// unsigned long	index;
-
-	// index = arr_size(&global()->allocs);
-
-	// printf("before\n");
-	// arr_print_ptr(&global()->allocs);
-
-	// mem_alloc_str(3, &input);
-
-	// printf("after\n");
-	// arr_print_ptr(&global()->allocs);
-
-
-	// mem_free_from(index);
-	// return (0);
-
-	// char *str = "aa";
-	// t_array split;
-
-	// str_split_all(str, 'a', &split);
-	// arr_print_str(&split);
-	// return (0);
-
-	// char	*key;
-	// char	*value;
-
-	// if (str_key_value("====", &key, &value))
-	// 	return (1);
-	// printf("key '%s'\n", key);
-	// printf("value '%s'\n", value);
-	// abort();
-
 	// TODO: free all memory related to sequences after each iteration of following while loops
 
 	if (argc == 2 && !env_get("--mhss", NULL))
@@ -172,7 +136,7 @@ int	main(int argc, char **argv)
 	if (argc > 1)
 	{
 		cleanup();
-		return(return_too_many_args(0));
+		return (return_too_many_args(0));
 	}
 
 	if (!isatty(STDIN_FILENO))
@@ -181,7 +145,6 @@ int	main(int argc, char **argv)
 		{
 			if (read_input(&input))
 				break ;
-			// printf("INPUT: '%s'\n", input);
 			run(input);
 		}
 		cleanup();
@@ -192,11 +155,8 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("exit 4", &input);
 		run(input);
-		// abort();
 	}
-
 	cleanup();
 	return (0);
 }
