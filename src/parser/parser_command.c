@@ -32,7 +32,8 @@ static int	parse_command_init(t_raw_command *command)
 	return (0);
 }
 
-static int	parse_command_execute(t_array *tokens, unsigned long *index, t_raw_command *command)
+static int	parse_command_execute(
+		t_array *tokens, unsigned long *index, t_raw_command *command)
 {
 	t_token	*token;
 
@@ -49,7 +50,8 @@ static int	parse_command_execute(t_array *tokens, unsigned long *index, t_raw_co
 	return (0);
 }
 
-int	parser_command_parse(t_array *tokens, unsigned long *index, t_raw_command *command)
+int	parser_command_parse(
+		t_array *tokens, unsigned long *index, t_raw_command *command)
 {
 	if (parse_command_init(command))
 		return (1);

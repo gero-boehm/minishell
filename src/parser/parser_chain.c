@@ -17,7 +17,6 @@ static int	chain_end(t_array *tokens, unsigned long *index, t_chain *chain)
 	if (token_is(token, TOKEN_CLOSING))
 		return (chain->op = OP_END, 1);
 	return (0);
-
 }
 
 int	parser_chain_parse(t_array *tokens, unsigned long *index, t_chain *chain)

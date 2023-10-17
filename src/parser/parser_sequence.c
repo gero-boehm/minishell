@@ -15,7 +15,8 @@ static int	sequence_end(t_array *tokens, unsigned long index)
 	return (token_is(token, TOKEN_CLOSING));
 }
 
-int	parser_sequence_parse(t_array *tokens, unsigned long *index, t_array *sequence)
+int	parser_sequence_parse(
+		t_array *tokens, unsigned long *index, t_array *sequence)
 {
 	t_chain	chain;
 
