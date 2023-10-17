@@ -3,7 +3,7 @@
 
 int	str_key_value(char *str, char **key, char **value)
 {
-	t_range range;
+	t_range	range;
 
 	*key = NULL;
 	*value = NULL;

@@ -32,7 +32,8 @@ static int	vars_var_key_extract(const char *str, t_range *var)
 	return (str_extract_range(str, &key_range, &var->meta.var_data.key));
 }
 
-int	vars_extract(const char *str, unsigned long index, unsigned long offset, t_array *vars)
+int	vars_extract(const char *str,
+	unsigned long index, unsigned long offset, t_array *vars)
 {
 	unsigned long	start;
 	t_range			var;

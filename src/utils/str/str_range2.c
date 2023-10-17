@@ -41,7 +41,7 @@ int	str_range_of_set(char *str, char *set,
 			}
 			range->length++;
 		}
-		else if(toggle)
+		else if (toggle)
 			return (0);
 		i++;
 	}

@@ -14,7 +14,6 @@
 #include "env.h"
 #include "str.h"
 #include "wildcard.h"
-#include "sequence.h"
 #include "tmp.h"
 #include "vars.h"
 #include "lexer.h"

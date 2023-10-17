@@ -22,10 +22,8 @@ static int	global_get_exec_path(char *exec_name, char **exec_path)
 	if (str_join(exec_path, "", cwd, "/", exec_name, NULL))
 		return (free(cwd), 2);
 	free(cwd);
-	// printf("before %s\n", *exec_path);
 	if (path_normalize(exec_path))
 		return (3);
-	// printf("after %s\n", *exec_path);
 	return (0);
 }
 
@@ -36,7 +34,7 @@ char	*shell_name(void)
 
 t_global	*global(void)
 {
-	static t_global global;
+	static t_global	global;
 
 	return (&global);
 }

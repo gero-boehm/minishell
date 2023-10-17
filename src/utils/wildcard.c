@@ -67,14 +67,6 @@ static int	is_dir_current_or_parent(char name[PATH_MAX])
 	return (str_eq(name, ".") || str_eq(name, ".."));
 }
 
-// static int	get_sub_path(char *path, char name[PATH_MAX], char **sub_path)
-// {
-// 	if (*path == '\0')
-// 		return (str_dup(path, sub_path));
-
-// 	return (str_join(&sub_path, "/", path, entry->d_name, NULL))
-// }
-
 static int	recurse(char *path, char **patterns, t_array *paths)
 {
 	DIR				*dir;
@@ -152,28 +144,13 @@ int	get_paths(char *pattern, t_array *paths)
 	if (str_arr_from_arr(&arr, &parts))
 		return (2);
 	arr_free(&arr);
-	// char **t = parts;
-	// while (*t)
-	// 	printf("%s\n", *t++);
-	// replace "." with cwd
 	if (arr_create(paths, sizeof(char *)))
 		return (3);
 	if (cwd_get(&cwd))
 		return (4);
-	// printf("cwd = %s\n", cwd);
 	if (recurse(cwd, parts, paths))
 		return (5);
 	if (cwd_cut(cwd, paths))
 		return (6);
 	return (0);
 }
-
-// int	compare(char *str, char *pattern)
-// {
-// 	while()
-// }
-
-// int	matches(char *str, char *pattern)
-// {
-
-// }

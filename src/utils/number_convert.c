@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "memory.h"
 
-static int digit_count(unsigned long num)
+static int	digit_count(unsigned long num)
 {
 	int	count;
 
