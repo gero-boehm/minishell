@@ -102,4 +102,5 @@ int	lexer_boundaries_get(char *str, t_array *boundaries)
 		return (4);
 	if (lexer_remove_duplicate_boundaries(boundaries))
 		return (5);
+	return (0);
 }
