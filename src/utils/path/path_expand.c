@@ -226,6 +226,11 @@ int	path_get_paths(t_array *segments, unsigned long index, t_array *paths)
 	return (0);
 }
 
+static int path_sort(char **a, char **b)
+{
+	return (str_cmp(*b, *a));
+}
+
 int	path_expand(char **str)
 {
 	t_array	segments;
@@ -245,8 +250,10 @@ int	path_expand(char **str)
 		arr_free_ptr(&paths);
 		return (0);
 	}
-	if (str_from_arr(&paths, " ", str))
+	if (arr_sort(&paths, path_sort))
 		return (4);
+	if (str_from_arr(&paths, " ", str))
+		return (5);
 	arr_free_ptr(&segments);
 	arr_free_ptr(&paths);
 	return (0);
