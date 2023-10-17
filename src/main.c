@@ -5,7 +5,7 @@
 #include <limits.h>
 #include <unistd.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <errno.h>
 #include "globaldef.h"
 #include "global.h"
 #include "array.h"
@@ -133,6 +133,27 @@ int	main(int argc, char **argv)
 	input = NULL;
 	global_init(argv[0]);
 	signals();
+
+	// char *str = "~///../.*.c";
+	// char *str = "~////../*ge*ro*/Desktop/lead*";
+	// char *str = "////../*ge*ro*/Desktop/lead*";
+
+	// char *cwd = getcwd(NULL, 0);
+	// str_join(&cwd, "/", cwd, "noread");
+	// printf("%s\n", cwd);
+
+	// errno = 0;
+	// opendir(cwd);
+	// printf("%d: %s", errno, strerror(errno));
+
+	// char *path = "*.sh";
+	// char *path = "~////Documents/projects///..//projects/minishell/*.sh";
+	// char *path = "./*/*.s";
+
+	// path_expand(&path);
+	// printf("%s\n", path);
+
+	// abort();
 
 	// unsigned long	index;
 

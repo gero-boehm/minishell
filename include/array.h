@@ -6,6 +6,7 @@
 # include "rangedef.h"
 
 int		arr_create(t_array *arr, unsigned int bytes);
+int		arr_clone(t_array *arr, t_array *clone);
 int		arr_add(t_array *arr, void *element);
 int		arr_insert_at(t_array *arr, unsigned long index, void *element);
 void	*arr_get(t_array *arr, unsigned long index);
