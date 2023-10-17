@@ -10,7 +10,8 @@
 // 		return (*fragment == quote);
 // }
 
-// size_t	fragment_quote_count(t_array *fragments, unsigned long index, t_quote_old quote)
+// size_t	fragment_quote_count(
+// 		t_array *fragments, unsigned long index, t_quote_old quote)
 // {
 // 	char			*fragment;
 // 	unsigned long	escaped;
@@ -20,5 +21,3 @@
 // 		return (0);
 // 	return (str_len(fragment));
 // }
-
-

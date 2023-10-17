@@ -2,7 +2,8 @@
 #include "deserializer.h"
 #include "array.h"
 
-int	deserializer_deserialize_sequence(t_array *lines, unsigned long *index, t_array *sequence)
+int	deserializer_deserialize_sequence(
+		t_array *lines, unsigned long *index, t_array *sequence)
 {
 	t_chain	chain;
 

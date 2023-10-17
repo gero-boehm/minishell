@@ -3,7 +3,8 @@
 #include "array.h"
 #include "str.h"
 
-static int	deserializer_deserialize_var_ulong(t_array *lines, unsigned long *index, unsigned long *value)
+static int	deserializer_deserialize_var_ulong(
+		t_array *lines, unsigned long *index, unsigned long *value)
 {
 	char	*line;
 
@@ -16,7 +17,8 @@ static int	deserializer_deserialize_var_ulong(t_array *lines, unsigned long *ind
 	return (0);
 }
 
-static int	deserializer_deserialize_var_str(t_array *lines, unsigned long *index, char **value)
+static int	deserializer_deserialize_var_str(
+		t_array *lines, unsigned long *index, char **value)
 {
 	char	*line;
 
@@ -28,20 +30,24 @@ static int	deserializer_deserialize_var_str(t_array *lines, unsigned long *index
 	return (0);
 }
 
-static int	deserializer_deserialize_var(t_array *lines, unsigned long *index, t_range *var)
+static int	deserializer_deserialize_var(
+		t_array *lines, unsigned long *index, t_range *var)
 {
 	if (line_matches(lines, *index, "start"))
 		return (deserializer_deserialize_var_ulong(lines, index, &var->start));
 	if (line_matches(lines, *index, "length"))
 		return (deserializer_deserialize_var_ulong(lines, index, &var->length));
 	if (line_matches(lines, *index, "index"))
-		return (deserializer_deserialize_var_ulong(lines, index, &var->meta.var_data.index));
+		return (deserializer_deserialize_var_ulong(
+				lines, index, &var->meta.var_data.index));
 	if (line_matches(lines, *index, "key"))
-		return (deserializer_deserialize_var_str(lines, index, &var->meta.var_data.key));
+		return (deserializer_deserialize_var_str(
+				lines, index, &var->meta.var_data.key));
 	return (0);
 }
 
-int	deserializer_deserialize_vars(t_array *lines, unsigned long *index, const char *vars_name, t_array *vars)
+int	deserializer_deserialize_vars(t_array *lines,
+		unsigned long *index, const char *vars_name, t_array *vars)
 {
 	t_range	var;
 

@@ -3,7 +3,7 @@
 
 int	append_str(const char *str, t_array *lines)
 {
-	char *dup;
+	char	*dup;
 
 	if (str_dup(str, &dup))
 		return (1);

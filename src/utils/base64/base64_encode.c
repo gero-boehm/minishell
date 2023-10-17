@@ -1,11 +1,11 @@
 #include "memory.h"
 #include "str.h"
 
-const char symbols[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+const char	symbols[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-static int base64_get_output_str(size_t len, char **output)
+static int	base64_get_output_str(size_t len, char **output)
 {
-	size_t out_len;
+	size_t	out_len;
 
 	out_len = len / 3;
 	if (len % 3 != 0)
@@ -26,10 +26,12 @@ int	base64_encode(const char *input, char **output)
 		return (1);
 	i = 0;
 	j = 0;
-	while (len--) {
+	while (len--)
+	{
 		bytes = bytes << 8;
 		bytes += (unsigned char) input[i++];
-		if (i % 3 == 0) {
+		if (i % 3 == 0)
+		{
 			(*output)[j++] = symbols[(bytes >> 18) & 0x3F];
 			(*output)[j++] = symbols[(bytes >> 12) & 0x3F];
 			(*output)[j++] = symbols[(bytes >> 6) & 0x3F];
@@ -37,16 +39,16 @@ int	base64_encode(const char *input, char **output)
 			bytes = 0;
 		}
 	}
-	if (i % 3) {
-        bytes <<= (3 - (i % 3)) * 8;
-        (*output)[j++] = symbols[(bytes >> 18) & 0x3F];
-        (*output)[j++] = symbols[(bytes >> 12) & 0x3F];
-        if (i % 3 == 2) {
-            (*output)[j++] = symbols[(bytes >> 6) & 0x3F];
-        } else {
-            (*output)[j++] = '=';
-        }
-        (*output)[j++] = '=';
-    }
+	if (i % 3)
+	{
+		bytes <<= (3 - (i % 3)) * 8;
+		(*output)[j++] = symbols[(bytes >> 18) & 0x3F];
+		(*output)[j++] = symbols[(bytes >> 12) & 0x3F];
+		if (i % 3 == 2)
+			(*output)[j++] = symbols[(bytes >> 6) & 0x3F];
+		else
+			(*output)[j++] = '=';
+		(*output)[j++] = '=';
+	}
 	return (0);
 }

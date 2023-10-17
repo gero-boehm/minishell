@@ -2,7 +2,8 @@
 #include "deserializer.h"
 #include "array.h"
 
-static void	deserializer_deserialize_chain_op(t_array *lines, unsigned long *index, t_op *op)
+static void	deserializer_deserialize_chain_op(
+		t_array *lines, unsigned long *index, t_op *op)
 {
 	if (!line_matches(lines, *index, "op"))
 		return ;
@@ -16,7 +17,8 @@ static void	deserializer_deserialize_chain_op(t_array *lines, unsigned long *ind
 	(*index)++;
 }
 
-int	deserializer_deserialize_chain(t_array *lines, unsigned long *index, t_chain *chain)
+int	deserializer_deserialize_chain(
+		t_array *lines, unsigned long *index, t_chain *chain)
 {
 	if (arr_create(&chain->commands, sizeof(t_raw_command)))
 		return (1);

@@ -3,7 +3,7 @@
 #include "error.h"
 #include "array.h"
 
-int fd_dup(int fd_old, int *fd_new)
+int	fd_dup(int fd_old, int *fd_new)
 {
 	*fd_new = dup(fd_old);
 	if (*fd_new == -1)

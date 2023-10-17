@@ -4,7 +4,7 @@
 #include "error.h"
 #include "array.h"
 
-int fd_pipe(int ports[2])
+int	fd_pipe(int ports[2])
 {
 	if (pipe(ports) == -1)
 		return (1);

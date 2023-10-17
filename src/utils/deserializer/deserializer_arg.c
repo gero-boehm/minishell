@@ -2,7 +2,8 @@
 #include "array.h"
 #include "str.h"
 
-int	deserializer_deserialize_args(t_array *lines, unsigned long *index, t_array *args)
+int	deserializer_deserialize_args(
+		t_array *lines, unsigned long *index, t_array *args)
 {
 	char	*line;
 	char	*arg;

@@ -43,11 +43,11 @@ int	arr_sort(t_array *arr, int (fn)(void *, void *))
 		{
 			element1 = arr_get(arr, j - 1);
 			if (fn(element1, element2) > 0)
-				break;
+				break ;
 			j--;
 		}
 		if (j == i)
-			continue;
+			continue ;
 		arr_elements_shift(arr, j, i - j);
 		arr_set(arr, j, tmp);
 		mem_free(tmp);

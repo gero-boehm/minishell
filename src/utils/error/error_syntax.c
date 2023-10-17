@@ -6,6 +6,7 @@
 
 void	return_syntax(char *token)
 {
-	PRINT_ERROR(shell_name(), ": syntax error near unexpected token `", token, "'\n", NULL);
+	PRINT_ERROR(shell_name(),
+		": syntax error near unexpected token `", token, "'\n", NULL);
 	set_exit_code(258);
 }

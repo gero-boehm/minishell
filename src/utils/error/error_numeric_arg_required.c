@@ -5,6 +5,7 @@
 
 void	error_numeric_arg_required(char *arg)
 {
-	PRINT_ERROR(shell_name(), ": exit: ", arg, ": numeric argument required\n", NULL);
+	PRINT_ERROR(shell_name(),
+		": exit: ", arg, ": numeric argument required\n", NULL);
 	error(255);
 }
