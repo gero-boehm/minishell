@@ -20,9 +20,9 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 		if (var->meta.var_data.index != index)
 			SKIP(i);
 		if (env_get(var->meta.var_data.key, &expanded))
-			return (return_ambiguous_redir(path), 1);
+			return (return_ambiguous_redir(path));
 		if (str_contains(expanded, " "))
-			return (return_ambiguous_redir(path), 2);
+			return (return_ambiguous_redir(path));
 		i++;
 	}
 	return (0);
@@ -51,22 +51,22 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 static void	converter_expand_args(t_array *args, t_array *vars)
 {
 	unsigned long	i;
-	char			**arg;
-	// t_array			expanded;
+	char			*arg;
+	t_array			split;
 
-	// if (arr_create(&expanded, sizeof(char *)))
-	// 	error_fatal();
 	i = 0;
 	while (i < arr_size(args))
 	{
-		arg = (char **) arr_get(args, i);
-		// if (converter_expand_arg(arg, vars, i, &expanded))
-		// 	error_fatal();
-		if (vars_expand_str(vars, i, arg))
+		arg = *(char **) arr_get(args, i);
+		if (vars_expand_str_split(arg, vars, i, &split))
 			error_fatal();
-		i++;
+		if (arr_remove_at(args, i))
+			error_fatal();
+		if (arr_insert_arr(args, i, &split))
+			error_fatal();
+		i += arr_size(&split);
+		arr_free(&split);
 	}
-	// *args = expanded;
 }
 
 static int	converter_expand_files(t_array *files, t_array *vars)

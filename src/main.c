@@ -214,7 +214,7 @@ int	main(int argc, char **argv)
 	{
 		if (prompt(&input))
 			break ;
-		// str_dup("exit 4", &input);
+		// str_dup("export A='ls -la'", &input);
 		run(input);
 		// abort();
 	}
