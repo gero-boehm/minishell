@@ -19,6 +19,9 @@ void	exec_sequence(t_array *sequence);
 void	exec_external(t_command *cmd);
 int		exec_builtin(t_command *command);
 
+void	dup_std_start(int *fd_stdin, int *fd_stdout);
+void	dup_std_end(int *fd_stdin, int *fd_stdout);
+
 int		parse_input(char *str, t_array *sequence);
 int		read_input(char **str);
 

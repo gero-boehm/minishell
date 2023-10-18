@@ -55,20 +55,3 @@ void	exec_sequence(t_array *sequence)
 		i++;
 	}
 }
-
-// void	exec_sequence(t_array *sequence)
-// {
-// 	unsigned long	i;
-// 	int				exit_code;
-// 	t_chain			*chain;
-
-// 	i = 0;
-// 	while (i < arr_size(sequence))
-// 	{
-// 		if (exec_get_next_chain(sequence, i, exit_code, &chain))
-// 			SKIP(i);
-// 		exit_code = exec_chain(chain);
-// 		set_exit_code(exit_code);
-// 		i++;
-// 	}
-// }
