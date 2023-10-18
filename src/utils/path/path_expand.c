@@ -1,7 +1,9 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include "path.h"
 #include "array.h"
 #include "range.h"
@@ -191,6 +193,18 @@ int	path_get_updated_segments(t_array *segments, t_array *clone, char *name, uns
 	return (0);
 }
 
+int	path_entry_is_file(char *dir, char *name)
+{
+	struct stat	buf;
+	char		*path;
+
+	if (str_join(&path, "", dir, "/", name, NULL))
+		error_fatal();
+	if (stat(path, &buf) == -1)
+		return (1);
+	return (!S_ISDIR(buf.st_mode));
+}
+
 int	path_get_paths(t_array *segments, unsigned long index, t_array *paths)
 {
 	char			*pattern;
@@ -214,7 +228,10 @@ int	path_get_paths(t_array *segments, unsigned long index, t_array *paths)
 			continue ;
 		if (entry == NULL)
 			break ;
-		if (str_eq(entry->d_name, ".") || str_eq(entry->d_name, ".."))
+		// printf("%s | %d\n", entry->d_name, entry->d_type);
+		if (index < arr_size(segments) - 1 && path_entry_is_file(path, entry->d_name))
+			continue;
+		if (str_starts_with(entry->d_name, "."))
 			continue ;
 		if (!path_entry_matches_pattern(entry->d_name, pattern))
 			continue ;
@@ -222,6 +239,7 @@ int	path_get_paths(t_array *segments, unsigned long index, t_array *paths)
 			return (3);
 		if (path_get_paths(&copy, index + 1, paths))
 			return (4);
+		arr_free_ptr(&copy);
 	}
 	return (0);
 }
@@ -252,7 +270,7 @@ int	path_expand(char **str)
 	}
 	if (arr_sort(&paths, path_sort))
 		return (4);
-	if (str_from_arr(&paths, " ", str))
+	if (str_from_arr(&paths, "\n", str))
 		return (5);
 	arr_free_ptr(&segments);
 	arr_free_ptr(&paths);

@@ -25,7 +25,7 @@ int		return_permission_denied(char *path);
 void	error_not_dir(char *path);
 int		return_not_dir(char *path);
 
-void	return_ambiguous_redir(char *value);
+int		return_ambiguous_redir(char *value);
 
 int		return_too_many_args(int is_exit);
 
