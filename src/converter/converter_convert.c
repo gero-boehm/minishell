@@ -5,13 +5,10 @@
 #include "error.h"
 #include "path.h"
 
-#include <stdio.h>
-
 static void	converter_command_type_get(t_raw_command *raw_command, t_command *command)
 {
 	char	*arg;
 
-	// TODO: do we have to handle commands written with uppercase letters?
 	if (arr_size(&raw_command->args) == 0)
 	{
 		command->type = COMMAND_NONE;

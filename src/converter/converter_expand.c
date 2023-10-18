@@ -28,26 +28,6 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 	return (0);
 }
 
-// static int	converter_expand_arg(char *arg, t_array *vars, unsigned long index, t_array *expanded)
-// {
-// 	unsigned long	i;
-// 	t_array			parts;
-// 	char			**tmp;
-
-// 	if (vars_expand_str_split(arg, vars, index, &parts))
-// 		return (1);
-// 	i = 0;
-// 	while (i < arr_size(&parts))
-// 	{
-// 		tmp = (char **) arr_get(&parts, i);
-// 		if (arr_add(expanded, tmp))
-// 			return (2);
-// 		i++;
-// 	}
-// 	arr_free(&parts);
-// 	return (0);
-// }
-
 static void	converter_expand_args(t_array *args, t_array *vars)
 {
 	unsigned long	i;
