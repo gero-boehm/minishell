@@ -48,12 +48,9 @@ void	exec_sequence(t_array *sequence)
 	{
 		if (exec_get_next_chain(sequence, i, exit_code, &chain))
 			SKIP(i);
-
 		dup_std_start(&fd_stdin, &fd_stdout);
 		exit_code = exec_chain(chain, &fd_stdin, &fd_stdout);
 		dup_std_end(&fd_stdin, &fd_stdout);
-
-		// exit_code = exec_chain(chain);
 		set_exit_code(exit_code);
 		i++;
 	}

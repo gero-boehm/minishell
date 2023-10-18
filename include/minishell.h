@@ -19,6 +19,9 @@ void	exec_sequence(t_array *sequence);
 void	exec_external(t_command *cmd);
 int		exec_builtin(t_command *command);
 
+int		parse_input(char *str, t_array *sequence);
+int		read_input(char **str);
+
 void	run_child(t_command *cmd, int input, int ports[2], int last);
 void	run_parent(t_command *cmd, int *fd, int ports[2]);
 int		run_builtin_in_main(t_command *cmd);
