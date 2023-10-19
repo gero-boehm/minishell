@@ -25,8 +25,9 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 
 	if (*cmd == '\0')
 		return (1);
+	if (str_eq(cmd, ".") || str_eq(cmd, ".."))
+		error_command_not_found(cmd);
 	i = 0;
-
 	while (i < arr_size(paths))
 	{
 		path = *(char **) arr_get(paths, i);
