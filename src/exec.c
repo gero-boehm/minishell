@@ -100,26 +100,19 @@ void	exec_external(t_command *cmd)
 	{
 		cmd_path = cmd->data.external.args[0];
 		if (access(cmd_path, F_OK))
-			error_no_file_or_dir(cmd_path);
+			error_no_file_or_dir(cmd_path, 0);
 		if (access(cmd_path, X_OK))
 			error_permission_denied(cmd_path);
 	}
 	else
 	{
-		// TODO: decide if we canna check binaries for magic numbers
-		// printf("is binary %d\n", is_binary(cmd->data.external.args[0]));
-		// if (access(cmd->data.external.args[0], X_OK))
-		// {
-			if (env_get("PATH", &paths_str))
-				error_no_file_or_dir(cmd->data.external.args[0]);
-			if (str_split(paths_str, ':', &paths))
-				error_fatal();
-			if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
-				error_command_not_found(cmd->data.external.args[0]);
-			arr_free_ptr(&paths);
-		// }
-		// else
-		// 	cmd_path = cmd->data.external.args[0];
+		if (env_get("PATH", &paths_str))
+			error_no_file_or_dir(cmd->data.external.args[0], 0);
+		if (str_split(paths_str, ':', &paths))
+			error_fatal();
+		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))
+			error_command_not_found(cmd->data.external.args[0]);
+		arr_free_ptr(&paths);
 	}
 	if (env_set("--mhss", "1"))
 		error_fatal();

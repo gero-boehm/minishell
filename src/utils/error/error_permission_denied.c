@@ -5,12 +5,11 @@
 
 void	error_permission_denied(char *path)
 {
-	PRINT_ERROR(shell_name(), ": ", path, ": Permission denied\n", NULL);
+	str_print_error(126, path, ": Permission denied", NULL);
 	error(126);
 }
 
 int	return_permission_denied(char *path)
 {
-	PRINT_ERROR(shell_name(), ": ", path, " :%s: Permission denied\n", NULL);
-	return (set_exit_code(126));
+	return (str_print_error(126, path, ": Permission denied", NULL));
 }

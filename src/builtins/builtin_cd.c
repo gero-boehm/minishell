@@ -16,13 +16,12 @@
 static int	report_error(char *path)
 {
 	if (errno == ENOENT)
-		return (return_no_file_or_dir(path), 1);
+		return (return_no_file_or_dir(path, 1), 1);
 	if (errno == EACCES)
 		return (return_permission_denied(path), 1);
 	if (errno == ENOTDIR)
 		return (return_not_dir(path), 1);
-	printf("%s: cd: %s: %s\n", shell_name(), path, strerror(errno));
-	return (set_exit_code(errno));
+	return (str_print_error(errno, "cd :", path, ": ", strerror(errno)));
 }
 
 static int	dir_change(char *to, int announce)
