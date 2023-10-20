@@ -48,3 +48,19 @@ int	arr_insert_at(t_array *arr, unsigned long index, void *element)
 	arr->size++;
 	return (0);
 }
+
+int	arr_insert_arr(t_array *dst, unsigned long index, t_array *src)
+{
+	unsigned long	i;
+	void			*tmp;
+
+	i = 0;
+	while (i < arr_size(src))
+	{
+		tmp = arr_get(src, i);
+		if (arr_insert_at(dst, index + i, tmp))
+			return (1);
+		i++;
+	}
+	return (0);
+}

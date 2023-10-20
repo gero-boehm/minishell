@@ -74,4 +74,6 @@ int		str_starts_with(char *str, const char *match);
 
 int		str_contains(const char *str, const char *match);
 
+int		str_print_error(int code, ...);
+
 #endif

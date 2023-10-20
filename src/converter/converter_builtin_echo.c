@@ -1,6 +1,6 @@
 #include "cmddef.h"
-#include "rangedef.h"
 #include "array.h"
+#include "range.h"
 #include "str.h"
 
 static int	is_newline_flag(char *str)

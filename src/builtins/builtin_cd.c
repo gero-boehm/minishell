@@ -11,17 +11,17 @@
 #include "error.h"
 #include "str.h"
 #include "env.h"
+#include "path.h"
 
 static int	report_error(char *path)
 {
 	if (errno == ENOENT)
-		return (return_no_file_or_dir(path), 1);
+		return (return_no_file_or_dir(path, 1), 1);
 	if (errno == EACCES)
 		return (return_permission_denied(path), 1);
 	if (errno == ENOTDIR)
 		return (return_not_dir(path), 1);
-	printf("%s: cd: %s: %s\n", shell_name(), path, strerror(errno));
-	return (set_exit_code(errno));
+	return (str_print_error(errno, "cd :", path, ": ", strerror(errno)));
 }
 
 static int	dir_change(char *to, int announce)
@@ -46,8 +46,7 @@ static int	go_home(void)
 {
 	char	*home;
 
-	if (env_get("HOME", &home))
-		home = getenv("HOME");
+	home = path_get_home();
 	return (dir_change(home, 0));
 }
 
@@ -73,8 +72,7 @@ int	builtin_cd(t_builtin_cd *cd)
 		return (go_back());
 	if (str_starts_with(path, "~"))
 	{
-		if (env_get("HOME", &home))
-			home = getenv("HOME");
+		home = path_get_home();
 		range.start = 0;
 		range.length = 1;
 		if (str_sub_range(&path, &range, home))

@@ -3,13 +3,13 @@
 #include "array.h"
 #include "str.h"
 #include "error.h"
+#include "path.h"
 
 static void	converter_command_type_get(
 		t_raw_command *raw_command, t_command *command)
 {
 	char	*arg;
 
-	// TODO: do we have to handle commands written with uppercase letters?
 	if (arr_size(&raw_command->args) == 0)
 	{
 		command->type = COMMAND_NONE;
@@ -58,11 +58,68 @@ static int	converter_convert_commands(
 	return (0);
 }
 
+<<<<<<< HEAD
 int	converter_convert(t_raw_command *raw_command, t_command *command)
+=======
+static int	converter_convert_paths_args(t_array *args)
+{
+	unsigned long	i;
+	char			*arg;
+	t_array			split;
+
+	i = 0;
+	while (i < arr_size(args))
+	{
+		arg = *(char **) arr_get(args, i);
+		if (path_expand(&arg))
+			return (1);
+		if (str_split(arg, '\n', &split))
+			return (2);
+		if (arr_remove_at(args, i))
+			return (3);
+		if (arr_insert_arr(args, i, &split))
+			return (4);
+		i += arr_size(&split);
+		arr_free(&split);
+	}
+	return (0);
+}
+
+static int	converter_convert_paths_files(t_array *files)
+{
+	unsigned long	i;
+	t_file			*file;
+	char			*before;
+
+	i = 0;
+	while (i < arr_size(files))
+	{
+		file = (t_file *) arr_get(files, i);
+		if (file->type == FILE_HEREDOC)
+		{
+			i++;
+			continue ;
+		}
+		before = file->data.path;
+		if (path_expand(&file->data.path))
+			error_fatal();
+		if (str_contains(file->data.path, "\n"))
+			return (return_ambiguous_redir(before));
+		i++;
+	}
+	return (0);
+}
+
+int converter_convert(t_raw_command *raw_command, t_command *command)
+>>>>>>> master
 {
 	command->fd_in = 0;
 	command->fd_out = 1;
 	if (converter_expand(raw_command))
+		return (1);
+	if (converter_convert_paths_args(&raw_command->args))
+		error_fatal();
+	if (converter_convert_paths_files(&raw_command->files))
 		return (1);
 	converter_command_type_get(raw_command, command);
 	if (converter_redir(&raw_command->files, command))
