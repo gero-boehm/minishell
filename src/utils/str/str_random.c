@@ -28,7 +28,7 @@ int	str_random(size_t length, char **str)
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd == -1)
 		return (1);
-	if(mem_alloc_str(length, str))
+	if (mem_alloc_str(length, str))
 		return (2);
 	bytes_read = read(fd, *str, length);
 	if (bytes_read != length)

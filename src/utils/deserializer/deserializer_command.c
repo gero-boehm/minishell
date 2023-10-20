@@ -3,7 +3,8 @@
 #include "array.h"
 #include "str.h"
 
-static int	deserializer_deserialize_command(t_array *lines, unsigned long *index, t_raw_command *command)
+static int	deserializer_deserialize_command(
+		t_array *lines, unsigned long *index, t_raw_command *command)
 {
 	if (arr_create(&command->args, sizeof(char *)))
 		return (1);
@@ -17,14 +18,17 @@ static int	deserializer_deserialize_command(t_array *lines, unsigned long *index
 		return (5);
 	if (deserializer_deserialize_files(lines, index, &command->files))
 		return (6);
-	if (deserializer_deserialize_vars(lines, index, "vars_args", &command->vars_args))
+	if (deserializer_deserialize_vars(
+			lines, index, "vars_args", &command->vars_args))
 		return (7);
-	if (deserializer_deserialize_vars(lines, index, "vars_files", &command->vars_files))
+	if (deserializer_deserialize_vars(
+			lines, index, "vars_files", &command->vars_files))
 		return (8);
 	return (0);
 }
 
-int	deserializer_deserialize_commands(t_array *lines, unsigned long *index, t_array *commands)
+int	deserializer_deserialize_commands(
+		t_array *lines, unsigned long *index, t_array *commands)
 {
 	t_raw_command	command;
 

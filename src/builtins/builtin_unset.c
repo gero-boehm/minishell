@@ -5,7 +5,6 @@
 #include "env.h"
 #include "str.h"
 
-// TODO: put in own file
 static int	contains_invalid_sign(char *key)
 {
 	char	*set;

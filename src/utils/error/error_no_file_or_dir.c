@@ -14,6 +14,7 @@ void	error_no_file_or_dir(char *path, int is_cd)
 int	return_no_file_or_dir(char *path, int is_cd)
 {
 	if (is_cd)
-		return (str_print_error(127, path, ": cd: No such file or directory", NULL));
+		return (str_print_error(127,
+				path, ": cd: No such file or directory", NULL));
 	return (str_print_error(127, path, ": No such file or directory", NULL));
 }

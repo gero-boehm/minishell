@@ -4,7 +4,8 @@
 #include "range.h"
 #include "number.h"
 
-static int	serializer_serialize_unsigned_long(const char *key, unsigned long *value, t_array *lines)
+static int	serializer_serialize_unsigned_long(
+		const char *key, unsigned long *value, t_array *lines)
 {
 	char	*str;
 
@@ -25,7 +26,8 @@ static int	serializer_serialize_var(t_range *var, t_array *lines)
 		return (2);
 	if (serializer_serialize_unsigned_long("length", range_length(var), lines))
 		return (3);
-	if (serializer_serialize_unsigned_long("index", var->meta.var_data.index, lines))
+	if (serializer_serialize_unsigned_long(
+			"index", var->meta.var_data.index, lines))
 		return (4);
 	if (append_str("key", lines))
 		return (1);
@@ -34,7 +36,8 @@ static int	serializer_serialize_var(t_range *var, t_array *lines)
 	return (0);
 }
 
-int	serializer_serialize_vars(t_array *vars, const char *vars_name, t_array *lines)
+int	serializer_serialize_vars(
+		t_array *vars, const char *vars_name, t_array *lines)
 {
 	unsigned long	i;
 	t_range			*var;

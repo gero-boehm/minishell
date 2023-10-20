@@ -6,14 +6,14 @@ static int	base64_get_output_str(const char *input, size_t len, char **output)
 	size_t			out_len;
 
 	out_len = (len / 4) * 3;
-    if (input[len - 1] == '=')
+	if (input[len - 1] == '=')
 		out_len--;
-    if (input[len - 2] == '=')
+	if (input[len - 2] == '=')
 		out_len--;
 	return (mem_alloc_str(out_len, output));
 }
 
-static int base64_value(char c)
+static int	base64_value(char c)
 {
 	if (c >= 'A' && c <= 'Z')
 		return (c - 'A');
@@ -28,12 +28,12 @@ static int base64_value(char c)
 	return (-1);
 }
 
-int base64_decode(const char *input, char **output)
+int	base64_decode(const char *input, char **output)
 {
-	int 			i;
-	int 			j;
-	size_t 			len;
-	int 			bits;
+	int				i;
+	int				j;
+	size_t			len;
+	int				bits;
 	unsigned int	bytes;
 
 	len = str_len(input);
@@ -47,17 +47,17 @@ int base64_decode(const char *input, char **output)
 	bytes = 0;
 	while (i < len)
 	{
-        if (input[i] != '=')
+		if (input[i] != '=')
 		{
-            bytes = (bytes << 6) + base64_value(input[i]);
-            bits += 6;
-        }
-        while (bits >= 8)
+			bytes = (bytes << 6) + base64_value(input[i]);
+			bits += 6;
+		}
+		while (bits >= 8)
 		{
-            (*output)[j++] = (bytes >> (bits - 8)) & 0xFF;
-            bits -= 8;
-        }
-        i++;
-    }
+			(*output)[j++] = (bytes >> (bits - 8)) & 0xFF;
+			bits -= 8;
+		}
+		i++;
+	}
 	return (0);
 }

@@ -18,7 +18,8 @@ static int	serializer_serialize_file_type(t_file_type type, t_array *lines)
 	return (0);
 }
 
-static int	serializer_serialize_file_data_heredoc(t_heredoc *heredoc, t_array *lines)
+static int	serializer_serialize_file_data_heredoc(
+		t_heredoc *heredoc, t_array *lines)
 {
 	char	*encoded;
 
@@ -42,7 +43,8 @@ static int	serializer_serialize_file_data(t_file *file, t_array *lines)
 	if (append_str("data", lines))
 		return (1);
 	if (file->type == FILE_HEREDOC)
-		return (serializer_serialize_file_data_heredoc(&file->data.heredoc, lines) * 2);
+		return (serializer_serialize_file_data_heredoc(
+				&file->data.heredoc, lines) * 2);
 	if (append_str("path", lines))
 		return (3);
 	if (arr_add(lines, &file->data.path))

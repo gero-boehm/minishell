@@ -3,7 +3,7 @@
 #include "array.h"
 #include "str.h"
 
-int converter_convert_builtin_cd(t_raw_command *raw_command, t_builtin_cd *data)
+int	converter_convert_builtin_cd(t_raw_command *raw_command, t_builtin_cd *data)
 {
 	t_range	range;
 

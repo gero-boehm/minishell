@@ -30,7 +30,7 @@ static int	redir_file_open_heredoc(t_file *file, int *fd)
 
 static int	redir_file_open(t_file *file, int *fd)
 {
-	int flags;
+	int	flags;
 
 	// TODO: handle spaces in path (ambiguous redir)
 	if (*fd != STDIN_FILENO && *fd != STDOUT_FILENO)
@@ -48,7 +48,7 @@ static int	redir_file_open(t_file *file, int *fd)
 	return (0);
 }
 
-int converter_redir(t_array *files, t_command *command)
+int	converter_redir(t_array *files, t_command *command)
 {
 	unsigned long	i;
 	t_file			*file;

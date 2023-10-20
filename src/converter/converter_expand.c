@@ -1,5 +1,4 @@
 #include "cmddef.h"
-#include "skipdef.h"
 #include "array.h"
 #include "vars.h"
 #include "token.h"
@@ -7,7 +6,8 @@
 #include "env.h"
 #include "str.h"
 
-static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array *vars)
+static int	converter_is_ambiguous_redir(
+		char *path, unsigned long index, t_array *vars)
 {
 	unsigned long	i;
 	t_range			*var;
@@ -18,7 +18,10 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 	{
 		var = (t_range *) arr_get(vars, i);
 		if (var->meta.var_data.index != index)
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		if (env_get(var->meta.var_data.key, &expanded))
 			return (return_ambiguous_redir(path));
 		if (str_contains(expanded, " "))
@@ -31,14 +34,23 @@ static int	converter_is_ambiguous_redir(char *path, unsigned long index, t_array
 static void	converter_expand_args(t_array *args, t_array *vars)
 {
 	unsigned long	i;
+<<<<<<< HEAD
+	char			**arg;
+=======
 	char			*arg;
 	t_array			split;
+>>>>>>> master
 
 	i = 0;
 	while (i < arr_size(args))
 	{
+<<<<<<< HEAD
+		arg = (char **) arr_get(args, i);
+		if (vars_expand_str(vars, i, arg))
+=======
 		arg = *(char **) arr_get(args, i);
 		if (vars_expand_str_split(arg, vars, i, &split))
+>>>>>>> master
 			error_fatal();
 		if (arr_remove_at(args, i))
 			error_fatal();
@@ -59,7 +71,10 @@ static int	converter_expand_files(t_array *files, t_array *vars)
 	{
 		file = (t_file *) arr_get(files, i);
 		if (file->type == FILE_HEREDOC)
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		if (converter_is_ambiguous_redir(file->data.path, i, vars))
 			return (1);
 		if (vars_expand_str(vars, i, &file->data.path))
@@ -79,8 +94,12 @@ static void	converter_expand_heredoc(t_array *files)
 	{
 		file = (t_file *) arr_get(files, i);
 		if (file->type != FILE_HEREDOC)
-			SKIP(i);
-		if (vars_expand_str(&file->data.heredoc.vars, 0, &file->data.heredoc.str))
+		{
+			i++;
+			continue ;
+		}
+		if (vars_expand_str(&file->data.heredoc.vars,
+				0, &file->data.heredoc.str))
 			error_fatal();
 		i++;
 	}

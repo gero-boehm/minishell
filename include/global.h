@@ -10,5 +10,4 @@ void		cleanup(void);
 void		success(void);
 int			set_exit_code(int code);
 
-
 #endif

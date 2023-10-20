@@ -24,7 +24,8 @@ static void	parser_redir_type_get(t_token *token, t_file *file)
 		file->type = FILE_APPEND;
 }
 
-static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
+static int	parser_redir_heredoc(
+		t_heredoc *heredoc, t_token *delimiter)
 {
 	t_array	lines;
 	char	*line;
@@ -37,9 +38,9 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	while (1)
 	{
 		// TODO: this allocation is not caught by custom memory handler. write function that adds pointers to allocs array
-		if(isatty(STDIN_FILENO))
+		if (isatty(STDIN_FILENO))
 			line = readline("> ");
-		else if(read_input(&line))
+		else if (read_input(&line))
 			break ;
 		if (line == NULL || str_eq(line, delimiter->str))
 			break ;
@@ -60,7 +61,8 @@ static int	parser_redir_heredoc(t_heredoc *heredoc, t_token *delimiter)
 	return (0);
 }
 
-int	parser_redir_parse(t_array *tokens, unsigned long *index, t_raw_command *command)
+int	parser_redir_parse(
+		t_array *tokens, unsigned long *index, t_raw_command *command)
 {
 	t_token	*redir;
 	t_token	*value;
@@ -76,7 +78,8 @@ int	parser_redir_parse(t_array *tokens, unsigned long *index, t_raw_command *com
 	}
 	else
 	{
-		if (parser_vars_copy(value, arr_size(&command->files), &command->vars_files))
+		if (parser_vars_copy(value,
+				arr_size(&command->files), &command->vars_files))
 			return (2);
 		if (str_dup(value->str, &file.data.path))
 			return (3);

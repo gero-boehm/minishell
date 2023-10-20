@@ -30,7 +30,8 @@ int	vars_expand_str(t_array *vars, unsigned long index, char **str)
 	return (0);
 }
 
-int	vars_expand_str_split(char *str, t_array *vars, unsigned long index, t_array *parts)
+int	vars_expand_str_split(
+		char *str, t_array *vars, unsigned long index, t_array *parts)
 {
 	unsigned long	i;
 	t_range			*var;

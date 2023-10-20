@@ -42,7 +42,7 @@ static int	dir_change(char *to, int announce)
 	return (0);
 }
 
-static int go_home(void)
+static int	go_home(void)
 {
 	char	*home;
 

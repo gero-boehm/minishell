@@ -10,7 +10,7 @@ unsigned long	range_end(t_range *range)
 	return (range->start + range->length);
 }
 
-size_t			range_length(t_range *range)
+size_t	range_length(t_range *range)
 {
 	return (range->length);
 }

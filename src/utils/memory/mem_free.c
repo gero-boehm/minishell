@@ -18,7 +18,7 @@ void	mem_free_from(unsigned long index)
 	i = arr_size(&global()->allocs);
 	if (index >= i)
 		return ;
-	while(i-- > index)
+	while (i-- > index)
 	{
 		ptr = *(void **) arr_get(&global()->allocs, i);
 		free(ptr);

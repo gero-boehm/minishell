@@ -1,4 +1,3 @@
-#include "skipdef.h"
 #include "array.h"
 #include "range.h"
 #include "str.h"
@@ -31,7 +30,7 @@ static int	lexer_token_mask_spaces(t_array *fragments, t_array *mask)
 	return (0);
 }
 
-static void lexer_token_mask_operators(t_array *fragments, t_array *mask)
+static void	lexer_token_mask_operators(t_array *fragments, t_array *mask)
 {
 	unsigned long	i;
 	t_fragment		*fragment;
@@ -41,8 +40,11 @@ static void lexer_token_mask_operators(t_array *fragments, t_array *mask)
 	while (i < arr_size(fragments))
 	{
 		fragment = (t_fragment *) arr_get(fragments, i);
-		if(fragment->quote != QUOTE_NONE || !str_char_in_set(set, *fragment->str))
-			SKIP(i);
+		if (fragment->quote != QUOTE_NONE || !str_char_in_set(set, *fragment->str))
+		{
+			i++;
+			continue ;
+		}
 		arr_set(mask, i, &counter);
 		counter++;
 		i++;

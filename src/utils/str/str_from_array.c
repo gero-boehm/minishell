@@ -20,7 +20,8 @@ static size_t	get_combined_len_of_elements(t_array *arr, t_range *range)
 	return (len);
 }
 
-static void	copy_elements_into_str(t_array *arr, t_range *range, char *sep, char *str)
+static void	copy_elements_into_str(
+		t_array *arr, t_range *range, char *sep, char *str)
 {
 	unsigned long	i;
 	char			*tmp;
@@ -41,7 +42,7 @@ int	str_from_arr_range(t_array *arr, t_range *range, char *sep, char **str)
 	size_t	len;
 
 	len = get_combined_len_of_elements(arr, range)
-			+ str_len(sep) * (range_length(range) - 1);
+		+ str_len(sep) * (range_length(range) - 1);
 	if (mem_alloc_str(len, str))
 		return (1);
 	copy_elements_into_str(arr, range, sep, *str);

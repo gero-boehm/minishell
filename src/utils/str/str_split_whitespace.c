@@ -12,7 +12,7 @@ static int	is_escaped(char *str, unsigned long index)
 	{
 		index--;
 		if (str[index] != '\\')
-			break;
+			break ;
 		backslashes++;
 	}
 	return (backslashes % 2);
@@ -21,6 +21,7 @@ static int	is_escaped(char *str, unsigned long index)
 int	is_whitespace(char c)
 {
 	const char	*set = " \n\t\r\f\v";
+
 	return (str_char_in_set(set, c));
 }
 
@@ -31,7 +32,4 @@ int	str_to_segments(char *str, t_array *segments)
 	if (arr_create(segments, sizeof(char *)))
 		return (1);
 	quote = 0;
-
 }
-
-

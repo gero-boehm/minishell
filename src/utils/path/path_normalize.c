@@ -2,7 +2,7 @@
 #include "str.h"
 #include "error.h"
 
-static int is_dir_reference(char *part)
+static int	is_dir_reference(char *part)
 {
 	while (*part != '\0')
 	{
@@ -13,7 +13,7 @@ static int is_dir_reference(char *part)
 	return (1);
 }
 
-static int dir_change(char *part, t_array *normalized)
+static int	dir_change(char *part, t_array *normalized)
 {
 	size_t	size;
 
@@ -30,7 +30,7 @@ static int dir_change(char *part, t_array *normalized)
 	return (1);
 }
 
-static void path_normalize_init(char *path, t_array *parts, t_array *normalized)
+static void	path_normalize_init(char *path, t_array *parts, t_array *normalized)
 {
 	if (str_split(path, '/', parts))
 		error_fatal();
@@ -38,7 +38,8 @@ static void path_normalize_init(char *path, t_array *parts, t_array *normalized)
 		error_fatal();
 }
 
-static void path_normalize_finish(char **path, t_array *parts, t_array *normalized, int absolute)
+static void	path_normalize_finish(
+		char **path, t_array *parts, t_array *normalized, int absolute)
 {
 	if (str_from_arr(normalized, "/", path))
 		error_fatal();

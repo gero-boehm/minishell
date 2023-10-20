@@ -4,7 +4,8 @@
 #include "base64.h"
 #include "str.h"
 
-static void	deserializer_deserialize_file_type(t_array *lines, unsigned long *index, t_file_type *type)
+static void	deserializer_deserialize_file_type(
+		t_array *lines, unsigned long *index, t_file_type *type)
 {
 	if (!line_matches(lines, *index, "type"))
 		return ;
@@ -20,7 +21,8 @@ static void	deserializer_deserialize_file_type(t_array *lines, unsigned long *in
 	(*index)++;
 }
 
-static int	deserializer_deserialize_file_data_heredoc(t_array *lines, unsigned long *index, t_heredoc *heredoc)
+static int	deserializer_deserialize_file_data_heredoc(
+		t_array *lines, unsigned long *index, t_heredoc *heredoc)
 {
 	char	*line;
 
@@ -39,7 +41,8 @@ static int	deserializer_deserialize_file_data_heredoc(t_array *lines, unsigned l
 	return (0);
 }
 
-static int	deserializer_deserialize_file_data(t_array *lines, unsigned long *index, t_file_data *data)
+static int	deserializer_deserialize_file_data(
+		t_array *lines, unsigned long *index, t_file_data *data)
 {
 	char	*line;
 	char	*path;
@@ -51,7 +54,8 @@ static int	deserializer_deserialize_file_data(t_array *lines, unsigned long *ind
 	if (line_matches(lines, *index, "heredoc"))
 	{
 		(*index)++;
-		if (deserializer_deserialize_file_data_heredoc(lines, index, &data->heredoc))
+		if (deserializer_deserialize_file_data_heredoc(
+				lines, index, &data->heredoc))
 			return (1);
 	}
 	else if (line_matches(lines, *index, "path"))
@@ -66,13 +70,15 @@ static int	deserializer_deserialize_file_data(t_array *lines, unsigned long *ind
 	return (0);
 }
 
-static int	deserializer_deserialize_file(t_array *lines, unsigned long *index, t_file *file)
+static int	deserializer_deserialize_file(
+		t_array *lines, unsigned long *index, t_file *file)
 {
 	deserializer_deserialize_file_type(lines, index, &file->type);
 	return (deserializer_deserialize_file_data(lines, index, &file->data));
 }
 
-int	deserializer_deserialize_files(t_array *lines, unsigned long *index, t_array *files)
+int	deserializer_deserialize_files(
+		t_array *lines, unsigned long *index, t_array *files)
 {
 	t_file	file;
 

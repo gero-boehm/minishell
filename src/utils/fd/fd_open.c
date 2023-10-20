@@ -3,7 +3,7 @@
 #include "error.h"
 #include "array.h"
 
-int fd_open(char *path, int flags, mode_t mode, int *fd)
+int	fd_open(char *path, int flags, mode_t mode, int *fd)
 {
 	*fd = open(path, flags, mode);
 	if (*fd == -1)

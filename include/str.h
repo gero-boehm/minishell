@@ -9,17 +9,28 @@ size_t	str_len(const char *s);
 int		str_split(char *str, char c, t_array *arr);
 int		str_split_all(char *str, char c, t_array *arr);
 
-int		str_range_to_exclusive(char *str, char *pattern, unsigned long start, t_range *range);
-int		str_range_to_inclusive(char *str, char *pattern, unsigned long start, t_range *range);
-int		str_range_from_inclusive(char *str, char *pattern, unsigned long start, t_range *range);
-int		str_range_from_exclusive(char *str, char *pattern, unsigned long start, t_range *range);
-int		str_str_to_inclusive(char *str, char *pattern, unsigned long start, char **sub);
-int		str_str_to_exclusive(char *str, char *pattern, unsigned long start, char **sub);
-int		str_str_from_inclusive(char *str, char *pattern, unsigned long start, char **sub);
-int		str_str_from_exclusive(char *str, char *pattern, unsigned long start, char **sub);
-int		str_range_of(char *str, char *pattern, unsigned long start, t_range *range);
-int		str_range_of_set(char *str, char *set, unsigned long start, t_range *range);
-int		str_range_between(char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_to_exclusive(
+			char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_to_inclusive(
+			char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_from_inclusive(
+			char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_from_exclusive(
+			char *str, char *pattern, unsigned long start, t_range *range);
+int		str_str_to_inclusive(
+			char *str, char *pattern, unsigned long start, char **sub);
+int		str_str_to_exclusive(
+			char *str, char *pattern, unsigned long start, char **sub);
+int		str_str_from_inclusive(
+			char *str, char *pattern, unsigned long start, char **sub);
+int		str_str_from_exclusive(
+			char *str, char *pattern, unsigned long start, char **sub);
+int		str_range_of(
+			char *str, char *pattern, unsigned long start, t_range *range);
+int		str_range_of_set(
+			char *str, char *set, unsigned long start, t_range *range);
+int		str_range_between(
+			char *str, char *pattern, unsigned long start, t_range *range);
 
 size_t	str_cpyn(char *dst, const char *src);
 int		str_ncmp(const char *s1, const char *s2, size_t n);

@@ -6,7 +6,8 @@
 #include "global.h"
 #include "serializer.h"
 
-int parser_subsequence_parse(t_array *tokens, unsigned long *index, t_raw_command *command)
+int	parser_subsequence_parse(
+		t_array *tokens, unsigned long *index, t_raw_command *command)
 {
 	t_array			sequence;
 	char			*exec_path;
