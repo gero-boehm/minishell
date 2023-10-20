@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include "skipdef.h"
 #include "minishell.h"
 #include "array.h"
 #include "global.h"
@@ -47,7 +46,10 @@ void	exec_sequence(t_array *sequence)
 	while (i < arr_size(sequence))
 	{
 		if (exec_get_next_chain(sequence, i, exit_code, &chain))
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		dup_std_start(&fd_stdin, &fd_stdout);
 		exit_code = exec_chain(chain, &fd_stdin, &fd_stdout);
 		dup_std_end(&fd_stdin, &fd_stdout);

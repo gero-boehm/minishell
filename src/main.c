@@ -64,9 +64,7 @@ int	main(int argc, char **argv)
 	input = NULL;
 	global_init(argv[0]);
 	signals();
-
 	// TODO: free all memory related to sequences after each iteration of following while loops
-
 	if (argc == 2 && !env_get("--mhss", NULL))
 		return (run_subshell(argv[1]));
 	if (argc > 1)

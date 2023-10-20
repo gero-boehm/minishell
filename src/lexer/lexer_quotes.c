@@ -1,10 +1,9 @@
-#include "skipdef.h"
 #include "lexerdef.h"
 #include "array.h"
 #include "str.h"
 #include "error.h"
 
-static int lexer_quote_end(t_fragment *fragment, t_quote quote)
+static int	lexer_quote_end(t_fragment *fragment, t_quote quote)
 {
 	if (!str_char_is_quote(*fragment->str))
 		return (0);
@@ -13,9 +12,10 @@ static int lexer_quote_end(t_fragment *fragment, t_quote quote)
 	return (fragment->length % 2);
 }
 
-static int	lexer_quote_mark(t_array *fragments, t_quote quote, unsigned long *index)
+static int	lexer_quote_mark(
+		t_array *fragments, t_quote quote, unsigned long *index)
 {
-	t_fragment 	*fragment;
+	t_fragment	*fragment;
 
 	while (*index < arr_size(fragments))
 	{
@@ -51,7 +51,7 @@ static int	lexer_quote_start(t_fragment *fragment)
 int	lexer_quotes_mark(t_array *fragments)
 {
 	unsigned long	i;
-	t_fragment 		*fragment;
+	t_fragment		*fragment;
 	t_quote			quote;
 
 	i = 0;

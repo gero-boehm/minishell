@@ -1,7 +1,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
-#include "skipdef.h"
 #include "minishell.h"
 #include "array.h"
 #include "error.h"

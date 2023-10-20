@@ -1,5 +1,4 @@
 #include "cmddef.h"
-#include "skipdef.h"
 #include "array.h"
 #include "vars.h"
 #include "token.h"
@@ -19,7 +18,10 @@ static int	converter_is_ambiguous_redir(
 	{
 		var = (t_range *) arr_get(vars, i);
 		if (var->meta.var_data.index != index)
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		if (env_get(var->meta.var_data.key, &expanded))
 			return (return_ambiguous_redir(path), 1);
 		if (str_contains(expanded, " "))
@@ -54,7 +56,10 @@ static int	converter_expand_files(t_array *files, t_array *vars)
 	{
 		file = (t_file *) arr_get(files, i);
 		if (file->type == FILE_HEREDOC)
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		if (converter_is_ambiguous_redir(file->data.path, i, vars))
 			return (1);
 		if (vars_expand_str(vars, i, &file->data.path))
@@ -74,7 +79,10 @@ static void	converter_expand_heredoc(t_array *files)
 	{
 		file = (t_file *) arr_get(files, i);
 		if (file->type != FILE_HEREDOC)
-			SKIP(i);
+		{
+			i++;
+			continue ;
+		}
 		if (vars_expand_str(&file->data.heredoc.vars,
 				0, &file->data.heredoc.str))
 			error_fatal();
