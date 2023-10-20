@@ -111,11 +111,17 @@ test_from_file() {
 				((line_count++))
 			done
 			# INPUT=${INPUT%?}
-			echo "$INPUT"
+			# echo "$INPUT"
 			echo -n "$INPUT" | $MINISHELL_PATH/$EXECUTABLE 2>tmp_err_minishell >tmp_out_minishell
 			exit_minishell=$?
+			# printf "\n\033[31mMINI\033[0m\n"
+			# cat -e tmp_out_minishell
+			# printf "\n"
 			echo -n "enable -n .$NL$INPUT" | bash 2>tmp_err_bash >tmp_out_bash
 			exit_bash=$?
+			# printf "\033[31mBASH\033[0m\n"
+			# cat -e tmp_out_bash
+			# printf "\n"
 			echo -ne "\033[0;34mSTD_OUT:\033[m "
 			if ! diff -q tmp_out_minishell tmp_out_bash >/dev/null ;
 			then

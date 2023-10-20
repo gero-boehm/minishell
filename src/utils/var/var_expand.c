@@ -2,6 +2,7 @@
 #include "array.h"
 #include "env.h"
 #include "str.h"
+#include "error.h"
 
 static int	vars_get_value(const char *key, char **value)
 {
@@ -36,7 +37,9 @@ int	vars_expand_str_split(
 	unsigned long	i;
 	t_range			*var;
 	char			*value;
+	int				no_vars;
 
+	no_vars = 1;
 	i = arr_size(vars);
 	while (i--)
 	{
@@ -44,12 +47,15 @@ int	vars_expand_str_split(
 		if (var->meta.var_data.index != index)
 			continue ;
 		if (vars_get_value(var->meta.var_data.key, &value))
-			return (1);
+			error_fatal();
 		str_char_replace(value, ' ', '\x01');
 		if (str_sub_range(&str, var, value))
-			return (2);
+			error_fatal();
+		no_vars = 0;
 	}
+	if (no_vars)
+		return (1);
 	if (str_split(str, '\x01', parts))
-		return (3);
+		error_fatal();
 	return (0);
 }

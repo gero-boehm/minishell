@@ -10,7 +10,6 @@ void	exec_sequence(t_array *sequence);
 int		read_input(char **str);
 
 void	signals(void);
-void	ctrlc(int sig);
 
 int		exec_chain(t_chain *chain, int *fd_stdin, int *fd_stdout);
 // int		exec_chain(t_chain *chain);

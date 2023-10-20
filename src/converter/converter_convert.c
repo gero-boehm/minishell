@@ -58,9 +58,6 @@ static int	converter_convert_commands(
 	return (0);
 }
 
-<<<<<<< HEAD
-int	converter_convert(t_raw_command *raw_command, t_command *command)
-=======
 static int	converter_convert_paths_args(t_array *args)
 {
 	unsigned long	i;
@@ -72,7 +69,10 @@ static int	converter_convert_paths_args(t_array *args)
 	{
 		arg = *(char **) arr_get(args, i);
 		if (path_expand(&arg))
-			return (1);
+		{
+			i++;
+			continue ;
+		}
 		if (str_split(arg, '\n', &split))
 			return (2);
 		if (arr_remove_at(args, i))
@@ -101,8 +101,7 @@ static int	converter_convert_paths_files(t_array *files)
 			continue ;
 		}
 		before = file->data.path;
-		if (path_expand(&file->data.path))
-			error_fatal();
+		path_expand(&file->data.path);
 		if (str_contains(file->data.path, "\n"))
 			return (return_ambiguous_redir(before));
 		i++;
@@ -110,8 +109,7 @@ static int	converter_convert_paths_files(t_array *files)
 	return (0);
 }
 
-int converter_convert(t_raw_command *raw_command, t_command *command)
->>>>>>> master
+int	converter_convert(t_raw_command *raw_command, t_command *command)
 {
 	command->fd_in = 0;
 	command->fd_out = 1;

@@ -4,13 +4,16 @@
 #include <signal.h>
 #include "minishell.h"
 
-void	signals(void)
+static void	ctrld(int sig)
 {
-	signal(SIGINT, &ctrlc);
-	signal(SIGQUIT, SIG_IGN);
+	if (sig == SIGQUIT)
+	{
+		rl_replace_line("exit", 0);
+		rl_redisplay();
+	}
 }
 
-void	ctrlc(int sig)
+static void	ctrlc(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -19,4 +22,10 @@ void	ctrlc(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	signals(void)
+{
+	signal(SIGINT, &ctrlc);
+	signal(SIGQUIT, &ctrld);
 }

@@ -59,6 +59,7 @@ int	exec_loop(t_chain *chain, t_exchain *ex, int *fd_stdin, int *fd_stdout)
 			fork_procs(chain, ex, fd_stdin, fd_stdout);
 		ex->i++;
 	}
+
 }
 
 int	exec_chain(t_chain *chain, int *fd_stdin, int *fd_stdout)
@@ -79,5 +80,5 @@ int	exec_chain(t_chain *chain, int *fd_stdin, int *fd_stdout)
 	ex.i--;
 	while (ex.i--)
 		wait(NULL);
-	return (ex.exit_code >> 8);
+	return (WEXITSTATUS(ex.exit_code));
 }

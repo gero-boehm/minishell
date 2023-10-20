@@ -7,6 +7,12 @@
 #include "deserializer.h"
 #include "fd.h"
 
+#include <stdlib.h>
+#include "str.h"
+
+void	sequence_print_raw(t_array *sequence, unsigned long index);
+
+
 void	run(char *input)
 {
 	t_array			sequence;
@@ -20,6 +26,7 @@ void	run(char *input)
 		fd_close_all();
 		return ;
 	}
+	// sequence_print_raw(&sequence, 0);
 	exec_sequence(&sequence);
 	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
 	// mem_free_from(index);
@@ -51,9 +58,11 @@ static void	infinite_prompt(char **input)
 {
 	while (1)
 	{
+		// str_dup("/usr/bin/printf \"%s\n\" minishe*l", input);
 		if (prompt(input))
 			break ;
 		run(*input);
+		// abort();
 	}
 }
 

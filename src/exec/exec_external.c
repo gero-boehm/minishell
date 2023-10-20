@@ -33,7 +33,7 @@ static int	get_cmd_path(t_array *paths, char *cmd, char **cmd_path)
 static void	check_script_path(char *cmd_path)
 {
 	if (access(cmd_path, F_OK))
-		error_no_file_or_dir(cmd_path);
+		error_no_file_or_dir(cmd_path, 0);
 	if (access(cmd_path, X_OK))
 		error_permission_denied(cmd_path);
 }
@@ -63,7 +63,7 @@ void	exec_external(t_command *cmd)
 	else
 	{
 		if (env_get("PATH", &paths_str))
-			error_no_file_or_dir(cmd->data.external.args[0]);
+			error_no_file_or_dir(cmd->data.external.args[0], 0);
 		if (str_split(paths_str, ':', &paths))
 			error_fatal();
 		if (get_cmd_path(&paths, cmd->data.external.args[0], &cmd_path))

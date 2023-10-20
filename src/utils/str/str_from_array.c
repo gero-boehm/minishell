@@ -41,8 +41,11 @@ int	str_from_arr_range(t_array *arr, t_range *range, char *sep, char **str)
 {
 	size_t	len;
 
-	len = get_combined_len_of_elements(arr, range)
-		+ str_len(sep) * (range_length(range) - 1);
+	if (range_length(range) == 0)
+		len = 0;
+	else
+		len = get_combined_len_of_elements(arr, range)
+			+ str_len(sep) * (range_length(range) - 1);
 	if (mem_alloc_str(len, str))
 		return (1);
 	copy_elements_into_str(arr, range, sep, *str);

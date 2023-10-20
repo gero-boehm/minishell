@@ -34,24 +34,18 @@ static int	converter_is_ambiguous_redir(
 static void	converter_expand_args(t_array *args, t_array *vars)
 {
 	unsigned long	i;
-<<<<<<< HEAD
-	char			**arg;
-=======
 	char			*arg;
 	t_array			split;
->>>>>>> master
 
 	i = 0;
 	while (i < arr_size(args))
 	{
-<<<<<<< HEAD
-		arg = (char **) arr_get(args, i);
-		if (vars_expand_str(vars, i, arg))
-=======
 		arg = *(char **) arr_get(args, i);
 		if (vars_expand_str_split(arg, vars, i, &split))
->>>>>>> master
-			error_fatal();
+		{
+			i++;
+			continue ;
+		}
 		if (arr_remove_at(args, i))
 			error_fatal();
 		if (arr_insert_arr(args, i, &split))
