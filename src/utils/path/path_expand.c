@@ -77,6 +77,7 @@ static int	path_get_paths(t_array *segments, unsigned long index, t_array *paths
 
 static int	path_sort(char **a, char **b)
 {
+
 	return (str_cmp(*b, *a));
 }
 
@@ -99,7 +100,7 @@ int	path_expand(char **str)
 		arr_free_ptr(&paths);
 		return (1);
 	}
-	if (arr_sort(&paths, path_sort))
+	if (arr_sort(&paths, (int (*)(void *, void *)) path_sort))
 		error_fatal();
 	if (str_from_arr(&paths, "\n", str))
 		error_fatal();

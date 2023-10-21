@@ -7,7 +7,7 @@ static int	lexer_quote_end(t_fragment *fragment, t_quote quote)
 {
 	if (!str_char_is_quote(*fragment->str))
 		return (0);
-	if (*fragment->str != quote)
+	if (*fragment->str != (char) quote)
 		return (0);
 	return (fragment->length % 2);
 }

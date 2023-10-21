@@ -11,7 +11,7 @@ static int	deserializer_deserialize_var_ulong(
 	(*index)++;
 	line = *(char **) arr_get(lines, *index);
 	// TODO: replace with proper function for type
-	if (str_to_long_unsafe(line, value))
+	if (str_to_long_unsafe(line, (long *) value))
 		return (1);
 	(*index)++;
 	return (0);

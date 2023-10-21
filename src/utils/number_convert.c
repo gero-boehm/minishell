@@ -1,5 +1,6 @@
-#include <stdio.h>
+#include <limits.h>
 #include "memory.h"
+#include "str.h"
 
 static int	digit_count(unsigned long num)
 {
@@ -10,6 +11,27 @@ static int	digit_count(unsigned long num)
 	{
 		count++;
 		num /= 10;
+	}
+	return (count);
+}
+
+static int	get_count(int n)
+{
+	int	count;
+
+	count = 1;
+	if (n < 0)
+	{
+		if (n == INT_MIN)
+			n = INT_MAX;
+		else
+			n *= -1;
+		count++;
+	}
+	while (n)
+	{
+		n /= 10;
+		count++;
 	}
 	return (count);
 }
@@ -27,4 +49,30 @@ int	lutoa(unsigned long num, char **str)
 		num /= 10;
 	}
 	return (0);
+}
+
+char	*ft_itoa(int n)
+{
+	int		count;
+	char	*str;
+
+	if (n == INT_MIN)
+		return (str_dup("-2147483648", &str), str);
+	if (n == 0)
+		return (str_dup("0", &str), str);
+	count = get_count(n);
+	if (mem_alloc_str(count, &str))
+		return (NULL);
+	str[--count] = 0;
+	if (n < 0)
+	{
+		str[0] = '-';
+		n *= -1;
+	}
+	while (n)
+	{
+		str[--count] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (str);
 }

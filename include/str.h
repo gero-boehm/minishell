@@ -37,7 +37,7 @@ int		str_ncmp(const char *s1, const char *s2, size_t n);
 int		str_cmp(const char *s1, const char *s2);
 int		str_eq(const char *s1, const char *s2);
 int		str_dup(const char *str, char **dup);
-int		str_join(char **str, const char *sep, ...);
+int		str_join(char **str, char *sep, ...);
 
 int		str_extract_range(char *str, t_range *range, char **sub);
 int		str_sub_range(char **str, t_range *range, char *sub);
@@ -72,7 +72,7 @@ int		str_key_value(char *str, char **key, char **value);
 
 int		str_starts_with(char *str, const char *match);
 
-int		str_contains(const char *str, const char *match);
+int		str_contains(char *str, char *match);
 
 int		str_print_error(int code, ...);
 
