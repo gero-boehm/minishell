@@ -8,18 +8,11 @@
 #include "fd.h"
 #include "memory.h"
 
-#include <stdlib.h>
-#include "str.h"
-
-void	sequence_print_raw(t_array *sequence, unsigned long index);
-
-
-void	run(char *input)
+static void	run(char *input)
 {
 	t_array			sequence;
 	unsigned long	index;
 
-	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	if (parse_input(input, &sequence))
 	{
 		if (!arr_index(&global()->allocs, &global()->exec_path, &index))
@@ -27,15 +20,13 @@ void	run(char *input)
 		fd_close_all();
 		return ;
 	}
-	// sequence_print_raw(&sequence, 0);
 	exec_sequence(&sequence);
-	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
 	if (!arr_index(&global()->allocs, &global()->exec_path, &index))
 		mem_free_from(++index);
 	fd_close_all();
 }
 
-int	run_subshell(char *str)
+static int	run_subshell(char *str)
 {
 	t_array			sequence;
 
@@ -60,11 +51,9 @@ static void	infinite_prompt(char **input)
 {
 	while (1)
 	{
-		// str_dup("export A=5", input);
 		if (prompt(input))
 			break ;
 		run(*input);
-		// abort();
 	}
 }
 

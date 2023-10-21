@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include "global.h"
+#include "error.h"
 #include "array.h"
 #include "str.h"
 

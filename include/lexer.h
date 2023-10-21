@@ -3,6 +3,8 @@
 
 # include "arraydef.h"
 
+int		lexer_sort_boundaries(void *element1, void *element2);
+int		lexer_remove_duplicate_boundaries(t_array *boundaries);
 int		lexer_boundaries_get(char *str, t_array *boundaries);
 int		lexer_fragments_get(char *str, t_array *fragments);
 int		lexer_quotes_mark(t_array *fragments);

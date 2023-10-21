@@ -48,15 +48,9 @@ int	base64_decode(const char *input, char **output)
 	while (i < len)
 	{
 		if (input[i] != '=')
-		{
-			bytes = (bytes << 6) + base64_value(input[i]);
-			bits += 6;
-		}
+			bytes = (bytes << 6) + base64_value(input[i] + (bits += 6) * 0);
 		while (bits >= 8)
-		{
-			(*output)[j++] = (bytes >> (bits - 8)) & 0xFF;
-			bits -= 8;
-		}
+			(*output)[j++] = (bytes >> (bits -= 8)) & 0xFF;
 		i++;
 	}
 	return (0);

@@ -18,12 +18,11 @@ static int	redir_file_open_heredoc(t_file *file, int *fd)
 	size_t	len;
 	int		ports[2];
 
-	// TODO: add function for pipes to add them to fds array
-	if (pipe(ports) == -1)
+	if (fd_pipe(ports) == -1)
 		return (1);
 	len = str_len(file->data.heredoc.str);
 	write(ports[1], file->data.heredoc.str, len);
-	close(ports[1]);
+	fd_close(ports[1]);
 	*fd = ports[0];
 	return (0);
 }
@@ -32,7 +31,6 @@ static int	redir_file_open(t_file *file, int *fd)
 {
 	int	flags;
 
-	// TODO: handle spaces in path (ambiguous redir)
 	if (*fd != STDIN_FILENO && *fd != STDOUT_FILENO)
 		fd_close(*fd);
 	if (file->type == FILE_IN)

@@ -17,7 +17,6 @@ int	serializer_serialize(t_array *sequence, char **str)
 		return (2);
 	if (base64_encode(raw, str))
 		return (3);
-	// TODO: free lines array and make sure all instances where strings are added to lines are duped to avoid double frees
 	mem_free(raw);
 	return (0);
 }

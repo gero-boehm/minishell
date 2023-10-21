@@ -1,6 +1,9 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+int		set_exit_code(int code);
+void	success(void);
+
 void	error(int code);
 void	error_fatal(void);
 

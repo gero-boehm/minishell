@@ -24,6 +24,19 @@ static void	parser_redir_type_get(t_token *token, t_file *file)
 		file->type = FILE_APPEND;
 }
 
+static int	parser_redir_heredoc_finish(t_array *lines, t_heredoc *heredoc,
+	t_token *delimiter)
+{
+	if (str_from_arr(lines, "", &heredoc->str))
+		return (1);
+	arr_free_ptr(lines);
+	if (delimiter->contained_quotes)
+		return (0);
+	if (vars_extract(heredoc->str, 0, 0, &heredoc->vars))
+		return (2);
+	return (0);
+}
+
 static int	parser_redir_heredoc(
 		t_heredoc *heredoc, t_token *delimiter)
 {
@@ -37,7 +50,6 @@ static int	parser_redir_heredoc(
 		return (2);
 	while (1)
 	{
-		// TODO: this allocation is not caught by custom memory handler. write function that adds pointers to allocs array
 		if (isatty(STDIN_FILENO))
 			line = readline("> ");
 		else if (read_input(&line))
@@ -51,14 +63,7 @@ static int	parser_redir_heredoc(
 		mem_free(line);
 	}
 	mem_free(line);
-	if (str_from_arr(&lines, "", &heredoc->str))
-		return (5);
-	arr_free_ptr(&lines);
-	if (delimiter->contained_quotes)
-		return (0);
-	if (vars_extract(heredoc->str, 0, 0, &heredoc->vars))
-		return (6);
-	return (0);
+	return (parser_redir_heredoc_finish(&lines, heredoc, delimiter));
 }
 
 int	parser_redir_parse(

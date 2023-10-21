@@ -10,7 +10,6 @@ static int	deserializer_deserialize_var_ulong(
 
 	(*index)++;
 	line = *(char **) arr_get(lines, *index);
-	// TODO: replace with proper function for type
 	if (str_to_long_unsafe(line, (long *) value))
 		return (1);
 	(*index)++;
@@ -34,15 +33,15 @@ static int	deserializer_deserialize_var(
 		t_array *lines, unsigned long *index, t_range *var)
 {
 	if (line_matches(lines, *index, "start"))
-		return (deserializer_deserialize_var_ulong(lines, index, &var->start));
+		deserializer_deserialize_var_ulong(lines, index, &var->start);
 	if (line_matches(lines, *index, "length"))
-		return (deserializer_deserialize_var_ulong(lines, index, &var->length));
+		deserializer_deserialize_var_ulong(lines, index, &var->length);
 	if (line_matches(lines, *index, "index"))
-		return (deserializer_deserialize_var_ulong(
-				lines, index, &var->meta.var_data.index));
+		deserializer_deserialize_var_ulong(
+			lines, index, &var->meta.var_data.index);
 	if (line_matches(lines, *index, "key"))
-		return (deserializer_deserialize_var_str(
-				lines, index, &var->meta.var_data.key));
+		deserializer_deserialize_var_str(
+			lines, index, &var->meta.var_data.key);
 	return (0);
 }
 

@@ -1,7 +1,8 @@
 #include "array.h"
 #include "range.h"
 
-static int	lexer_token_range_start(t_array *mask, unsigned long *start, int *mask_value)
+static int	lexer_token_range_start(t_array *mask,
+	unsigned long *start, int *mask_value)
 {
 	while (*start < arr_size(mask))
 	{
@@ -13,7 +14,8 @@ static int	lexer_token_range_start(t_array *mask, unsigned long *start, int *mas
 	return (1);
 }
 
-static unsigned long	lexer_token_range_end(t_array *mask, unsigned long index, int match)
+static unsigned long	lexer_token_range_end(t_array *mask,
+	unsigned long index, int match)
 {
 	int	mask_value;
 
@@ -27,7 +29,8 @@ static unsigned long	lexer_token_range_end(t_array *mask, unsigned long index, i
 	return (index);
 }
 
-static int	lexer_token_range_add(unsigned long start, unsigned long end, t_array *token_ranges)
+static int	lexer_token_range_add(unsigned long start,
+	unsigned long end, t_array *token_ranges)
 {
 	t_range	token_range;
 

@@ -20,13 +20,10 @@ int	assoc_from_str_arr(t_assoc *assoc, char **arr)
 		return (1);
 	while (*arr != NULL)
 	{
-		// TODO: use str_key_value to handle multiple '='
-		if (str_str_to_exclusive(*arr, "=", 0, &key))
+		if (str_key_value(*arr, &key, &value))
 			return (2);
-		if (str_str_from_exclusive(*arr, "=", 0, &value))
-			return (3);
 		if (assoc_set(assoc, key, value))
-			return (4);
+			return (3);
 		arr++;
 	}
 	return (0);

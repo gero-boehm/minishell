@@ -44,7 +44,8 @@ int	path_get_pattern_boundaries(char *str, t_array *boundaries)
 	return (0);
 }
 
-int	path_get_segments_from_boundaries(char *str, t_array *boundaries, t_array *segments)
+int	path_get_segments_from_boundaries(char *str, t_array *boundaries,
+	t_array *segments)
 {
 	unsigned long	i;
 	unsigned long	start;
@@ -62,8 +63,7 @@ int	path_get_segments_from_boundaries(char *str, t_array *boundaries, t_array *s
 			i++;
 			continue ;
 		}
-		range.start = start;
-		range.length = end - start;
+		range = (t_range){start, end - start, (t_range_meta){0}};
 		if (str_extract_range(str, &range, &part))
 			return (1);
 		if (arr_add(segments, &part))
