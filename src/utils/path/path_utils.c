@@ -27,12 +27,14 @@ int	path_resolve(t_array *segments, unsigned long index, char **path)
 	char	*cwd;
 	t_range	range;
 
-	range = (t_range) {0, index};
+	range.start = 0;
+	range.length = index;
 	if (str_from_arr_range(segments, &range, "", path))
 		return (1);
 	if (str_starts_with(*path, "/"))
 		return (0);
-	range = (t_range) {0, 1};
+	range.start = 0;
+	range.length = 1;
 	if (str_starts_with(*path, "~/"))
 		return (str_sub_range(path, &range, path_get_home()));
 	cwd = getcwd(NULL, 0);

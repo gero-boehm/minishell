@@ -2,7 +2,7 @@
 #include "array.h"
 #include "str.h"
 
-int	str_join(char **str, const char *sep, ...)
+int	str_join(char **str, char *sep, ...)
 {
 	va_list	args;
 	t_array	parts;

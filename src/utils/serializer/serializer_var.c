@@ -5,7 +5,7 @@
 #include "number.h"
 
 static int	serializer_serialize_unsigned_long(
-		const char *key, unsigned long *value, t_array *lines)
+		const char *key, unsigned long value, t_array *lines)
 {
 	char	*str;
 

@@ -3,7 +3,7 @@
 
 static int	base64_get_output_str(const char *input, size_t len, char **output)
 {
-	size_t			out_len;
+	size_t	out_len;
 
 	out_len = (len / 4) * 3;
 	if (input[len - 1] == '=')
@@ -30,8 +30,8 @@ static int	base64_value(char c)
 
 int	base64_decode(const char *input, char **output)
 {
-	int				i;
-	int				j;
+	unsigned long	i;
+	unsigned long	j;
 	size_t			len;
 	int				bits;
 	unsigned int	bytes;

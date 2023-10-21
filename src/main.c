@@ -6,6 +6,7 @@
 #include "minishell.h"
 #include "deserializer.h"
 #include "fd.h"
+#include "memory.h"
 
 #include <stdlib.h>
 #include "str.h"
@@ -18,24 +19,25 @@ void	run(char *input)
 	t_array			sequence;
 	unsigned long	index;
 
-	index = arr_size(&global()->allocs);
 	// TODO: turn returns into error_fatal() and make return value reflect if there was something to parse or not (empty input);
 	if (parse_input(input, &sequence))
 	{
-		// mem_free_from(index);
+		if (!arr_index(&global()->allocs, &global()->exec_path, &index))
+			mem_free_from(++index);
 		fd_close_all();
 		return ;
 	}
 	// sequence_print_raw(&sequence, 0);
 	exec_sequence(&sequence);
 	// TODO: find a better way to implement this. cause this messes up export since the keys and values are assigned after index and are thus cleared..
-	// mem_free_from(index);
+	if (!arr_index(&global()->allocs, &global()->exec_path, &index))
+		mem_free_from(++index);
 	fd_close_all();
 }
 
 int	run_subshell(char *str)
 {
-	t_array	sequence;
+	t_array			sequence;
 
 	if (deserializer_deserialize(str, &sequence))
 		error_fatal();
@@ -58,7 +60,7 @@ static void	infinite_prompt(char **input)
 {
 	while (1)
 	{
-		// str_dup("/usr/bin/printf \"%s\n\" minishe*l", input);
+		// str_dup("export A=5", input);
 		if (prompt(input))
 			break ;
 		run(*input);
@@ -73,7 +75,6 @@ int	main(int argc, char **argv)
 	input = NULL;
 	global_init(argv[0]);
 	signals();
-	// TODO: free all memory related to sequences after each iteration of following while loops
 	if (argc == 2 && !env_get("--mhss", NULL))
 		return (run_subshell(argv[1]));
 	if (argc > 1)

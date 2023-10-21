@@ -9,8 +9,7 @@
 #include "fd.h"
 #include "exchain.h"
 
-static void	fork_procs(
-		t_chain *chain, t_exchain *ex, int *fd_stdin, int *fd_stdout)
+static void	fork_procs(t_chain *chain, t_exchain *ex)
 {
 	ex->pid = fork();
 	if (ex->pid == -1)
@@ -56,10 +55,10 @@ int	exec_loop(t_chain *chain, t_exchain *ex, int *fd_stdin, int *fd_stdout)
 		if (handle_single_builtin(chain, ex, fd_stdin, fd_stdout))
 			return (2);
 		else
-			fork_procs(chain, ex, fd_stdin, fd_stdout);
+			fork_procs(chain, ex);
 		ex->i++;
 	}
-
+	return (0);
 }
 
 int	exec_chain(t_chain *chain, int *fd_stdin, int *fd_stdout)

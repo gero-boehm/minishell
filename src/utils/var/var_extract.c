@@ -2,7 +2,7 @@
 #include "range.h"
 #include "str.h"
 
-static void	vars_var_get_range(const char *str, t_range *var)
+static void	vars_var_get_range(char *str, t_range *var)
 {
 	const char	*boundaries = " \n\t\r\f\v!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~";
 	char		c;
@@ -23,7 +23,7 @@ static void	vars_var_get_range(const char *str, t_range *var)
 	}
 }
 
-static int	vars_var_key_extract(const char *str, t_range *var)
+static int	vars_var_key_extract(char *str, t_range *var)
 {
 	t_range	key_range;
 
@@ -32,7 +32,7 @@ static int	vars_var_key_extract(const char *str, t_range *var)
 	return (str_extract_range(str, &key_range, &var->meta.var_data.key));
 }
 
-int	vars_extract(const char *str,
+int	vars_extract(char *str,
 	unsigned long index, unsigned long offset, t_array *vars)
 {
 	unsigned long	start;

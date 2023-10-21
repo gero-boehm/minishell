@@ -38,7 +38,7 @@ static void	check_script_path(char *cmd_path)
 		error_permission_denied(cmd_path);
 }
 
-static void	fatal_checks(char **env)
+static void	fatal_checks(char ***env)
 {
 	if (env_set("--mhss", "1"))
 		error_fatal();

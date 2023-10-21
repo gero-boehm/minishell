@@ -1,7 +1,7 @@
 #include "rangedef.h"
 #include "str.h"
 
-int	str_contains(const char *str, const char *match)
+int	str_contains(char *str, char *match)
 {
 	t_range	range;
 

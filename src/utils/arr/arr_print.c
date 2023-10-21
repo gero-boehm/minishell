@@ -3,7 +3,7 @@
 
 static int	get_digit_count(size_t size)
 {
-	size_t	count;
+	int	count;
 
 	count = 1;
 	while (size > 9)
@@ -35,14 +35,14 @@ void	arr_print_ptr(t_array *arr)
 {
 	unsigned long	i;
 	void			*tmp;
-	size_t			padding;
+	int				padding;
 
 	i = 0;
 	padding = get_digit_count(arr_size(arr));
 	while (i < arr_size(arr))
 	{
 		tmp = *(void **) arr_get(arr, i);
-		printf("% *lu: %p\n", padding, i, tmp);
+		printf("%-*lu: %p\n", padding, i, tmp);
 		i++;
 	}
 }

@@ -5,59 +5,13 @@
 #include "str.h"
 #include "memory.h"
 #include "error.h"
+#include "array.h"
+#include "number.h"
 
 extern char	**environ;
 
-static int	get_count(int n)
-{
-	int	count;
-
-	count = 1;
-	if (n < 0)
-	{
-		if (n == INT_MIN)
-			n = INT_MAX;
-		else
-			n *= -1;
-		count++;
-	}
-	while (n)
-	{
-		n /= 10;
-		count++;
-	}
-	return (count);
-}
-
-static char	*ft_itoa(int n)
-{
-	int		count;
-	char	*str;
-
-	if (n == INT_MIN)
-		return (str_dup("-2147483648", &str), str);
-	if (n == 0)
-		return (str_dup("0", &str), str);
-	count = get_count(n);
-	if (mem_alloc_str(count, &str))
-		return (NULL);
-	str[--count] = 0;
-	if (n < 0)
-	{
-		str[0] = '-';
-		n *= -1;
-	}
-	while (n)
-	{
-		str[--count] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (str);
-}
-
 int	env_init(void)
 {
-	// TODO: variable export can have mutiple '=' in succession. meaning A==5 with have A as key and =5 as value. make sure splitting the env works correctly in this case
 	return (assoc_from_str_arr(&global()->env, environ));
 }
 
@@ -65,7 +19,6 @@ int	env_get(const char *key, char **value)
 {
 	if (str_eq(key, "?"))
 	{
-		// TODO: write proper conversion function
 		*value = ft_itoa(global()->exit_code);
 		if (*value == NULL)
 			error_fatal();
@@ -76,7 +29,21 @@ int	env_get(const char *key, char **value)
 
 int	env_set(const char *key, char *value)
 {
-	return (assoc_set(&global()->env, key, value));
+	unsigned long	index;
+
+	if (assoc_set(&global()->env, key, value))
+		return (1);
+	if (arr_remove(&global()->allocs, &key))
+		return (2);
+	if (arr_remove(&global()->allocs, &value))
+		return (3);
+	if (arr_index(&global()->allocs, &global()->exec_path, &index))
+		return (0);
+	if (arr_insert_at(&global()->allocs, index, &key))
+		return (4);
+	if (arr_insert_at(&global()->allocs, index, &value))
+		return (5);
+	return (0);
 }
 
 int	env_remove(const char *key)

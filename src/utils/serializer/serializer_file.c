@@ -38,8 +38,6 @@ static int	serializer_serialize_file_data_heredoc(
 
 static int	serializer_serialize_file_data(t_file *file, t_array *lines)
 {
-	char	*id;
-
 	if (append_str("data", lines))
 		return (1);
 	if (file->type == FILE_HEREDOC)
