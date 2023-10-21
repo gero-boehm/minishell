@@ -12,6 +12,4 @@ typedef struct s_global {
 	t_array	allocs;
 }	t_global;
 
-int	g_signal;
-
 #endif

@@ -7,6 +7,9 @@
 #include "str.h"
 #include "error.h"
 
+static int	path_get_paths(t_array *segments,
+				unsigned long index, t_array *paths);
+
 static int	path_entry_matches_pattern(char *name, char *pattern)
 {
 	unsigned long	i;
@@ -36,48 +39,62 @@ static int	path_entry_matches_pattern(char *name, char *pattern)
 	return (1);
 }
 
-
-static int	path_get_paths(t_array *segments, unsigned long index, t_array *paths)
+static int	path_search_dir(t_array *segments, char *path,
+	unsigned long index, t_array *paths)
 {
 	char			*pattern;
-	char			*path;
-	t_array			copy;
 	DIR				*dir;
 	struct dirent	*entry;
+	t_array			copy;
 
-	if (index == arr_size(segments))
-		return (str_from_arr(segments, "", &pattern) || arr_add(paths, &pattern));
-	pattern = *(char **) arr_get(segments, index);
-	if (!str_contains(pattern, "*"))
-		return (path_get_paths(segments, index + 1, paths));
-	if (path_resolve(segments, index, &path))
-		return (2);
 	if (opendir2(path, &dir))
 		return (0);
+	pattern = *(char **) arr_get(segments, index);
 	while (1)
 	{
 		if (readdir2(dir, &entry))
 			continue ;
 		if (entry == NULL)
 			break ;
-		if (index < arr_size(segments) - 1 && path_entry_is_file(path, entry->d_name))
-			continue;
-		if (str_starts_with(entry->d_name, "."))
-			continue ;
-		if (!path_entry_matches_pattern(entry->d_name, pattern))
+		if ((index < arr_size(segments) - 1
+				&& path_entry_is_file(path, entry->d_name))
+			|| str_starts_with(entry->d_name, ".")
+			|| !path_entry_matches_pattern(entry->d_name, pattern))
 			continue ;
 		if (path_get_updated_segments(segments, &copy, entry->d_name, index))
 			return (3);
 		if (path_get_paths(&copy, index + 1, paths))
 			return (4);
-		arr_free_ptr(&copy);
 	}
+	return (0);
+}
+
+static int	path_get_paths(t_array *segments,
+	unsigned long index, t_array *paths)
+{
+	char			*pattern;
+	char			*path;
+
+	if (index == arr_size(segments))
+	{
+		if (str_from_arr(segments, "", &pattern))
+			return (1);
+		if (arr_add(paths, &pattern))
+			return (2);
+		return (0);
+	}
+	pattern = *(char **) arr_get(segments, index);
+	if (!str_contains(pattern, "*"))
+		return (path_get_paths(segments, index + 1, paths));
+	if (path_resolve(segments, index, &path))
+		return (3);
+	if (path_search_dir(segments, path, index, paths))
+		return (4);
 	return (0);
 }
 
 static int	path_sort(char **a, char **b)
 {
-
 	return (str_cmp(*b, *a));
 }
 

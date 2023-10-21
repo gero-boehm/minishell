@@ -2,10 +2,7 @@
 #include "range.h"
 #include "str.h"
 
-// static char *set = " \n\t\r\f\v&|<>()";
-static char *set = "&|<>()";
-
-static int lexer_token_mask_value_get(t_fragment *fragment)
+static int	lexer_token_mask_value_get(t_fragment *fragment)
 {
 	if (!str_char_is_whitespace(*fragment->str))
 		return (1);
@@ -32,6 +29,7 @@ static int	lexer_token_mask_spaces(t_array *fragments, t_array *mask)
 
 static void	lexer_token_mask_operators(t_array *fragments, t_array *mask)
 {
+	const char		*set = "&|<>()";
 	unsigned long	i;
 	t_fragment		*fragment;
 	static int		counter = 2;
@@ -40,7 +38,8 @@ static void	lexer_token_mask_operators(t_array *fragments, t_array *mask)
 	while (i < arr_size(fragments))
 	{
 		fragment = (t_fragment *) arr_get(fragments, i);
-		if (fragment->quote != QUOTE_NONE || !str_char_in_set(set, *fragment->str))
+		if (fragment->quote != QUOTE_NONE
+			|| !str_char_in_set(set, *fragment->str))
 		{
 			i++;
 			continue ;

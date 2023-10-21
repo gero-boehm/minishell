@@ -26,19 +26,15 @@ static int	lexer_fragments_from_boundaries(
 	range.start = 0;
 	while (i < arr_size(boundaries))
 	{
-		end = *(unsigned long *) arr_get(boundaries, i);
+		end = *(unsigned long *) arr_get(boundaries, i++);
 		range.length = end - range.start;
 		if (range.length == 0)
-		{
-			i++;
 			continue ;
-		}
 		if (str_extract_range(str, &range, &fragment_str))
 			return (2);
 		if (lexer_fragment_add(fragment_str, fragments))
 			return (3);
 		range.start = end;
-		i++;
 	}
 	return (0);
 }

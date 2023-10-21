@@ -22,7 +22,8 @@ static int	path_clone_segments(t_array *segments, t_array *clone)
 	return (0);
 }
 
-int	path_get_updated_segments(t_array *segments, t_array *clone, char *name, unsigned long index)
+int	path_get_updated_segments(t_array *segments, t_array *clone,
+	char *name, unsigned long index)
 {
 	if (path_clone_segments(segments, clone))
 		return (1);

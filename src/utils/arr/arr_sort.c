@@ -26,23 +26,19 @@ int	arr_sort(t_array *arr, int (fn)(void *, void *))
 {
 	unsigned long	i;
 	unsigned long	j;
-	void			*element1;
 	void			*element2;
 	void			*tmp;
 
-	if (arr_size(arr) <= 1)
-		return (0);
 	i = 0;
 	while (++i < arr_size(arr))
 	{
 		j = i;
 		element2 = arr_get(arr, i);
 		if (arr_element_clone(arr, i, &tmp))
-			return (2);
+			return (1);
 		while (j)
 		{
-			element1 = arr_get(arr, j - 1);
-			if (fn(element1, element2) > 0)
+			if (fn(arr_get(arr, j - 1), element2) > 0)
 				break ;
 			j--;
 		}
