@@ -203,7 +203,6 @@ endif
 
 ifdef DEBUG
 	CFLAGS += -g
-#	CFLAGS += -fsanitize=address
 endif
 
 CFLAGS += $(INCLUDE) $(READLINE_INCLUDE)
