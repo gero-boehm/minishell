@@ -11,18 +11,13 @@
 static void	run(char *input)
 {
 	t_array			sequence;
-	// unsigned long	index;
 
 	if (parse_input(input, &sequence))
 	{
-		// if (!arr_index(&global()->allocs, &global()->exec_path, &index))
-		// 	mem_free_from(++index);
 		fd_close_all();
 		return ;
 	}
 	exec_sequence(&sequence);
-	// if (!arr_index(&global()->allocs, &global()->exec_path, &index))
-	// 	mem_free_from(++index);
 	fd_close_all();
 }
 

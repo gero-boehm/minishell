@@ -29,20 +29,8 @@ int	env_get(const char *key, char **value)
 
 int	env_set(const char *key, char *value)
 {
-	// unsigned long	index;
-
 	if (assoc_set(&global()->env, key, value))
 		return (1);
-	// if (arr_remove(&global()->allocs, &key))
-	// 	return (2);
-	// if (arr_remove(&global()->allocs, &value))
-	// 	return (3);
-	// if (arr_index(&global()->allocs, &global()->exec_path, &index))
-	// 	return (0);
-	// if (arr_insert_at(&global()->allocs, index, &key))
-	// 	return (4);
-	// if (arr_insert_at(&global()->allocs, index, &value))
-	// 	return (5);
 	return (0);
 }
 
