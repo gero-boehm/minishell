@@ -91,7 +91,6 @@ SRCS			=	src/converter/converter_expand.c \
 					src/utils/assoc/assoc_index.c \
 					src/utils/assoc/assoc_size.c \
 					src/utils/assoc/assoc_create.c \
-					src/utils/tmp.c \
 					src/utils/range/range_get.c \
 					src/utils/range/range_contains.c \
 					src/utils/global.c \
@@ -169,7 +168,6 @@ HEADERS			=	include/error.h \
 					include/parser.h \
 					include/global.h \
 					include/deserializer.h \
-					include/tmp.h \
 					include/minishell.h \
 					include/converter.h \
 					include/assoc.h \
