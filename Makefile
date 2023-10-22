@@ -123,7 +123,6 @@ SRCS			=	src/converter/converter_expand.c \
 					src/utils/str/str_arr_from_array.c \
 					src/utils/str/str_copy.c \
 					src/utils/str/str_duplicate.c \
-					src/utils/str/str_range_set.c \
 					src/utils/str/str_starts_with.c \
 					src/utils/str/str_length.c \
 					src/utils/str/str_char_in_set.c \
