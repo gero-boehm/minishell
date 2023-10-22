@@ -57,3 +57,12 @@ int	path_entry_is_file(char *dir, char *name)
 		return (1);
 	return (!S_ISDIR(buf.st_mode));
 }
+
+int	path_ignore(char *pattern, char *name)
+{
+	if (*pattern == '.' && str_starts_with(name, "."))
+		return (0);
+	if (*pattern != '.' && !str_starts_with(name, "."))
+		return (0);
+	return (1);
+}

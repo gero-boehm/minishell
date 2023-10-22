@@ -6,6 +6,7 @@
 #include "error.h"
 #include "global.h"
 #include "str.h"
+#include "memory.h"
 
 int	prompt(char **input)
 {
@@ -13,6 +14,7 @@ int	prompt(char **input)
 
 	using_history();
 	*input = readline("miniheaven$ ");
+	mem_add(*input);
 	if (*input == NULL)
 	{
 		if (str_join(&str, "", "\x1b[1A\r", shell_name(), "$ exit\n", NULL))
