@@ -58,7 +58,7 @@ static int	path_search_dir(t_array *segments, char *path,
 			break ;
 		if ((index < arr_size(segments) - 1
 				&& path_entry_is_file(path, entry->d_name))
-			|| str_starts_with(entry->d_name, ".")
+			|| path_ignore(pattern, entry->d_name)
 			|| !path_entry_matches_pattern(entry->d_name, pattern))
 			continue ;
 		if (path_get_updated_segments(segments, &copy, entry->d_name, index))
