@@ -10,6 +10,7 @@ int		opendir2(const char *path, DIR **dir);
 int		readdir2(DIR *dir, struct dirent **entry);
 int		path_resolve(t_array *segments, unsigned long index, char **path);
 int		path_entry_is_file(char *dir, char *name);
+int		path_ignore(char *pattern, char *name);
 
 int		path_get_pattern_boundaries(char *str, t_array *boundaries);
 int		path_get_segments_from_boundaries(char *str, t_array *boundaries,
