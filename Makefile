@@ -243,7 +243,7 @@ fclean: clean
 re: fclean all
 	@echo "$(GREEN)*** Cleaned and rebuilt minishell! ***$(RESET)"
 
-delete:
+delete: fclean
 	$(RM) lib/
 	@echo "$(BLUE)*** Lib deleted! ***$(RESET)"
 

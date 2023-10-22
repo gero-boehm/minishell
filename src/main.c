@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmeng <cmeng@student.42.fr>                +#+  +:+       +#+        */
+/*   By: gbohm <gbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 15:59:13 by cmeng             #+#    #+#             */
-/*   Updated: 2023/10/22 15:59:13 by cmeng            ###   ########.fr       */
+/*   Updated: 2023/10/22 18:20:21 by gbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <unistd.h>
 #include "global.h"
 #include "array.h"
@@ -39,6 +40,7 @@ static int	run_subshell(char *str)
 
 	if (deserializer_deserialize(str, &sequence))
 		error_fatal();
+	printf("");
 	exec_sequence(&sequence);
 	cleanup();
 	return (global()->exit_code);
