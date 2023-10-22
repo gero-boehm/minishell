@@ -15,7 +15,6 @@ int	super_duper(int fd_src, int fd_dst)
 
 int	redirect(t_command *cmd, int input, int ports[2], int last)
 {
-	// TODO: close input and ports[1] when stdio deviates
 	if (cmd->fd_in != STDIN_FILENO)
 	{
 		if (super_duper(cmd->fd_in, STDIN_FILENO))
