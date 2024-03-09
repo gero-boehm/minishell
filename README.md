@@ -1,4 +1,4 @@
-# :shell: Minishell :computer:
+# Minishell :computer:
 
 ## Description
 Minishell is a custom Unix shell implementation designed to mimic basic features of bash, providing a lightweight, yet powerful command line interface for interaction with the operating system. It supports command execution, pipelines, redirections, environment variable expansions, and several built-ins, with a focus on minimalism and efficiency.
@@ -35,48 +35,6 @@ Execute the shell by running:
 ```shell
 ./minishell
 ```
-
-Sure, here's the entire project description in Markdown format suitable for a `.md` file:
-
-```markdown
-# :shell: Minishell :computer:
-
-## Description
-Minishell is a custom Unix shell implementation designed to mimic basic features of bash, providing a lightweight, yet powerful command line interface for interaction with the operating system. It supports command execution, pipelines, redirections, environment variable expansions, and several built-ins, with a focus on minimalism and efficiency.
-
-## Objective
-The primary goal of Minishell is to offer an educational insight into the workings of a Unix shell. It aims to challenge the understanding of system calls, process management, and the overall architecture of a shell environment.
-
-## Features
-- Display a prompt for new commands with a working history.
-- Execute the correct executable using the PATH variable or through relative/absolute paths.
-- Includes built-ins: `echo`, `cd`, `pwd`, `export`, `unset`, `env`, `exit`.
-- Support for input (`<`), output (`>`), append (`>>`), and heredoc (`<<`) redirections.
-- Implement pipes (`|`) to connect command outputs to inputs.
-- Handle environment variables and the `$?` special variable.
-- Manage signals (`ctrl-C`, `ctrl-D`, `ctrl-\`) similar to bash.
-- Limit the use of global variables, focusing on signal handling without accessing main data structures.
-
-## Technical Details
-- **External Functions Allowed**: A wide range of system and library functions, including `readline` for input handling and `execve` for command execution.
-- **Authorized Library**: `libft` for general utilities.
-- **Programming Language**: C
-
-## Getting Started
-1. **Prerequisites**: Ensure you have `gcc`, `make`, and `readline` library installed on your system.
-2. **Installation**:
-    ```shell
-    git clone https://github.com/yourrepository/minishell.git
-    cd minishell
-    make
-    ```
-
-## Usage
-Execute the shell by running:
-```shell
-./minishell
-```
-You'll be greeted with a prompt where you can start entering commands, similar to any Unix shell.
 
 ## Bonus Features
 - Logical operators `&&` and `||` with parentheses for priority.
@@ -99,5 +57,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contributors
 - Gero Böhm (https://github.com/gero-boehm)
 - Christian Meng (https://github.com/Christwelve)
-
-```
